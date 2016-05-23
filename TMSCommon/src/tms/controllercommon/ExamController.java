@@ -6,11 +6,17 @@
 package tms.controllercommon;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import tms.model.Exam;
+import tms.model.Paper;
 
 /**
  *
  * @author Nuwantha
  */
 public interface ExamController extends Remote{
-    
+    public boolean addNewExamResult(Paper paper, ArrayList<Exam> results) throws RemoteException,ClassNotFoundException, SQLException;
+
 }

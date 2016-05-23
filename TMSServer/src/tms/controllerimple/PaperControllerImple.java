@@ -10,6 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import tms.controller.PaperControllerD;
 import tms.controllercommon.PaperController;
+import tms.model.Paper;
 
 /**
  *
@@ -26,5 +27,10 @@ public class PaperControllerImple extends UnicastRemoteObject implements PaperCo
     @Override
     public int getPaperCount() throws RemoteException, SQLException, ClassNotFoundException {
        return paperControllerD.getPaperCount();
+    }
+
+    @Override
+    public boolean addNewPaper(Paper paper) throws RemoteException, ClassNotFoundException, SQLException {
+        return  paperControllerD.addNewPaper(paper);
     }
 }

@@ -7,8 +7,12 @@ package tms.controllerimple;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import tms.controller.ExamControllerD;
 import tms.controllercommon.ExamController;
+import tms.model.Exam;
+import tms.model.Paper;
 
 /**
  *
@@ -21,5 +25,10 @@ public class ExamControllerImple extends UnicastRemoteObject implements ExamCont
    public ExamControllerImple() throws RemoteException{
         this.examControllerD=new ExamControllerD();
    }
+
+    @Override
+    public boolean addNewExamResult(Paper paper, ArrayList<Exam> results) throws RemoteException, ClassNotFoundException, SQLException {
+      return examControllerD.addNewExamResult(paper, results);
+    }
     
 }

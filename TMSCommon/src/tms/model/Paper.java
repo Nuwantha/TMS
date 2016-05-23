@@ -12,21 +12,35 @@ import java.io.Serializable;
  * @author Nuwantha
  */
 public class Paper implements Serializable{
+
     private String paperId;
     private String dateOfConduct;
+    private String classId;
     private int numberOfFacedStudent;
     private int grade;
     private int topScore;
     private double average;
 
-    public Paper(String paperId, String dateOfConduct, int numberOfFacedStudent, int grade, int topScore, double average) {
+    public Paper(String paperId, String dateOfConduct, String classId, int numberOfFacedStudent, int grade, int topScore, double average) {
         this.paperId = paperId;
         this.dateOfConduct = dateOfConduct;
+        this.classId = classId;
         this.numberOfFacedStudent = numberOfFacedStudent;
         this.grade = grade;
         this.topScore = topScore;
         this.average = average;
     }
+
+    public Paper(String paperId, String dateOfConduct, String classId, int grade) {
+        this.paperId = paperId;
+        this.dateOfConduct = dateOfConduct;
+        this.classId = classId;
+        this.grade = grade;
+    }
+
+    
+    
+   
 
     public double getAverage() {
         return average;
@@ -74,6 +88,14 @@ public class Paper implements Serializable{
 
     public void setTopScore(int topScore) {
         this.topScore = topScore;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 
     

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import tms.db_utilities.DBConnection;
 import tms.db_utilities.DBHandler;
+import tms.model.Paper;
 
 /**
  *
@@ -39,4 +40,19 @@ public class PaperControllerD {
         return count;
     }
     
+    
+     public static boolean addNewPaper(Paper paper) throws ClassNotFoundException, SQLException {
+        try {
+            
+            readWriteLock.writeLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Insert into Paper Values('" + paper.getPaperId() + "','" + paper.getClassId() + "','" + paper.getDateOfConduct() + "','" + paper.getNumberOfFacedStudent() + "','" + paper.getGrade() + "','" + paper.getTopScore() + "','"+paper.getAverage()+"')";
+            int returnValue = DBHandler.setData(conn, sql);
+            return returnValue > 0;
+            
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
+  
 }

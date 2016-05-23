@@ -11,13 +11,18 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.PaperController;
 import tms.controllercommon.StudentController;
 import tms.model.ClassS;
+import tms.model.Exam;
+import tms.model.Paper;
 import tms.model.Student;
 
 /**
@@ -38,9 +43,9 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         initComponents();
         try {
             Connector sConnector = Connector.getSConnector();
-           paperController=sConnector.getPaperController();
-           classController=sConnector.getClassController();
-           studentController=sConnector.getStudentController();
+            paperController = sConnector.getPaperController();
+            classController = sConnector.getClassController();
+            studentController = sConnector.getStudentController();
         } catch (SQLException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException | InterruptedException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,11 +71,11 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         classIdAddMarkC = new javax.swing.JComboBox<>();
         loadAddMarkB = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        conductedDateT = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         addStudentMarkTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        addMarkB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -135,7 +140,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                         .addGap(0, 21, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(conductedDateT, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -152,7 +157,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 .addGap(11, 11, 11)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(conductedDateT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loadAddMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77))
@@ -185,8 +190,13 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(addStudentMarkTable);
 
-        jButton1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        jButton1.setText("Add Mark");
+        addMarkB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        addMarkB.setText("Add Mark");
+        addMarkB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMarkBActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -198,7 +208,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(addMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -207,7 +217,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(addMarkB)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -258,24 +268,75 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         try {
             String classId = String.valueOf(classIdAddMarkC.getSelectedItem());
             ArrayList<Student> studentOfClass = studentController.getStudentOfClass(classId);
-            
-            DefaultTableModel tableModel = (DefaultTableModel)addStudentMarkTable.getModel();
+
+            DefaultTableModel tableModel = (DefaultTableModel) addStudentMarkTable.getModel();
             tableModel.getDataVector().removeAllElements();
             revalidate();
             for (Student student : studentOfClass) {
-                tableModel.addRow(new Object[]{student.getName(),student.getStudentId(),null});
+                tableModel.addRow(new Object[]{student.getName(), student.getStudentId(), null});
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loadAddMarkBActionPerformed
 
+    private void addMarkBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMarkBActionPerformed
+        try {
+            String paperId = paperIdAddMarkT.getText();
+            String conductedDate = conductedDateT.getText();
+            String classId = String.valueOf(classIdAddMarkC.getSelectedItem());
+            ClassS searchClass = classController.searchClass(classId);
+            int grade = searchClass.getGrade();
+            Paper paper = new Paper(paperId, conductedDate, classId, grade);
+
+            ArrayList<Exam> results = new ArrayList<Exam>();
+
+            DefaultTableModel model = (DefaultTableModel) addStudentMarkTable.getModel();
+
+            for (int count = 0; count < model.getRowCount(); count++) {
+
+                String studentId = model.getValueAt(count, 1).toString();
+                Student student = studentController.searchStudent(studentId);
+                int mark = Integer.parseInt(model.getValueAt(count, 2).toString());
+                Exam exam = new Exam(student, paper, mark, 0);
+                results.add(exam);
+            }
+
+            Collections.sort(results, new Comparator<Exam>() {
+                @Override
+                public int compare(Exam exam1, Exam exam2) {
+                    if (exam1.getMark() > exam2.getMark()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+            int topScore = 0;
+            int count = 1;
+            double totalmark = 0;
+            for (Exam result : results) {
+                if (result.getMark() > 0) {
+                    result.setRank(count);
+                    topScore = result.getMark();
+                    totalmark += result.getMark();
+                    count++;
+                }
+            }
+            paper.setNumberOfFacedStudent(count);
+            paper.setTopScore(topScore);
+            paper
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_addMarkBActionPerformed
+
     private void setPaperID() {
         try {
             int paperCount = paperController.getPaperCount() + 1;
             if (paperCount < 10) {
                 paperIdAddMarkT.setText("P000" + String.valueOf(paperCount));
-            } else if (paperCount< 100) {
+            } else if (paperCount < 100) {
                 paperIdAddMarkT.setText("P00" + String.valueOf(paperCount));
             } else if (paperCount < 1000) {
                 paperIdAddMarkT.setText("P0" + String.valueOf(paperCount));
@@ -287,8 +348,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         }
 
     }
-    
-    
+
     private void loadClassCombo() {
         classIdAddMarkC.removeAllItems();
         try {
@@ -345,17 +405,17 @@ public class StudentMarkManagement extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addMarkB;
     private javax.swing.JTable addStudentMarkTable;
     private javax.swing.JComboBox<String> classIdAddMarkC;
     private javax.swing.JLabel classIdAddMarkL;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField conductedDateT;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton loadAddMarkB;
     private javax.swing.JLabel paperIdAddMarkL;
     private javax.swing.JTextField paperIdAddMarkT;
