@@ -6,6 +6,7 @@
 package tms.controller;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -14,6 +15,7 @@ import tms.db_utilities.DBConnection;
 import tms.db_utilities.DBHandler;
 import tms.model.Exam;
 import tms.model.Paper;
+import tms.model.Student;
 
 /**
  *
@@ -62,4 +64,25 @@ public class ExamControllerD {
         }
     }
 
+    
+    public static ArrayList<Exam> getAllResults(String paperId) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * From exam where paperId='"+paperId+"'";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Exam> examList = new ArrayList<>();
+            while (rst.next()) {
+                Student searchStudent = StudentControllerD.searchStudent(rst.getString(1));
+                Paper searchPaper = PaperControllerD.searchPaper( rst.getString(2));
+                Exam exam = new Exam(searchStudent,searchPaper, rst.getInt(3), rst.getInt(4));
+                examList.add(exam);
+            }
+            return examList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+    
+    
 }

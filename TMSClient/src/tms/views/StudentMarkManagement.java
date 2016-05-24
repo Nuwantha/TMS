@@ -15,9 +15,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import tms.controllercommon.ClassController;
+import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
 import tms.controllercommon.StudentController;
 import tms.model.ClassS;
@@ -34,6 +36,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
     PaperController paperController;
     ClassController classController;
     StudentController studentController;
+    ExamController examController;
 
     /**
      * Creates new form StudentMarkManagement
@@ -46,6 +49,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
             paperController = sConnector.getPaperController();
             classController = sConnector.getClassController();
             studentController = sConnector.getStudentController();
+            examController=sConnector.getExamController();
         } catch (SQLException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException | InterruptedException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -312,20 +316,31 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                     }
                 }
             });
+            ArrayList<Exam> resultfinal = new ArrayList<Exam>();
             int topScore = 0;
             int count = 1;
             double totalmark = 0;
             for (Exam result : results) {
                 if (result.getMark() > 0) {
+                    resultfinal.add(result);
                     result.setRank(count);
-                    topScore = result.getMark();
+                    if (topScore < result.getMark()) {
+                        topScore = result.getMark();
+                    }
                     totalmark += result.getMark();
                     count++;
                 }
             }
-            paper.setNumberOfFacedStudent(count);
+            paper.setNumberOfFacedStudent(count-1);
             paper.setTopScore(topScore);
-            paper
+            paper.setAverage(totalmark/count);
+            boolean addNewExamResult = examController.addNewExamResult(paper, results);
+            if(addNewExamResult){
+                JOptionPane.showMessageDialog(this,"result is added successfully");
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(this,"result is not added successfully");
+            }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }

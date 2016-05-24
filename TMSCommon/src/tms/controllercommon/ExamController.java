@@ -17,6 +17,8 @@ import tms.model.Paper;
  * @author Nuwantha
  */
 public interface ExamController extends Remote{
+    
     public boolean addNewExamResult(Paper paper, ArrayList<Exam> results) throws RemoteException,ClassNotFoundException, SQLException;
-
+    public  ArrayList<Exam> getAllResults(String paperId) throws RemoteException,ClassNotFoundException, SQLException;
+    
 }

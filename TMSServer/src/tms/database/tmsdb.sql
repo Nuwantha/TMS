@@ -41,7 +41,7 @@ CREATE TABLE Paper(
 	numberOfFacedStudent INT(3) NOT NULL,
 	grade INT(2) NOT NULL,
 	topScore INT(3),
-	average DOUBLE(3,2),
+	average DOUBLE(5,2),
 	CONSTRAINT FOREIGN KEY(classId)REFERENCES Class1(classId)
 	ON DELETE CASCADE ON UPDATE CASCADE, 	
 	CONSTRAINT PRIMARY KEY(paperId)

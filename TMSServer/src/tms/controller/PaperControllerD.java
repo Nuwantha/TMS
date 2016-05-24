@@ -8,6 +8,7 @@ package tms.controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import tms.db_utilities.DBConnection;
 import tms.db_utilities.DBHandler;
@@ -18,11 +19,9 @@ import tms.model.Paper;
  * @author Nuwantha
  */
 public class PaperControllerD {
-    
-    
-   private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-   
-    
+
+    private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
     public static int getPaperCount() throws ClassNotFoundException, SQLException {
         int count = 0;
         try {
@@ -39,20 +38,56 @@ public class PaperControllerD {
 
         return count;
     }
-    
-    
-     public static boolean addNewPaper(Paper paper) throws ClassNotFoundException, SQLException {
+
+    public static boolean addNewPaper(Paper paper) throws ClassNotFoundException, SQLException {
         try {
-            
+
             readWriteLock.writeLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();
-            String sql = "Insert into Paper Values('" + paper.getPaperId() + "','" + paper.getClassId() + "','" + paper.getDateOfConduct() + "','" + paper.getNumberOfFacedStudent() + "','" + paper.getGrade() + "','" + paper.getTopScore() + "','"+paper.getAverage()+"')";
+            String sql = "Insert into paper Values('" + paper.getPaperId() + "','" + paper.getClassId() + "','" + paper.getDateOfConduct() + "','" + paper.getNumberOfFacedStudent() + "','" + paper.getGrade() + "','" + paper.getTopScore() + "','" + paper.getAverage() + "')";
+
+            System.out.println(paper.getPaperId() + "  " + paper.getClassId() + " " + paper.getDateOfConduct() + " " + paper.getNumberOfFacedStudent() + " " + paper.getTopScore() + " " + paper.getAverage() + " " + paper.getGrade());
+
             int returnValue = DBHandler.setData(conn, sql);
             return returnValue > 0;
-            
+
         } finally {
             readWriteLock.writeLock().unlock();
         }
     }
-  
+
+    public static ArrayList<Paper> getAllPaper() throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * From paper";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Paper> paperList = new ArrayList<>();
+            while (rst.next()) {
+                Paper paper = new Paper(rst.getString(1), rst.getString(2), rst.getString(3), rst.getInt(4), rst.getInt(5), rst.getInt(6), rst.getDouble(7));
+                paperList.add(paper);
+            }
+            return paperList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
+    public static Paper searchPaper(String paperId) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * from paper where paperId='" + paperId + "'";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            if (rst.next()) {
+                Paper paper = new Paper(rst.getString(1), rst.getString(2), rst.getString(3), rst.getInt(4), rst.getInt(5), rst.getInt(6), rst.getDouble(7));
+                return paper;
+            } else {
+                return null;
+            }
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
 }
