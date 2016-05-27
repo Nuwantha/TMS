@@ -8,7 +8,9 @@ package tms.controllercommon;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import tms.model.Registration;
+import tms.model.Student;
 
 /**
  *
@@ -16,6 +18,7 @@ import tms.model.Registration;
  */
 public interface RegistrationController extends Remote{
     public boolean addNewRegistration(Registration registration) throws RemoteException, SQLException,ClassNotFoundException;
-        
+    public ArrayList<Student> getStudentOfClass(String classId) throws RemoteException, ClassNotFoundException, SQLException;
+      
     
 }

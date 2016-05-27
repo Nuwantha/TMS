@@ -18,8 +18,6 @@ public interface RemoteFactory extends Remote {
 
     public ClassFeesController getClassFeesController() throws RemoteException, SQLException, ClassNotFoundException;
 
-    public ClassFeesPavementController getClassFeesPavementController() throws RemoteException, SQLException, ClassNotFoundException;
-
     public ExamController getExamController() throws RemoteException, SQLException, ClassNotFoundException;
 
     public PaperController getPaperController() throws RemoteException, SQLException, ClassNotFoundException;

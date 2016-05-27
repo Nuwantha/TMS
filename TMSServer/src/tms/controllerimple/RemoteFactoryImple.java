@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import tms.controllercommon.AttendenceController;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ClassFeesController;
-import tms.controllercommon.ClassFeesPavementController;
 import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
 import tms.controllercommon.RegistrationController;
@@ -45,10 +44,6 @@ public class RemoteFactoryImple extends UnicastRemoteObject implements RemoteFac
         return new ClassFeesControllerImple();
     }
 
-    @Override
-    public ClassFeesPavementController getClassFeesPavementController() throws RemoteException, SQLException, ClassNotFoundException {
-        return new ClassFeesPavementControllerImple();
-    }
 
     @Override
     public ExamController getExamController() throws RemoteException, SQLException, ClassNotFoundException {

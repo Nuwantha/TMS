@@ -12,8 +12,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import tms.controllercommon.AttendenceController;
 import tms.controllercommon.ClassController;
-import tms.controllercommon.ClassFeesController;
-import tms.controllercommon.ClassFeesPavementController;
+import tms.controllercommon.ClassFeesController;;
 import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
 import tms.controllercommon.RegistrationController;
@@ -36,7 +35,6 @@ public class Connector {
     private AttendenceController attendenceController;
     private ClassController classController;
     private ClassFeesController classFeesController;
-    private ClassFeesPavementController classFeesPavementController;
     private ExamController examController;
     private PaperController paperController;
     private RegistrationController registrationController;
@@ -81,14 +79,7 @@ public class Connector {
         
     }
 
-    public ClassFeesPavementController getClassFeesPavementController() throws RemoteException, SQLException, ClassNotFoundException {
-        if(classFeesPavementController==null){
-            classFeesPavementController=remoteFactory.getClassFeesPavementController();
-        }
-        
-        return classFeesPavementController;
-    }
-
+   
     public ExamController getExamController() throws RemoteException, SQLException, ClassNotFoundException {
         if(examController==null){
             examController=remoteFactory.getExamController();

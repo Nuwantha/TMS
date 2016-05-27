@@ -99,6 +99,8 @@ public class FrontPage extends javax.swing.JFrame {
         addAttendenceM = new javax.swing.JMenuItem();
         editAttendenceM = new javax.swing.JMenuItem();
         viewAttendenceM = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
         systemMenu = new javax.swing.JMenu();
         changePasswordMenu = new javax.swing.JMenuItem();
         createNewUserMenu = new javax.swing.JMenuItem();
@@ -690,6 +692,13 @@ public class FrontPage extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setText("ClassFees");
+
+        jMenu5.setText("Add New ClassFeesId");
+        jMenu4.add(jMenu5);
+
+        jMenuBar1.add(jMenu4);
+
         systemMenu.setText("System");
 
         changePasswordMenu.setText("Change password");
@@ -767,7 +776,9 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_sendNotifaicationFBActionPerformed
 
     private void addClassFeesFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClassFeesFBActionPerformed
-
+      ClassFeesManagement classFeesManagement = new ClassFeesManagement(this, true);
+      classFeesManagement.setLocationRelativeTo(null);
+      classFeesManagement.setVisible(true);
     }//GEN-LAST:event_addClassFeesFBActionPerformed
 
     private void addNewStudentMarkMBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewStudentMarkMBActionPerformed
@@ -930,6 +941,8 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

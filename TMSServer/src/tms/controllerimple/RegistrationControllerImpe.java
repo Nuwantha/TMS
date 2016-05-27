@@ -8,9 +8,11 @@ package tms.controllerimple;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import tms.controller.RegistrationControllerD;
 import tms.controllercommon.RegistrationController;
 import tms.model.Registration;
+import tms.model.Student;
 
 /**
  *
@@ -27,5 +29,10 @@ public class RegistrationControllerImpe extends UnicastRemoteObject implements R
     @Override
     public boolean addNewRegistration(Registration registration) throws RemoteException, SQLException, ClassNotFoundException {
         return registrationControllerD.addNewRegistration(registration); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Student> getStudentOfClass(String classId) throws RemoteException, ClassNotFoundException, SQLException {
+        return  registrationControllerD.getStudentOfClass(classId);//To change body of generated methods, choose Tools | Templates.
     }
 }

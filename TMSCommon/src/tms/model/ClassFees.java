@@ -12,32 +12,24 @@ import java.io.Serializable;
  * @author Nuwantha
  */
 public class ClassFees implements Serializable{
-    private String classFeesId;
+    private Student student;
     private ClassS classStudent;	
-    private int year;
+    private String payDate;
     private int	month;
 
-    public ClassFees(String classFeesId, ClassS classStudent, int year, int month) {
-        this.classFeesId = classFeesId;
+    public ClassFees(Student student, ClassS classStudent, String payDate, int month) {
+        this.student = student;
         this.classStudent = classStudent;
-        this.year = year;
+        this.payDate = payDate;
         this.month = month;
     }
 
-    public int getMonth() {
-        return month;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public String getClassFeesId() {
-        return classFeesId;
-    }
-
-    public void setClassFeesId(String classFeesId) {
-        this.classFeesId = classFeesId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public ClassS getClassStudent() {
@@ -48,14 +40,21 @@ public class ClassFees implements Serializable{
         this.classStudent = classStudent;
     }
 
-    public int getYear() {
-        return year;
+    public String getPayDate() {
+        return payDate;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setPayDate(String payDate) {
+        this.payDate = payDate;
     }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
     
-    
-	 
 }
