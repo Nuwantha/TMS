@@ -21,7 +21,7 @@ public class Paper implements Serializable{
     private int topScore;
     private double average;
 
-    public Paper(String paperId, String dateOfConduct, String classId, int numberOfFacedStudent, int grade, int topScore, double average) {
+    public Paper(String paperId, String classId, String dateOfConduct, int numberOfFacedStudent, int grade, int topScore, double average) {
         this.paperId = paperId;
         this.dateOfConduct = dateOfConduct;
         this.classId = classId;

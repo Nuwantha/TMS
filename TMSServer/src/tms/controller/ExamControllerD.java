@@ -69,7 +69,7 @@ public class ExamControllerD {
         try {
             readWriteLock.readLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();
-            String sql = "Select * From exam where paperId='"+paperId+"'";
+            String sql = "Select * From exam where paperId='"+paperId+"' order by rank2";
             ResultSet rst = DBHandler.getData(conn, sql);
             ArrayList<Exam> examList = new ArrayList<>();
             while (rst.next()) {

@@ -46,8 +46,6 @@ public class PaperControllerD {
             Connection conn = DBConnection.getDBConnection().getConnection();
             String sql = "Insert into paper Values('" + paper.getPaperId() + "','" + paper.getClassId() + "','" + paper.getDateOfConduct() + "','" + paper.getNumberOfFacedStudent() + "','" + paper.getGrade() + "','" + paper.getTopScore() + "','" + paper.getAverage() + "')";
 
-            System.out.println(paper.getPaperId() + "  " + paper.getClassId() + " " + paper.getDateOfConduct() + " " + paper.getNumberOfFacedStudent() + " " + paper.getTopScore() + " " + paper.getAverage() + " " + paper.getGrade());
-
             int returnValue = DBHandler.setData(conn, sql);
             return returnValue > 0;
 

@@ -6,6 +6,8 @@
 package tms.views;
 
 import SeverConnector.Connector;
+import java.io.File;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,9 +15,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
+import tms.model.Exam;
 import tms.model.Paper;
+import tms.model.Student;
 
 /**
  *
@@ -25,6 +38,7 @@ public class ResultbyPapers extends javax.swing.JDialog {
 
     PaperController paperController;
     ExamController examController;
+
     /**
      * Creates new form ResultbyPapers
      */
@@ -33,14 +47,14 @@ public class ResultbyPapers extends javax.swing.JDialog {
         initComponents();
         try {
             Connector sConnector = Connector.getSConnector();
-            paperController=sConnector.getPaperController();
-            examController=sConnector.getExamController();
+            paperController = sConnector.getPaperController();
+            examController = sConnector.getExamController();
             loadPaperIdCombo();
-            
+
         } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(ResultbyPapers.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     /**
@@ -69,7 +83,7 @@ public class ResultbyPapers extends javax.swing.JDialog {
         highestScoreT = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        resultTable = new javax.swing.JTable();
 
         jLabel1.setText("jLabel1");
 
@@ -82,9 +96,19 @@ public class ResultbyPapers extends javax.swing.JDialog {
 
         searchB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         searchB.setText("Search");
+        searchB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBActionPerformed(evt);
+            }
+        });
 
         reportB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         reportB.setText("report");
+        reportB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportBActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,8 +190,8 @@ public class ResultbyPapers extends javax.swing.JDialog {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        resultTable.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        resultTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -190,16 +214,16 @@ public class ResultbyPapers extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(0).setHeaderValue("Student Id");
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setHeaderValue("Student Name");
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setHeaderValue("Mark");
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setHeaderValue("Rank");
+        jScrollPane1.setViewportView(resultTable);
+        if (resultTable.getColumnModel().getColumnCount() > 0) {
+            resultTable.getColumnModel().getColumn(0).setResizable(false);
+            resultTable.getColumnModel().getColumn(0).setHeaderValue("Student Id");
+            resultTable.getColumnModel().getColumn(1).setResizable(false);
+            resultTable.getColumnModel().getColumn(1).setHeaderValue("Student Name");
+            resultTable.getColumnModel().getColumn(2).setResizable(false);
+            resultTable.getColumnModel().getColumn(2).setHeaderValue("Mark");
+            resultTable.getColumnModel().getColumn(3).setResizable(false);
+            resultTable.getColumnModel().getColumn(3).setHeaderValue("Rank");
         }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -277,6 +301,41 @@ public class ResultbyPapers extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBActionPerformed
+        try {
+
+            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
+            Paper paper = paperController.searchPaper(paperId);
+
+            aveMarkT.setText(String.valueOf(paper.getAverage()));
+            highestScoreT.setText(String.valueOf(paper.getTopScore()));
+            conductedDateT.setText(paper.getDateOfConduct());
+
+            ArrayList<Exam> allResults = examController.getAllResults(paperId);
+            DefaultTableModel tableModel = (DefaultTableModel) resultTable.getModel();
+            tableModel.getDataVector().removeAllElements();
+            revalidate();
+            for (Exam exam : allResults) {
+                tableModel.addRow(new Object[]{exam.getStudent().getStudentId(), exam.getStudent().getName(), exam.getMark(), exam.getRank()});
+            }
+
+        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(ResultbyPapers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_searchBActionPerformed
+
+    private void reportBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBActionPerformed
+        try {
+
+           JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/tms/views/MarkReportbyPaper.jrxml"));
+            DefaultTableModel model = (DefaultTableModel) resultTable.getModel();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,null, new JRTableModelDataSource(model));
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException ex) {
+            Logger.getLogger(ResultbyPapers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_reportBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -318,9 +377,7 @@ public class ResultbyPapers extends javax.swing.JDialog {
             }
         });
     }
-    
-    
-    
+
     private void loadPaperIdCombo() {
         paperIdCombo.removeAllItems();
         try {
@@ -348,10 +405,10 @@ public class ResultbyPapers extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> paperIdCombo;
     private javax.swing.JLabel paperIdL;
     private javax.swing.JButton reportB;
+    private javax.swing.JTable resultTable;
     private javax.swing.JButton searchB;
     // End of variables declaration//GEN-END:variables
 }
