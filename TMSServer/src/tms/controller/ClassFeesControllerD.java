@@ -6,11 +6,14 @@
 package tms.controller;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import tms.db_utilities.DBConnection;
 import tms.db_utilities.DBHandler;
 import tms.model.ClassFees;
+import tms.model.Student;
 
 /**
  *
@@ -36,4 +39,39 @@ public class ClassFeesControllerD {
         }
     }
     
+      public static ArrayList<Student> getClassFeesPaidStudents(String classId,int month) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select studentId From classFees where classId='"+classId+"' and month1='"+month+"'";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Student> studentList = new ArrayList<>();
+            while (rst.next()) {
+                Student student=StudentControllerD.searchStudent(rst.getString(1));
+                studentList.add(student);
+            }
+            return studentList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
+      
+      public static ArrayList<Student> getClassFeesNotPaidStudents(String classId,int month) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select studentId from registration where classid='"+classId+"' and studentId not in(Select studentId From classFees where classId='"+classId+"' and month1='"+month+"')";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Student> studentList = new ArrayList<>();
+            while (rst.next()) {
+                Student student=StudentControllerD.searchStudent(rst.getString(1));
+                studentList.add(student);
+            }
+            return studentList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
 }

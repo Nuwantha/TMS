@@ -17,7 +17,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ClassFeesController;
 import tms.controllercommon.RegistrationController;
@@ -48,11 +50,12 @@ public class ClassFeesManagement extends javax.swing.JDialog {
             classController = sConnector.getClassController();
             registrationController = sConnector.getRegistrationController();
             studentController = sConnector.getStudentController();
-            classFeesController=sConnector.getClassFeesController();
+            classFeesController = sConnector.getClassFeesController();
         } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | ClassNotFoundException | InterruptedException ex) {
             Logger.getLogger(ClassFeesManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
-        loadClassId();
+        loadClassId(classIdComboA);
+        loadClassId(classIdComboView);
     }
 
     /**
@@ -66,6 +69,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
 
         jPanel2 = new javax.swing.JPanel();
         jTextField5 = new javax.swing.JTextField();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -92,6 +96,19 @@ public class ClassFeesManagement extends javax.swing.JDialog {
         paprentNameTA = new javax.swing.JTextField();
         contactNumberTextA = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        paidStudentL = new javax.swing.JLabel();
+        classIdLV = new javax.swing.JLabel();
+        classIdComboView = new javax.swing.JComboBox<>();
+        monthLabelA1 = new javax.swing.JLabel();
+        monthComboA1 = new javax.swing.JComboBox<>();
+        loadB = new javax.swing.JButton();
+        yesB = new javax.swing.JRadioButton();
+        noB = new javax.swing.JRadioButton();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        classFesTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -340,7 +357,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,28 +367,187 @@ public class ClassFeesManagement extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("Add Class Fees", jPanel1);
 
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        paidStudentL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        paidStudentL.setText("Paid Student");
+
+        classIdLV.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        classIdLV.setText("Class Id");
+
+        classIdComboView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        classIdComboView.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                classIdComboViewItemStateChanged(evt);
+            }
+        });
+
+        monthLabelA1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        monthLabelA1.setText("Month");
+
+        monthComboA1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        monthComboA1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "Octomber", "November", "December" }));
+
+        loadB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        loadB.setText("Load");
+        loadB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadBActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(yesB);
+        yesB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        yesB.setText("Yes");
+
+        buttonGroup1.add(noB);
+        noB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        noB.setText("No");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addComponent(loadB, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(classIdComboView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(monthComboA1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(paidStudentL, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(classIdLV, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(monthLabelA1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(yesB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(noB, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paidStudentL, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(yesB)
+                    .addComponent(noB))
+                .addGap(13, 13, 13)
+                .addComponent(classIdLV, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(classIdComboView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(monthLabelA1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(monthComboA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(loadB)
+                .addContainerGap(143, Short.MAX_VALUE))
+        );
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        classFesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Student Id", "Student Name", "Parent", "Contact Number"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(classFesTable);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 628, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 361, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        jTabbedPane1.addTab("tab2", jPanel3);
+        jTabbedPane1.addTab("View Class Fees Detail", jPanel3);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 628, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 361, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("tab3", jPanel4);
@@ -440,34 +616,65 @@ public class ClassFeesManagement extends javax.swing.JDialog {
         try {
             String classId = String.valueOf(classIdComboA.getSelectedItem());
             String studentId = String.valueOf(studentIdCombo.getSelectedItem());
-            int month = monthComboA.getSelectedIndex()+1;
+            int month = monthComboA.getSelectedIndex() + 1;
             Student student = studentController.searchStudent(studentId);
             ClassS searchClass = classController.searchClass(classId);
 
             String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-            
+
             System.out.println(date);
-            ClassFees classFees = new ClassFees(student, searchClass,date.substring(0,10),month);
+            ClassFees classFees = new ClassFees(student, searchClass, date.substring(0, 10), month);
             boolean addNewClassFees = classFeesController.addNewClassFees(classFees);
-            if(addNewClassFees){
-                JOptionPane.showMessageDialog(this,"classFees is added successfully");
-            }else{
-                    JOptionPane.showMessageDialog(this,"classFees is not added successfully");
-            
+            if (addNewClassFees) {
+                JOptionPane.showMessageDialog(this, "classFees is added successfully");
+            } else {
+                JOptionPane.showMessageDialog(this, "classFees is not added successfully");
+
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
-          //  Logger.getLogger(ClassFeesManagement.class.getName()).log(Level.SEVERE, null, ex);
+            //  Logger.getLogger(ClassFeesManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_addButtonAActionPerformed
 
-    private void loadClassId() {
+    private void classIdComboViewItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classIdComboViewItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_classIdComboViewItemStateChanged
+
+    private void loadBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBActionPerformed
+        String classId = String.valueOf(classIdComboView.getSelectedItem());
+        int month = monthComboA1.getSelectedIndex();
+        ArrayList<Student> students = null;
+        if (yesB.isSelected()) {
+            try {
+                students = classFeesController.getClassFeesPaidStudents(classId, month);
+            } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(ClassFeesManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                students = classFeesController.getClassFeesNotPaidStudents(classId, month);
+            } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(ClassFeesManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        DefaultTableModel tableModel = (DefaultTableModel) classFesTable.getModel();
+        tableModel.getDataVector().removeAllElements();
+        revalidate();
+        for (Student student : students) {
+            tableModel.addRow(new Object[]{student.getStudentId(), student.getName(), student.getParentName(), student.getContactNumber()});
+        }
+
+    }//GEN-LAST:event_loadBActionPerformed
+
+    private void loadClassId(JComboBox comboBox) {
         try {
-            classIdComboA.removeAllItems();
+            comboBox.removeAllItems();
             ArrayList<ClassS> allClass = classController.getAllClass();
             for (ClassS cls : allClass) {
-                classIdComboA.addItem(cls.getClassId());
+                comboBox.addItem(cls.getClassId());
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(ClassFeesManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -533,10 +740,14 @@ public class ClassFeesManagement extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButtonA;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel classDeatilPanelA;
     private javax.swing.JLabel classFeesAmountLabelA;
     private javax.swing.JTextField classFeesAmountTextA;
+    private javax.swing.JTable classFesTable;
     private javax.swing.JComboBox<String> classIdComboA;
+    private javax.swing.JComboBox<String> classIdComboView;
+    private javax.swing.JLabel classIdLV;
     private javax.swing.JLabel classIdLabelA;
     private javax.swing.JLabel conductedYearLabelA;
     private javax.swing.JTextField conductedYearTextA;
@@ -550,16 +761,26 @@ public class ClassFeesManagement extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton loadB;
     private javax.swing.JComboBox<String> monthComboA;
+    private javax.swing.JComboBox<String> monthComboA1;
     private javax.swing.JLabel monthLabelA;
+    private javax.swing.JLabel monthLabelA1;
     private javax.swing.JLabel nameTextA;
     private javax.swing.JTextField nameTextAdd;
+    private javax.swing.JRadioButton noB;
+    private javax.swing.JLabel paidStudentL;
     private javax.swing.JTextField paprentNameTA;
     private javax.swing.JLabel paprentNameTextA;
     private javax.swing.JPanel studentDetailPanelA;
     private javax.swing.JComboBox<String> studentIdCombo;
     private javax.swing.JLabel studentIdLabelA;
+    private javax.swing.JRadioButton yesB;
     // End of variables declaration//GEN-END:variables
 }
