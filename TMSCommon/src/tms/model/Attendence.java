@@ -13,30 +13,40 @@ import java.io.Serializable;
  */
 public class Attendence implements Serializable{
 
-    private ClassS studentClass;
-    private Student student;
+    private String classId;
+    private String studentId;
     private String date;
+    private int status;
 
-    public Attendence(ClassS studentClass, Student student, String date) {
-        this.studentClass = studentClass;
-        this.student = student;
+    public Attendence(String classId, String studentId, String date, int status) {
+        this.classId = classId;
+        this.studentId = studentId;
         this.date = date;
+        this.status = status;
     }
 
-    public ClassS getStudentClass() {
-        return studentClass;
+    public int getStatus() {
+        return status;
     }
 
-    public void setStudentClass(ClassS studentClass) {
-        this.studentClass = studentClass;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public Student getStudent() {
-        return student;
+    public String getClassId() {
+        return classId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public String getDate() {
@@ -46,7 +56,7 @@ public class Attendence implements Serializable{
     public void setDate(String date) {
         this.date = date;
     }
-    
+
     
     
 }

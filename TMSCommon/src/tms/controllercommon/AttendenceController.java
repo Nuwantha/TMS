@@ -5,10 +5,16 @@
  */
 package tms.controllercommon;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import tms.model.Attendence;
 /**
  *
  * @author Nuwantha
  */
 public interface AttendenceController extends Remote{
-                
+   
+    public boolean addNewAttendence(ArrayList<Attendence> attendences) throws RemoteException,ClassNotFoundException, SQLException;
+             
 }
