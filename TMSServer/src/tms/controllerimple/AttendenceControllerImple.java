@@ -15,8 +15,7 @@ import tms.model.Attendence;
 /**
  *
  * @author Nuwantha
- */
-public class AttendenceControllerImple extends UnicastRemoteObject implements AttendenceController{
+ */public class AttendenceControllerImple extends UnicastRemoteObject implements AttendenceController{
     
     private final AttendenceControllerD attendenceControllerD;
     
@@ -28,6 +27,21 @@ public class AttendenceControllerImple extends UnicastRemoteObject implements At
     @Override
     public boolean addNewAttendence(ArrayList<Attendence> attendences) throws RemoteException, ClassNotFoundException, SQLException {
         return attendenceControllerD.addNewAttendence(attendences);//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean editAttendence(ArrayList<Attendence> attendences) throws RemoteException, ClassNotFoundException, SQLException {
+        return attendenceControllerD.editAttendence(attendences);
+    }
+
+    @Override
+    public ArrayList<Attendence> searchClassAttendence(String classId, String date) throws RemoteException, ClassNotFoundException, SQLException {
+        return attendenceControllerD.searchClassAttendence(classId, date);//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Attendence> searchStudentAttendence(String studentId, String classId) throws RemoteException, ClassNotFoundException, SQLException {
+        return attendenceControllerD.searchStudentAttendence(studentId, classId);//To change body of generated methods, choose Tools | Templates.
     }
     
 }

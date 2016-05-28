@@ -16,5 +16,8 @@ import tms.model.Attendence;
 public interface AttendenceController extends Remote{
    
     public boolean addNewAttendence(ArrayList<Attendence> attendences) throws RemoteException,ClassNotFoundException, SQLException;
-             
+    public boolean editAttendence(ArrayList<Attendence> attendences) throws RemoteException,ClassNotFoundException, SQLException;
+    public ArrayList<Attendence> searchClassAttendence(String classId,String date) throws RemoteException,ClassNotFoundException, SQLException;
+    public ArrayList<Attendence> searchStudentAttendence(String studentId,String classId) throws RemoteException,ClassNotFoundException, SQLException;
+                 
 }

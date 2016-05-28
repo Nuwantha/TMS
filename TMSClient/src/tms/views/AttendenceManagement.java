@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import tms.controllercommon.AttendenceController;
@@ -49,7 +50,8 @@ public class AttendenceManagement extends javax.swing.JDialog {
         } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | InterruptedException | ClassNotFoundException ex) {
             Logger.getLogger(AttendenceManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
-        loadClassIdCombo();
+        loadClassIdCombo(classIdComboA);
+        loadClassIdCombo(classIdComboE);
     }
 
     /**
@@ -73,6 +75,24 @@ public class AttendenceManagement extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         attendenceTable = new javax.swing.JTable();
         markAttendenceB = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        classIdAddMarkL1 = new javax.swing.JLabel();
+        classIdComboE = new javax.swing.JComboBox<>();
+        loadButtonE = new javax.swing.JButton();
+        datelabelA1 = new javax.swing.JLabel();
+        dateTextE = new javax.swing.JTextField();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        attendenceTableE = new javax.swing.JTable();
+        editAttendenceB = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        classIdAddMarkL2 = new javax.swing.JLabel();
+        classIdComboE1 = new javax.swing.JComboBox<>();
+        loadButtonE1 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        desktopPaneAtendence = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -186,7 +206,7 @@ public class AttendenceManagement extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(markAttendenceB, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -223,15 +243,255 @@ public class AttendenceManagement extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("Mark Attendence", jPanel1);
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        classIdAddMarkL1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        classIdAddMarkL1.setText("Class Id");
+
+        classIdComboE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                classIdComboEActionPerformed(evt);
+            }
+        });
+
+        loadButtonE.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        loadButtonE.setText("Load");
+        loadButtonE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadButtonEActionPerformed(evt);
+            }
+        });
+
+        datelabelA1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        datelabelA1.setText("Date");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 61, Short.MAX_VALUE)
+                        .addComponent(classIdComboE, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(classIdAddMarkL1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(datelabelA1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(loadButtonE, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(dateTextE, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(classIdAddMarkL1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(classIdComboE, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(datelabelA1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(dateTextE, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(loadButtonE, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        attendenceTableE.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Student Name", "Student Id", "Attendence"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(attendenceTableE);
+
+        editAttendenceB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        editAttendenceB.setText(" Edit Attendence");
+        editAttendenceB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editAttendenceBActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(editAttendenceB, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editAttendenceB)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Edit Attendence", jPanel4);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        classIdAddMarkL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        classIdAddMarkL2.setText("Search By ");
+
+        classIdComboE1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        classIdComboE1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Class", "Student", " " }));
+        classIdComboE1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                classIdComboE1ActionPerformed(evt);
+            }
+        });
+
+        loadButtonE1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        loadButtonE1.setText("Load");
+        loadButtonE1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadButtonE1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(classIdAddMarkL2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 25, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(loadButtonE1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                            .addComponent(classIdComboE1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(23, 23, 23))))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(classIdAddMarkL2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(classIdComboE1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(loadButtonE1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(217, Short.MAX_VALUE))
+        );
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        desktopPaneAtendence.setBackground(new java.awt.Color(240, 240, 240));
+
+        javax.swing.GroupLayout desktopPaneAtendenceLayout = new javax.swing.GroupLayout(desktopPaneAtendence);
+        desktopPaneAtendence.setLayout(desktopPaneAtendenceLayout);
+        desktopPaneAtendenceLayout.setHorizontalGroup(
+            desktopPaneAtendenceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 502, Short.MAX_VALUE)
+        );
+        desktopPaneAtendenceLayout.setVerticalGroup(
+            desktopPaneAtendenceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(desktopPaneAtendence)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(desktopPaneAtendence)
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("View Attendence", jPanel7);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -285,12 +545,74 @@ public class AttendenceManagement extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_markAttendenceBActionPerformed
 
-        private void loadClassIdCombo() {
-        classIdComboA.removeAllItems();
+    private void classIdComboEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classIdComboEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_classIdComboEActionPerformed
+
+    private void loadButtonEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonEActionPerformed
+        
+        try {
+            String classId = String.valueOf(classIdComboA.getSelectedItem());
+            String date = dateTextE.getText();
+            ArrayList<Attendence> searchAttendence = attendenceController.searchClassAttendence(classId, date);
+            DefaultTableModel tableModel = (DefaultTableModel) attendenceTableE.getModel();
+            tableModel.getDataVector().removeAllElements();
+            revalidate();
+            for (Attendence attendence :searchAttendence) {
+                Student student = studentController.searchStudent(attendence.getStudentId());
+                tableModel.addRow(new Object[]{student.getName(), student.getStudentId(), attendence.getStatus()});
+            }
+        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AttendenceManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }//GEN-LAST:event_loadButtonEActionPerformed
+
+    private void editAttendenceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAttendenceBActionPerformed
+
+          try {
+            ArrayList<Attendence> attendences = new ArrayList<Attendence>();
+
+            DefaultTableModel model = (DefaultTableModel) attendenceTableE.getModel();
+
+            for (int count = 0; count < model.getRowCount(); count++) {
+
+                String studentId = model.getValueAt(count, 1).toString();
+                int status = Integer.parseInt(model.getValueAt(count, 2).toString());
+                String classId = String.valueOf(classIdComboA.getSelectedItem());
+                String date = dateTextA.getText();
+                Attendence attendence = new Attendence(classId, studentId, date, status);
+                attendences.add(attendence);
+            }
+
+              boolean editAttendence = attendenceController.editAttendence(attendences);
+            if(editAttendence){
+                JOptionPane.showMessageDialog(this,"attendence is updated successfully");
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(this,"attendence is not updated successfully");
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_editAttendenceBActionPerformed
+
+    private void classIdComboE1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classIdComboE1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_classIdComboE1ActionPerformed
+
+    private void loadButtonE1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonE1ActionPerformed
+        
+    }//GEN-LAST:event_loadButtonE1ActionPerformed
+
+        private void loadClassIdCombo(JComboBox comboBox) {
+        comboBox.removeAllItems();
         try {
             ArrayList<ClassS> allClass = classController.getAllClass();
             for (ClassS cls : allClass) {
-                classIdComboA.addItem(cls.getClassId());
+                comboBox.addItem(cls.getClassId());
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -343,16 +665,34 @@ public class AttendenceManagement extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable attendenceTable;
+    private javax.swing.JTable attendenceTableE;
     private javax.swing.JLabel classIdAddMarkL;
+    private javax.swing.JLabel classIdAddMarkL1;
+    private javax.swing.JLabel classIdAddMarkL2;
     private javax.swing.JComboBox<String> classIdComboA;
+    private javax.swing.JComboBox<String> classIdComboE;
+    private javax.swing.JComboBox<String> classIdComboE1;
     private javax.swing.JTextField dateTextA;
+    private javax.swing.JTextField dateTextE;
     private javax.swing.JLabel datelabelA;
+    private javax.swing.JLabel datelabelA1;
+    private javax.swing.JDesktopPane desktopPaneAtendence;
+    private javax.swing.JButton editAttendenceB;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton loadButtonA;
+    private javax.swing.JButton loadButtonE;
+    private javax.swing.JButton loadButtonE1;
     private javax.swing.JButton markAttendenceB;
     // End of variables declaration//GEN-END:variables
 }
