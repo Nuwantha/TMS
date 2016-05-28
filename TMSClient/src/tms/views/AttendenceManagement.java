@@ -29,24 +29,26 @@ import tms.model.Student;
  * @author Nuwantha
  */
 public class AttendenceManagement extends javax.swing.JDialog {
+
     RegistrationController registrationController;
     ClassController classController;
     StudentController studentController;
     AttendenceController attendenceController;
+
     /**
      * Creates new form AttendenceManagement
      */
     public AttendenceManagement(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         try {
-            
+
             Connector sConnector = Connector.getSConnector();
-            registrationController=sConnector.getRegistrationController();
-            classController=sConnector.getClassController();
-            studentController=sConnector.getStudentController();
-            attendenceController=sConnector.getAttendenceController();
+            registrationController = sConnector.getRegistrationController();
+            classController = sConnector.getClassController();
+            studentController = sConnector.getStudentController();
+            attendenceController = sConnector.getAttendenceController();
         } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | InterruptedException | ClassNotFoundException ex) {
             Logger.getLogger(AttendenceManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,7 +91,7 @@ public class AttendenceManagement extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         classIdAddMarkL2 = new javax.swing.JLabel();
-        classIdComboE1 = new javax.swing.JComboBox<>();
+        searchByCombo = new javax.swing.JComboBox<>();
         loadButtonE1 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         desktopPaneAtendence = new javax.swing.JDesktopPane();
@@ -391,11 +393,11 @@ public class AttendenceManagement extends javax.swing.JDialog {
         classIdAddMarkL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         classIdAddMarkL2.setText("Search By ");
 
-        classIdComboE1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        classIdComboE1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Class", "Student", " " }));
-        classIdComboE1.addActionListener(new java.awt.event.ActionListener() {
+        searchByCombo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        searchByCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Class", "Student", " " }));
+        searchByCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                classIdComboE1ActionPerformed(evt);
+                searchByComboActionPerformed(evt);
             }
         });
 
@@ -421,7 +423,7 @@ public class AttendenceManagement extends javax.swing.JDialog {
                         .addGap(0, 25, Short.MAX_VALUE)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(loadButtonE1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                            .addComponent(classIdComboE1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(searchByCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23))))
         );
         jPanel8Layout.setVerticalGroup(
@@ -430,7 +432,7 @@ public class AttendenceManagement extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(classIdAddMarkL2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(classIdComboE1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchByCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(loadButtonE1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(217, Short.MAX_VALUE))
@@ -534,11 +536,11 @@ public class AttendenceManagement extends javax.swing.JDialog {
             }
 
             boolean addNewAttendence = attendenceController.addNewAttendence(attendences);
-            if(addNewAttendence){
-                JOptionPane.showMessageDialog(this,"attendence is added successfully");
+            if (addNewAttendence) {
+                JOptionPane.showMessageDialog(this, "attendence is added successfully");
                 this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this,"attendence is not added successfully");
+            } else {
+                JOptionPane.showMessageDialog(this, "attendence is not added successfully");
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -550,7 +552,7 @@ public class AttendenceManagement extends javax.swing.JDialog {
     }//GEN-LAST:event_classIdComboEActionPerformed
 
     private void loadButtonEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonEActionPerformed
-        
+
         try {
             String classId = String.valueOf(classIdComboA.getSelectedItem());
             String date = dateTextE.getText();
@@ -558,19 +560,19 @@ public class AttendenceManagement extends javax.swing.JDialog {
             DefaultTableModel tableModel = (DefaultTableModel) attendenceTableE.getModel();
             tableModel.getDataVector().removeAllElements();
             revalidate();
-            for (Attendence attendence :searchAttendence) {
+            for (Attendence attendence : searchAttendence) {
                 Student student = studentController.searchStudent(attendence.getStudentId());
                 tableModel.addRow(new Object[]{student.getName(), student.getStudentId(), attendence.getStatus()});
             }
         } catch (RemoteException | ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AttendenceManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
-      
+
     }//GEN-LAST:event_loadButtonEActionPerformed
 
     private void editAttendenceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAttendenceBActionPerformed
 
-          try {
+        try {
             ArrayList<Attendence> attendences = new ArrayList<Attendence>();
 
             DefaultTableModel model = (DefaultTableModel) attendenceTableE.getModel();
@@ -579,18 +581,18 @@ public class AttendenceManagement extends javax.swing.JDialog {
 
                 String studentId = model.getValueAt(count, 1).toString();
                 int status = Integer.parseInt(model.getValueAt(count, 2).toString());
-                String classId = String.valueOf(classIdComboA.getSelectedItem());
-                String date = dateTextA.getText();
+                String classId = String.valueOf(classIdComboE.getSelectedItem());
+                String date = dateTextE.getText();
                 Attendence attendence = new Attendence(classId, studentId, date, status);
                 attendences.add(attendence);
             }
 
-              boolean editAttendence = attendenceController.editAttendence(attendences);
-            if(editAttendence){
-                JOptionPane.showMessageDialog(this,"attendence is updated successfully");
+            boolean editAttendence = attendenceController.editAttendence(attendences);
+            if (editAttendence) {
+                JOptionPane.showMessageDialog(this, "attendence is updated successfully");
                 this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this,"attendence is not updated successfully");
+            } else {
+                JOptionPane.showMessageDialog(this, "attendence is not updated successfully");
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -599,15 +601,34 @@ public class AttendenceManagement extends javax.swing.JDialog {
 
     }//GEN-LAST:event_editAttendenceBActionPerformed
 
-    private void classIdComboE1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classIdComboE1ActionPerformed
+    private void searchByComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByComboActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_classIdComboE1ActionPerformed
+    }//GEN-LAST:event_searchByComboActionPerformed
 
     private void loadButtonE1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonE1ActionPerformed
-        
+        int selectedIndex = searchByCombo.getSelectedIndex();
+        if (selectedIndex == 0) {
+            AttendenceViewByClass attendenceViewByClass = new AttendenceViewByClass();
+            attendenceViewByClass.setSize(desktopPaneAtendence.getSize());
+            desktopPaneAtendence.removeAll();
+            desktopPaneAtendence.add(attendenceViewByClass);
+            attendenceViewByClass.setVisible(true);
+            attendenceViewByClass.requestFocus();
+        } else {
+            AttendenceViewByStudent attendenceViewByStudent = new AttendenceViewByStudent();
+            attendenceViewByStudent.setSize(desktopPaneAtendence.getSize());
+            desktopPaneAtendence.removeAll();
+            desktopPaneAtendence.add(attendenceViewByStudent);
+            attendenceViewByStudent.setVisible(true);
+            attendenceViewByStudent.requestFocus();
+
+        }
+
+  
+
     }//GEN-LAST:event_loadButtonE1ActionPerformed
 
-        private void loadClassIdCombo(JComboBox comboBox) {
+    private void loadClassIdCombo(JComboBox comboBox) {
         comboBox.removeAllItems();
         try {
             ArrayList<ClassS> allClass = classController.getAllClass();
@@ -620,7 +641,6 @@ public class AttendenceManagement extends javax.swing.JDialog {
 
     }
 
-    
     /**
      * @param args the command line arguments
      */
@@ -671,7 +691,6 @@ public class AttendenceManagement extends javax.swing.JDialog {
     private javax.swing.JLabel classIdAddMarkL2;
     private javax.swing.JComboBox<String> classIdComboA;
     private javax.swing.JComboBox<String> classIdComboE;
-    private javax.swing.JComboBox<String> classIdComboE1;
     private javax.swing.JTextField dateTextA;
     private javax.swing.JTextField dateTextE;
     private javax.swing.JLabel datelabelA;
@@ -694,5 +713,6 @@ public class AttendenceManagement extends javax.swing.JDialog {
     private javax.swing.JButton loadButtonE;
     private javax.swing.JButton loadButtonE1;
     private javax.swing.JButton markAttendenceB;
+    private javax.swing.JComboBox<String> searchByCombo;
     // End of variables declaration//GEN-END:variables
 }

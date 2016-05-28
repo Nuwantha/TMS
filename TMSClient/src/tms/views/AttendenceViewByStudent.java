@@ -5,17 +5,49 @@
  */
 package tms.views;
 
+import SeverConnector.Connector;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import tms.controllercommon.AttendenceController;
+import tms.controllercommon.ClassController;
+import tms.controllercommon.StudentController;
+import tms.model.Attendence;
+import tms.model.ClassS;
+import tms.model.Student;
+
 /**
  *
  * @author Nuwantha
  */
 public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
 
+    ClassController classController;
+    StudentController studentController;
+    AttendenceController attendenceController;
+
     /**
      * Creates new form AttendenceViewByStudent
      */
     public AttendenceViewByStudent() {
         initComponents();
+
+        try {
+            Connector sConnector = Connector.getSConnector();
+            studentController = sConnector.getStudentController();
+            classController = sConnector.getClassController();
+            attendenceController = sConnector.getAttendenceController();
+        } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | InterruptedException | ClassNotFoundException ex) {
+            Logger.getLogger(AttendenceViewByStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        loadClassCombo();
+        loadStudentIdCombo();
     }
 
     /**
@@ -30,7 +62,7 @@ public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         classIdCombo = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        searchButtun = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         studentIdCombo = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
@@ -44,8 +76,13 @@ public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         jLabel1.setText("Class Id");
 
-        jButton1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        jButton1.setText("Search ");
+        searchButtun.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        searchButtun.setText("Search ");
+        searchButtun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtunActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         jLabel2.setText("Student Id");
@@ -62,7 +99,7 @@ public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(classIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(searchButtun)
                         .addGap(38, 38, 38))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -81,7 +118,7 @@ public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(classIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(searchButtun))
                 .addGap(20, 20, 20))
         );
 
@@ -165,10 +202,60 @@ public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtunActionPerformed
+        
+         try {
+            String classId = String.valueOf(classIdCombo.getSelectedItem());
+            String studentId = String.valueOf(studentIdCombo.getSelectedItem());
+            double attendedStudent=0;
+            ArrayList<Attendence> searchStudentAttendence = attendenceController.searchStudentAttendence(studentId, classId);
+             DefaultTableModel model = (DefaultTableModel) viewTable.getModel();
+
+             
+            model.getDataVector().removeAllElements();
+            revalidate();
+            for (Attendence attendence : searchStudentAttendence) {
+                model.addRow(new Object[]{attendence.getDate(), attendence.getStatus()});
+                if(attendence.getStatus()==1){
+                    attendedStudent+=1;
+                }
+            }
+            percentageT.setText(String.valueOf((attendedStudent/searchStudentAttendence.size())*100));
+        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AttendenceViewByClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_searchButtunActionPerformed
+
+    private void loadStudentIdCombo() {
+        studentIdCombo.removeAllItems();
+        try {
+            ArrayList<Student> allStudent = studentController.getAllStudent();
+            for (Student student : allStudent) {
+                studentIdCombo.addItem(student.getStudentId());
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(AttendenceViewByStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void loadClassCombo() {
+        classIdCombo.removeAllItems();
+        try {
+            ArrayList<ClassS> allClass = classController.getAllClass();
+            for (ClassS cls : allClass) {
+                classIdCombo.addItem(cls.getClassId());
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(AttendenceViewByStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> classIdCombo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -176,6 +263,7 @@ public class AttendenceViewByStudent extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel percentageL;
     private javax.swing.JTextField percentageT;
+    private javax.swing.JButton searchButtun;
     private javax.swing.JComboBox<String> studentIdCombo;
     private javax.swing.JTable viewTable;
     // End of variables declaration//GEN-END:variables

@@ -791,6 +791,9 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_addNewStudentMarkMBActionPerformed
 
     private void markAtendenceFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markAtendenceFBActionPerformed
+      AttendenceManagement attendenceManagement = new AttendenceManagement(this, true);
+      attendenceManagement.setLocationRelativeTo(null);
+      attendenceManagement.setVisible(true);
     }//GEN-LAST:event_markAtendenceFBActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
