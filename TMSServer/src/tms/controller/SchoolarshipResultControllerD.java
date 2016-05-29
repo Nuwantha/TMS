@@ -89,7 +89,7 @@ public class SchoolarshipResultControllerD {
         try {
             readWriteLock.readLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();
-            String sql = "Select * from schoolarshipResult where year='" + year + "'";
+            String sql = "Select * from schoolarshipResult where year1='" + year + "'";
             ResultSet rst = DBHandler.getData(conn, sql);
             ArrayList<SchoolarshipResult> schoolarshipResultList = new ArrayList<>();
             while (rst.next()) {

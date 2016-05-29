@@ -34,6 +34,7 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
         } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(SchoolarshipMarkByYear.class.getName()).log(Level.SEVERE, null, ex);
         }
+        loadYearCombo();
     }
 
     /**
@@ -172,6 +173,18 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_searchButtunActionPerformed
 
+    private void loadYearCombo(){
+        try {
+            ArrayList<Integer> years = schoolarshipResultController.getYears();
+            for (Integer year : years) {
+                yearCombo.addItem(String.valueOf(year));
+            }
+        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(SchoolarshipMarkByYear.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel5;

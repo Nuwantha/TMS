@@ -711,7 +711,9 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         try {
             String studentId = String.valueOf(studentIdCombo.getSelectedItem());
             Student searchStudent = studentController.searchStudent(studentId);
-            nameTA.setText(searchStudent.getName());
+            if(searchStudent!=null){
+                nameTA.setText(searchStudent.getName());
+            }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(SchoolarshipMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
