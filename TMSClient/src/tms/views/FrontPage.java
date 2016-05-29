@@ -811,8 +811,10 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_searchSetComboItemStateChanged
 
     private void addSchoolarshipMarksFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSchoolarshipMarksFBActionPerformed
-        
-        //new PermitCertificationForm(this, true).setVisible(true);
+      SchoolarshipMarkManagement schoolarshipMarkManagement = new SchoolarshipMarkManagement(this, true);
+      schoolarshipMarkManagement.setLocationRelativeTo(null);
+      schoolarshipMarkManagement.setVisible(true);
+      //new PermitCertificationForm(this, true).setVisible(true);
     }//GEN-LAST:event_addSchoolarshipMarksFBActionPerformed
 
     private void searchSetComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSetComboActionPerformed
