@@ -17,14 +17,18 @@ public class SchoolarshipResult implements Serializable{
     private int year;
     private int result;
     private int rank;
+    private int isPass;
 
-    public SchoolarshipResult(Student student, int indexNumber, int year, int result, int rank) {
+    public SchoolarshipResult(Student student, int indexNumber, int year, int result, int rank, int isPass) {
         this.student = student;
         this.indexNumber = indexNumber;
         this.year = year;
         this.result = result;
         this.rank = rank;
+        this.isPass = isPass;
     }
+
+    
 
     public Student getStudent() {
         return student;
@@ -64,6 +68,14 @@ public class SchoolarshipResult implements Serializable{
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public int getIsPass() {
+        return isPass;
+    }
+
+    public void setIsPass(int isPass) {
+        this.isPass = isPass;
     }
     
     

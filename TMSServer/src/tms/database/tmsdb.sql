@@ -19,6 +19,7 @@ CREATE TABLE SchoolarshipResult(
 	year1 INT(4),
 	results INT(3),
 	rank1 INT(4),
+        isPassint INT(1),
 	CONSTRAINT FOREIGN KEY(studentId)REFERENCES Student(studentId)
 	ON DELETE CASCADE ON UPDATE CASCADE, 	
 	CONSTRAINT PRIMARY KEY(indexNumber)
