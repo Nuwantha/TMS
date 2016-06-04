@@ -103,4 +103,27 @@ public class PaperControllerD {
         }
     }
 
+    
+
+    public static ArrayList<Paper> getStudentFacedPapers(String classId) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * From  paper where classId='"+classId+"'";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Paper> paperList = new ArrayList<>();
+            while (rst.next()) {
+                Paper paper = new Paper(rst.getString(1), rst.getString(2), rst.getString(3), rst.getInt(4), rst.getInt(5), rst.getInt(6), rst.getDouble(7));
+                paperList.add(paper);
+            }
+            return paperList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+    
+    
+    
+    
+    
 }

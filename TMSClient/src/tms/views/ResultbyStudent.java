@@ -6,8 +6,6 @@
 package tms.views;
 
 import SeverConnector.Connector;
-import java.io.File;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,10 +21,12 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
+import tms.controllercommon.RegistrationController;
+import tms.controllercommon.StudentController;
+import tms.model.ClassS;
 import tms.model.Exam;
 import tms.model.Paper;
 import tms.model.Student;
@@ -35,25 +35,29 @@ import tms.model.Student;
  *
  * @author Nuwantha
  */
-public class ResultbyPapers extends javax.swing.JDialog {
+public class ResultbyStudent extends javax.swing.JDialog {
 
     PaperController paperController;
     ExamController examController;
+    StudentController studentController;
+    RegistrationController registrationController;
 
     /**
      * Creates new form ResultbyPapers
      */
-    public ResultbyPapers(java.awt.Frame parent, boolean modal) {
+    public ResultbyStudent(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         try {
             Connector sConnector = Connector.getSConnector();
             paperController = sConnector.getPaperController();
             examController = sConnector.getExamController();
-            loadPaperIdCombo();
+            studentController = sConnector.getStudentController();
+            registrationController = sConnector.getRegistrationController();
+            loadStudentIdCombo();
 
-        } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(ResultbyPapers.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | ClassNotFoundException | InterruptedException ex) {
+            Logger.getLogger(ResultbyStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -71,14 +75,16 @@ public class ResultbyPapers extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         paperIdL = new javax.swing.JLabel();
-        paperIdCombo = new javax.swing.JComboBox<>();
+        studentIdCombo = new javax.swing.JComboBox<>();
         searchB = new javax.swing.JButton();
         reportB = new javax.swing.JButton();
+        paperIdL1 = new javax.swing.JLabel();
+        classIdcombo = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         conductedDateL = new javax.swing.JLabel();
         averageMarkL = new javax.swing.JLabel();
-        conductedDateT = new javax.swing.JTextField();
+        aveRankT = new javax.swing.JTextField();
         aveMarkT = new javax.swing.JTextField();
         highestScoreL = new javax.swing.JLabel();
         highestScoreT = new javax.swing.JTextField();
@@ -93,7 +99,18 @@ public class ResultbyPapers extends javax.swing.JDialog {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         paperIdL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        paperIdL.setText("Paper Id  : ");
+        paperIdL.setText("Student Id  : ");
+
+        studentIdCombo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                studentIdComboItemStateChanged(evt);
+            }
+        });
+        studentIdCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentIdComboActionPerformed(evt);
+            }
+        });
 
         searchB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         searchB.setText("Search");
@@ -111,23 +128,40 @@ public class ResultbyPapers extends javax.swing.JDialog {
             }
         });
 
+        paperIdL1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        paperIdL1.setText("Class Id  : ");
+
+        classIdcombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                classIdcomboActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(reportB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(searchB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(paperIdL, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(studentIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(reportB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(searchB))
+                                .addGap(83, 83, 83))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(paperIdL, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(paperIdL1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(paperIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(14, 14, 14))
+                        .addComponent(classIdcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,18 +169,22 @@ public class ResultbyPapers extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(paperIdL, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(paperIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(studentIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(paperIdL1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(classIdcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56)
                 .addComponent(searchB)
                 .addGap(26, 26, 26)
                 .addComponent(reportB)
-                .addContainerGap(431, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         conductedDateL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        conductedDateL.setText("Conducted Date");
+        conductedDateL.setText("Average Rank");
 
         averageMarkL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         averageMarkL.setText("Average Mark");
@@ -166,8 +204,8 @@ public class ResultbyPapers extends javax.swing.JDialog {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(aveMarkT)
-                    .addComponent(conductedDateT, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                    .addComponent(aveRankT, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addComponent(highestScoreL, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(highestScoreT, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,7 +223,7 @@ public class ResultbyPapers extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conductedDateL, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(conductedDateT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(aveRankT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -197,14 +235,14 @@ public class ResultbyPapers extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Student Id", "Student Name", "Mark", "Rank"
+                "Paper Id", "Mark", "Rank", "Highest Score", "Average of Test"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -218,13 +256,10 @@ public class ResultbyPapers extends javax.swing.JDialog {
         jScrollPane1.setViewportView(resultTable);
         if (resultTable.getColumnModel().getColumnCount() > 0) {
             resultTable.getColumnModel().getColumn(0).setResizable(false);
-            resultTable.getColumnModel().getColumn(0).setHeaderValue("Student Id");
             resultTable.getColumnModel().getColumn(1).setResizable(false);
-            resultTable.getColumnModel().getColumn(1).setHeaderValue("Student Name");
             resultTable.getColumnModel().getColumn(2).setResizable(false);
-            resultTable.getColumnModel().getColumn(2).setHeaderValue("Mark");
             resultTable.getColumnModel().getColumn(3).setResizable(false);
-            resultTable.getColumnModel().getColumn(3).setHeaderValue("Rank");
+            resultTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -305,43 +340,76 @@ public class ResultbyPapers extends javax.swing.JDialog {
     private void searchBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBActionPerformed
         try {
 
-            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
-            Paper paper = paperController.searchPaper(paperId);
+            String studentId = String.valueOf(studentIdCombo.getSelectedItem());
+            String classId = String.valueOf(classIdcombo.getSelectedItem());
 
-            aveMarkT.setText(String.valueOf(paper.getAverage()));
-            highestScoreT.setText(String.valueOf(paper.getTopScore()));
-            conductedDateT.setText(paper.getDateOfConduct());
+            ArrayList<Exam> searchStudentResult = examController.searchStudentResult(studentId);
 
-            ArrayList<Exam> allResults = examController.getAllResults(paperId);
             DefaultTableModel tableModel = (DefaultTableModel) resultTable.getModel();
             tableModel.getDataVector().removeAllElements();
             revalidate();
-            for (Exam exam : allResults) {
-                tableModel.addRow(new Object[]{exam.getStudent().getStudentId(), exam.getStudent().getName(), exam.getMark(), exam.getRank()});
+
+            int highScoreOfStudent=0;
+            int rankAddition=0;
+            int scoreAddition=0;
+            int facePaperCount=0;
+            
+            for (Exam exam : searchStudentResult) {
+                if (exam.getPaper().getClassId().equals(classId)) {
+                    facePaperCount++;
+                    scoreAddition+=exam.getMark();
+                    rankAddition+=exam.getRank();
+                    if(highScoreOfStudent<exam.getMark()){
+                        highScoreOfStudent=exam.getMark();
+                    }
+                    Paper paper = exam.getPaper();
+                    tableModel.addRow(new Object[]{paper.getPaperId(), exam.getMark(), exam.getRank(), paper.getTopScore(), paper.getAverage()});
+
+                }
             }
 
+            aveMarkT.setText(String.valueOf((double)scoreAddition/facePaperCount));
+            highestScoreT.setText(String.valueOf(highScoreOfStudent));
+            aveRankT.setText(String.valueOf((double)rankAddition/facePaperCount));
+
+
         } catch (RemoteException | ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(ResultbyPapers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResultbyStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_searchBActionPerformed
 
     private void reportBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBActionPerformed
         try {
 
-           JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/tms/reports/MarkReportbyPaper.jrxml"));
+            JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/tms/reports/MarkReportByStudent.jrxml"));
             DefaultTableModel model = (DefaultTableModel) resultTable.getModel();
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,null, new JRTableModelDataSource(model));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, new JRTableModelDataSource(model));
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
             JDialog dialog = new JDialog(this);//the owner
             dialog.setContentPane(jasperViewer.getContentPane());
             dialog.setSize(jasperViewer.getSize());
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-           
+            
         } catch (JRException ex) {
-            Logger.getLogger(ResultbyPapers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResultbyStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_reportBActionPerformed
+
+    private void studentIdComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentIdComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_studentIdComboActionPerformed
+
+    private void classIdcomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classIdcomboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_classIdcomboActionPerformed
+
+    private void studentIdComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentIdComboItemStateChanged
+        String classId = String.valueOf(studentIdCombo.getSelectedItem());
+        loadClassIdCombo(classId);
+
+
+    }//GEN-LAST:event_studentIdComboItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -360,20 +428,21 @@ public class ResultbyPapers extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ResultbyPapers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResultbyStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ResultbyPapers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResultbyStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ResultbyPapers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResultbyStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ResultbyPapers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResultbyStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ResultbyPapers dialog = new ResultbyPapers(new javax.swing.JFrame(), true);
+                ResultbyStudent dialog = new ResultbyStudent(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -385,12 +454,25 @@ public class ResultbyPapers extends javax.swing.JDialog {
         });
     }
 
-    private void loadPaperIdCombo() {
-        paperIdCombo.removeAllItems();
+    private void loadClassIdCombo(String studentId) {
+        classIdcombo.removeAllItems();
         try {
-            ArrayList<Paper> allPaper = paperController.getAllPaper();
-            for (Paper paper : allPaper) {
-                paperIdCombo.addItem(paper.getPaperId());
+            ArrayList<ClassS> classOfStudent = registrationController.getClassOfStudent(studentId);
+            for (ClassS classS : classOfStudent) {
+                classIdcombo.addItem(classS.getClassId());
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void loadStudentIdCombo() {
+        studentIdCombo.removeAllItems();
+        try {
+            ArrayList<Student> allStudent = studentController.getAllStudent();
+            for (Student student : allStudent) {
+                studentIdCombo.addItem(student.getStudentId());
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -400,9 +482,10 @@ public class ResultbyPapers extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField aveMarkT;
+    private javax.swing.JTextField aveRankT;
     private javax.swing.JLabel averageMarkL;
+    private javax.swing.JComboBox<String> classIdcombo;
     private javax.swing.JLabel conductedDateL;
-    private javax.swing.JTextField conductedDateT;
     private javax.swing.JLabel highestScoreL;
     private javax.swing.JTextField highestScoreT;
     private javax.swing.JLabel jLabel1;
@@ -412,10 +495,11 @@ public class ResultbyPapers extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> paperIdCombo;
     private javax.swing.JLabel paperIdL;
+    private javax.swing.JLabel paperIdL1;
     private javax.swing.JButton reportB;
     private javax.swing.JTable resultTable;
     private javax.swing.JButton searchB;
+    private javax.swing.JComboBox<String> studentIdCombo;
     // End of variables declaration//GEN-END:variables
 }

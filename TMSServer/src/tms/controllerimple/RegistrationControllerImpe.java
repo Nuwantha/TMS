@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import tms.controller.RegistrationControllerD;
 import tms.controllercommon.RegistrationController;
+import tms.model.ClassS;
 import tms.model.Registration;
 import tms.model.Student;
 
@@ -34,5 +35,10 @@ public class RegistrationControllerImpe extends UnicastRemoteObject implements R
     @Override
     public ArrayList<Student> getStudentOfClass(String classId) throws RemoteException, ClassNotFoundException, SQLException {
         return  registrationControllerD.getStudentOfClass(classId);//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<ClassS> getClassOfStudent(String studentId) throws RemoteException, ClassNotFoundException, SQLException {
+        return registrationControllerD.getClassOfStudent(studentId);//To change body of generated methods, choose Tools | Templates.
     }
 }

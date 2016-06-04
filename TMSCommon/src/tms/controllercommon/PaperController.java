@@ -23,4 +23,7 @@ public interface PaperController extends Remote{
     public Paper searchPaper(String paperId) throws RemoteException,ClassNotFoundException, SQLException;
     public boolean editPaper(Paper paper) throws RemoteException,ClassNotFoundException, SQLException ;
 
+    public  ArrayList<Paper> getStudentFacedPapers(String classId) throws RemoteException,ClassNotFoundException, SQLException;
+     
+    
 }

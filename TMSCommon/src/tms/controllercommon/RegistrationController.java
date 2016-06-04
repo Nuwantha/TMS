@@ -9,6 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import tms.model.ClassS;
 import tms.model.Registration;
 import tms.model.Student;
 
@@ -16,9 +17,12 @@ import tms.model.Student;
  *
  * @author Nuwantha
  */
-public interface RegistrationController extends Remote{
-    public boolean addNewRegistration(Registration registration) throws RemoteException, SQLException,ClassNotFoundException;
+public interface RegistrationController extends Remote {
+
+    public boolean addNewRegistration(Registration registration) throws RemoteException, SQLException, ClassNotFoundException;
+
     public ArrayList<Student> getStudentOfClass(String classId) throws RemoteException, ClassNotFoundException, SQLException;
-      
-    
+
+    public ArrayList<ClassS> getClassOfStudent(String studentId) throws RemoteException, ClassNotFoundException, SQLException;
+
 }

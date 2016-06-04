@@ -13,17 +13,12 @@ import org.apache.batik.gvt.flow.TextLineBreaks;
  */
 public class FrontPage extends javax.swing.JFrame {
 
-
-
     /**
      * Creates new form FrontPage
      */
-  public FrontPage() {
+    public FrontPage() {
         initComponents();
-  }
-
-
-
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -779,33 +774,35 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_sendNotifaicationFBActionPerformed
 
     private void addClassFeesFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClassFeesFBActionPerformed
-      ClassFeesManagement classFeesManagement = new ClassFeesManagement(this, true);
-      classFeesManagement.setLocationRelativeTo(null);
-      classFeesManagement.setVisible(true);
+        ClassFeesManagement classFeesManagement = new ClassFeesManagement(this, true);
+        classFeesManagement.setLocationRelativeTo(null);
+        classFeesManagement.setVisible(true);
     }//GEN-LAST:event_addClassFeesFBActionPerformed
 
     private void addNewStudentMarkMBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewStudentMarkMBActionPerformed
-      StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, true);
-      studentMarkManagement.setLocationRelativeTo(null);
-      studentMarkManagement.setVisible(true);
-      
-      
-      
+        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, true);
+        studentMarkManagement.setLocationRelativeTo(null);
+        studentMarkManagement.setVisible(true);
+
+
     }//GEN-LAST:event_addNewStudentMarkMBActionPerformed
 
     private void markAtendenceFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markAtendenceFBActionPerformed
-      AttendenceManagement attendenceManagement = new AttendenceManagement(this, true);
-      attendenceManagement.setLocationRelativeTo(null);
-      attendenceManagement.setVisible(true);
+        AttendenceManagement attendenceManagement = new AttendenceManagement(this, true);
+        attendenceManagement.setLocationRelativeTo(null);
+        attendenceManagement.setVisible(true);
     }//GEN-LAST:event_markAtendenceFBActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-        if(searchSetCombo.getSelectedIndex()==1){
-            ResultbyPapers resultbyPapers = new ResultbyPapers(this,true);
+        if (searchSetCombo.getSelectedIndex() == 1) {
+            ResultbyPapers resultbyPapers = new ResultbyPapers(this, true);
             resultbyPapers.setLocationRelativeTo(null);
             resultbyPapers.setVisible(true);
-            
-        
+
+        } else if (searchSetCombo.getSelectedIndex() == 0) {
+            ResultbyStudent resultbyStudent = new ResultbyStudent(this, true);
+            resultbyStudent.setLocationRelativeTo(null);
+            resultbyStudent.setVisible(true);
         }
 
     }//GEN-LAST:event_goButtonActionPerformed
@@ -814,10 +811,10 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_searchSetComboItemStateChanged
 
     private void addSchoolarshipMarksFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSchoolarshipMarksFBActionPerformed
-      SchoolarshipMarkManagement schoolarshipMarkManagement = new SchoolarshipMarkManagement(this, true);
-      schoolarshipMarkManagement.setLocationRelativeTo(null);
-      schoolarshipMarkManagement.setVisible(true);
-      //new PermitCertificationForm(this, true).setVisible(true);
+        SchoolarshipMarkManagement schoolarshipMarkManagement = new SchoolarshipMarkManagement(this, true);
+        schoolarshipMarkManagement.setLocationRelativeTo(null);
+        schoolarshipMarkManagement.setVisible(true);
+        //new PermitCertificationForm(this, true).setVisible(true);
     }//GEN-LAST:event_addSchoolarshipMarksFBActionPerformed
 
     private void searchSetComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSetComboActionPerformed
@@ -878,24 +875,23 @@ public class FrontPage extends javax.swing.JFrame {
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
     }//GEN-LAST:event_formKeyReleased
 
-    
+
     private void viewStudentMarksFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStudentMarksFBActionPerformed
     }//GEN-LAST:event_viewStudentMarksFBActionPerformed
 
     private void editClassDetailMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClassDetailMActionPerformed
 
-        
-      ClassDetail classDetail = new ClassDetail(this, true,1);
-      classDetail.setLocationRelativeTo(null);
-      classDetail.setVisible(true);
-        
+        ClassDetail classDetail = new ClassDetail(this, true, 1);
+        classDetail.setLocationRelativeTo(null);
+        classDetail.setVisible(true);
+
     }//GEN-LAST:event_editClassDetailMActionPerformed
 
     private void addNewClassMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClassMActionPerformed
 
-      ClassDetail classDetail = new ClassDetail(this, true,0);
-      classDetail.setLocationRelativeTo(null);
-      classDetail.setVisible(true);
+        ClassDetail classDetail = new ClassDetail(this, true, 0);
+        classDetail.setLocationRelativeTo(null);
+        classDetail.setVisible(true);
     }//GEN-LAST:event_addNewClassMActionPerformed
 
     /**

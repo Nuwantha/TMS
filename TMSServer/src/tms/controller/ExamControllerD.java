@@ -127,6 +127,26 @@ public class ExamControllerD {
     }
 
   
+     public static ArrayList<Exam> searchStudentResult(String studentId) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * From exam where studentId='"+studentId+"'";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Exam> examList = new ArrayList<>();
+            while (rst.next()) {
+                Student searchStudent = StudentControllerD.searchStudent(rst.getString(1));
+                Paper searchPaper = PaperControllerD.searchPaper( rst.getString(2));
+                Exam exam = new Exam(searchStudent,searchPaper, rst.getInt(3), rst.getInt(4));
+                examList.add(exam);
+            }
+            return examList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+    
+  
     
     
     
