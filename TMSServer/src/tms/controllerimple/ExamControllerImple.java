@@ -35,5 +35,10 @@ public class ExamControllerImple extends UnicastRemoteObject implements ExamCont
     public ArrayList<Exam> getAllResults(String paperId) throws RemoteException, ClassNotFoundException, SQLException {
         return examControllerD.getAllResults(paperId);//To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public boolean editExamResult(Paper paper, ArrayList<Exam> results) throws RemoteException, ClassNotFoundException, SQLException {
+        return examControllerD.editExamResult(paper, results);//To change body of generated methods, choose Tools | Templates.
+    }
     
 }

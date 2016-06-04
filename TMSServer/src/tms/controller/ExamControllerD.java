@@ -84,5 +84,52 @@ public class ExamControllerD {
         }
     }
     
+  
+    
+    
+    public static boolean editExamResult(Paper paper, ArrayList<Exam> results) throws ClassNotFoundException, SQLException {
+
+        try {
+            readWriteLock.writeLock().lock();
+            boolean returnStatue = true;
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            conn.setAutoCommit(false);
+            try {
+                boolean editPaper = PaperControllerD.editPaper(paper);
+                if (editPaper) {
+                    for (Exam result : results) {
+                        String sql = "update Exam set mark='" + result.getMark() + "' ,rank2='" + result.getRank() + "' where studentId='" + result.getStudent().getStudentId() + "' and paperId='" + result.getPaper().getPaperId() + "'";
+                        int resultAdded = DBHandler.setData(conn, sql);
+                        if (resultAdded < 0) {
+                            returnStatue = false;
+                            conn.rollback();
+
+                            break;
+                        }
+                    }
+                } else {
+                    returnStatue = false;
+                    conn.rollback();
+                }
+                if (returnStatue) {
+                    conn.commit();
+                }
+            } catch (SQLException sqlExeption) {
+                returnStatue = false;
+                conn.rollback();
+            } finally {
+                conn.setAutoCommit(true);
+            }
+            return returnStatue;
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
+
+  
+    
+    
+    
+    
     
 }

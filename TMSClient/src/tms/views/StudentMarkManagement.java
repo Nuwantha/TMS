@@ -55,6 +55,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         }
         setPaperID();
         loadClassCombo();
+        loadPaperIdCombo();
     }
 
     /**
@@ -80,6 +81,15 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         addStudentMarkTable = new javax.swing.JTable();
         addMarkB = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        paperIdAddMarkL1 = new javax.swing.JLabel();
+        paperIdCombo = new javax.swing.JComboBox<>();
+        loadAddMarkB1 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        edittable = new javax.swing.JTable();
+        editB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -246,6 +256,135 @@ public class StudentMarkManagement extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("Add Student Mark", jPanel1);
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        paperIdAddMarkL1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        paperIdAddMarkL1.setText("Paper Id");
+
+        paperIdCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paperIdComboActionPerformed(evt);
+            }
+        });
+
+        loadAddMarkB1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        loadAddMarkB1.setText("Load");
+        loadAddMarkB1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadAddMarkB1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(paperIdAddMarkL1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(paperIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 34, Short.MAX_VALUE)
+                .addComponent(loadAddMarkB1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paperIdAddMarkL1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(paperIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(loadAddMarkB1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(106, 106, 106))
+        );
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        edittable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Student Name", "Student Id", "Mark"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(edittable);
+
+        editB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        editB.setText("Edit Mark");
+        editB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(editB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editB)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Edit Student Mark", jPanel4);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -346,6 +485,102 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_addMarkBActionPerformed
 
+    private void loadAddMarkB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAddMarkB1ActionPerformed
+        try {
+            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
+            ArrayList<Exam> allResults = examController.getAllResults(paperId);
+
+            DefaultTableModel tableModel = (DefaultTableModel) edittable.getModel();
+            tableModel.getDataVector().removeAllElements();
+            revalidate();
+            for (Exam exam :allResults) {
+                tableModel.addRow(new Object[]{exam.getStudent().getName(), exam.getStudent().getStudentId(), exam.getMark()});
+            }
+      
+// TODO add your handling code here:
+        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_loadAddMarkB1ActionPerformed
+
+    private void editBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBActionPerformed
+try{
+            
+            
+            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
+            Paper paper = paperController.searchPaper(paperId);
+            ArrayList<Exam> results = new ArrayList<Exam>();
+
+            DefaultTableModel model = (DefaultTableModel)edittable.getModel();
+
+            
+            
+            for (int count = 0; count < model.getRowCount(); count++) {
+
+               
+                    String studentId = model.getValueAt(count, 1).toString();
+                    Student student = studentController.searchStudent(studentId);
+                    int mark = Integer.parseInt(model.getValueAt(count, 2).toString());
+                    Exam exam = new Exam(student, paper, mark, 0);
+                    results.add(exam);
+            }
+
+            Collections.sort(results, new Comparator<Exam>() {
+                @Override
+                public int compare(Exam exam1, Exam exam2) {
+                    if (exam1.getMark() > exam2.getMark()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+            ArrayList<Exam> resultfinal = new ArrayList<Exam>();
+            int topScore = 0;
+            int count = 1;
+            double totalmark = 0;
+            for (Exam result : results) {
+                if (result.getMark() > 0) {
+                    resultfinal.add(result);
+                    result.setRank(count);
+                    if (topScore < result.getMark()) {
+                        topScore = result.getMark();
+                    }
+                    totalmark += result.getMark();
+                    count++;
+                }
+            }
+            paper.setNumberOfFacedStudent(count-1);
+            paper.setTopScore(topScore);
+            paper.setAverage(totalmark/count);
+            
+            
+            boolean editExamResult = examController.editExamResult(paper, results);
+            if(editExamResult){
+                JOptionPane.showMessageDialog(this,"result is updeted successfully");
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(this,"result is not updated successfully");
+            }
+
+            } catch (RemoteException ex) {
+                    Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editBActionPerformed
+
+    private void paperIdComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paperIdComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_paperIdComboActionPerformed
+
     private void setPaperID() {
         try {
             int paperCount = paperController.getPaperCount() + 1;
@@ -370,6 +605,20 @@ public class StudentMarkManagement extends javax.swing.JDialog {
             ArrayList<ClassS> allClass = classController.getAllClass();
             for (ClassS cls : allClass) {
                 classIdAddMarkC.addItem(cls.getClassId());
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    
+    private void loadPaperIdCombo() {
+        paperIdCombo.removeAllItems();
+        try {
+            ArrayList<Paper> allPaper = paperController.getAllPaper();
+            for (Paper paper : allPaper) {
+                paperIdCombo.addItem(paper.getPaperId());
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -425,14 +674,23 @@ public class StudentMarkManagement extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> classIdAddMarkC;
     private javax.swing.JLabel classIdAddMarkL;
     private javax.swing.JTextField conductedDateT;
+    private javax.swing.JButton editB;
+    private javax.swing.JTable edittable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton loadAddMarkB;
+    private javax.swing.JButton loadAddMarkB1;
     private javax.swing.JLabel paperIdAddMarkL;
+    private javax.swing.JLabel paperIdAddMarkL1;
     private javax.swing.JTextField paperIdAddMarkT;
+    private javax.swing.JComboBox<String> paperIdCombo;
     // End of variables declaration//GEN-END:variables
 }

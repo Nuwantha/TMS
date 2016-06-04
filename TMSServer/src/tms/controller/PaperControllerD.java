@@ -88,4 +88,19 @@ public class PaperControllerD {
         }
     }
 
+    public static boolean editPaper(Paper paper) throws ClassNotFoundException, SQLException {
+        try {
+
+            readWriteLock.writeLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "update paper set  numberOfFacedStudent ='" + paper.getNumberOfFacedStudent() + "',topscore='" + paper.getTopScore() + "',average='" + paper.getAverage() + "' where paperId='" + paper.getPaperId() + "'";
+
+            int returnValue = DBHandler.setData(conn, sql);
+            return returnValue > 0;
+
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
+
 }

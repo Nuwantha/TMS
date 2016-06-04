@@ -21,4 +21,6 @@ public interface ExamController extends Remote{
     public boolean addNewExamResult(Paper paper, ArrayList<Exam> results) throws RemoteException,ClassNotFoundException, SQLException;
     public  ArrayList<Exam> getAllResults(String paperId) throws RemoteException,ClassNotFoundException, SQLException;
     
+    public boolean editExamResult(Paper paper, ArrayList<Exam> results) throws RemoteException,ClassNotFoundException, SQLException ;
+
 }

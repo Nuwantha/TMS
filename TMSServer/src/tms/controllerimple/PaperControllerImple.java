@@ -44,4 +44,10 @@ public class PaperControllerImple extends UnicastRemoteObject implements PaperCo
     public Paper searchPaper(String paperId) throws RemoteException, ClassNotFoundException, SQLException {
         return paperControllerD.searchPaper(paperId);
     }
+
+    @Override
+    public boolean editPaper(Paper paper) throws RemoteException, ClassNotFoundException, SQLException {
+        return paperControllerD.editPaper(paper);
+
+    }
 }
