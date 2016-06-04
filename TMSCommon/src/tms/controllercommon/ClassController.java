@@ -17,8 +17,13 @@ import tms.model.ClassS;
  */
 public interface ClassController extends Remote{
       public ArrayList<ClassS> getAllClass() throws RemoteException, SQLException,ClassNotFoundException;
-       public ClassS searchClass(String classId) throws RemoteException, SQLException,ClassNotFoundException;
+      public ClassS searchClass(String classId) throws RemoteException, SQLException,ClassNotFoundException;
       public ArrayList<ClassS> getAllClassForNewYear() throws RemoteException, SQLException,ClassNotFoundException;
-        
+      public boolean addNewClass(ClassS classDetail) throws RemoteException,ClassNotFoundException, SQLException;
+      public boolean editClassDetail(ClassS classDetail) throws RemoteException,ClassNotFoundException, SQLException;
+      public int getClassCount() throws RemoteException,ClassNotFoundException, SQLException;
+      
+       
+      
       
 }

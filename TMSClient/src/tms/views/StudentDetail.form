@@ -272,7 +272,7 @@
                           <Component id="parentET" alignment="0" max="32767" attributes="0"/>
                           <Component id="contactNumberET" alignment="0" max="32767" attributes="0"/>
                           <Component id="jScrollPane2" alignment="0" pref="196" max="32767" attributes="0"/>
-                          <Component id="indexNumberET" alignment="0" max="32767" attributes="0"/>
+                          <Component id="indexNumberC" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="31" max="32767" attributes="0"/>
                   </Group>
@@ -283,8 +283,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="indexNumberRL1" alignment="1" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="indexNumberET" alignment="1" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="indexNumberRL1" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="indexNumberC" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -311,7 +311,7 @@
                           <Component id="contactNumberRL1" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="contactNumberET" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="34" max="32767" attributes="0"/>
                       <Component id="editStudentB" min="-2" pref="36" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
@@ -403,11 +403,25 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Edit Student"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="indexNumberET">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="indexNumberETActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editStudentBActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="indexNumberC">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="12" style="0"/>
+                </Property>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="indexNumberCItemStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

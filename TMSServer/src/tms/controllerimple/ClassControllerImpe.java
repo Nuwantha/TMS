@@ -40,4 +40,19 @@ public class ClassControllerImpe extends UnicastRemoteObject implements ClassCon
         return  classControllerD.getAllClassForNewYear();//To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public boolean addNewClass(ClassS classDetail) throws RemoteException, ClassNotFoundException, SQLException {
+        return classControllerD.addNewClass(classDetail);
+    }
+
+    @Override
+    public boolean editClassDetail(ClassS classDetail) throws RemoteException, ClassNotFoundException, SQLException {
+        return classControllerD.editClassDetail(classDetail);//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getClassCount() throws RemoteException, ClassNotFoundException, SQLException {
+        return classControllerD.getClassCount();//To change body of generated methods, choose Tools | Templates.
+    }
+
 }

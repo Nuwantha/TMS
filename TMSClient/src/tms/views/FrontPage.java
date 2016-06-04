@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package tms.views;
+
+import org.apache.batik.gvt.flow.TextLineBreaks;
+
 /**
  *
  * @author Nuwantha
@@ -881,10 +884,18 @@ public class FrontPage extends javax.swing.JFrame {
 
     private void editClassDetailMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClassDetailMActionPerformed
 
+        
+      ClassDetail classDetail = new ClassDetail(this, true,1);
+      classDetail.setLocationRelativeTo(null);
+      classDetail.setVisible(true);
+        
     }//GEN-LAST:event_editClassDetailMActionPerformed
 
     private void addNewClassMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClassMActionPerformed
 
+      ClassDetail classDetail = new ClassDetail(this, true,0);
+      classDetail.setLocationRelativeTo(null);
+      classDetail.setVisible(true);
     }//GEN-LAST:event_addNewClassMActionPerformed
 
     /**

@@ -123,5 +123,18 @@ public class StudentControllerD {
         }
     }
 
+    public static boolean editStudentDetail(Student student) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.writeLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "update Student set birthday='" + student.getBirthDay() + "',name= '" + student.getName() + "',address='" + student.getAddress() + "',parentName='" + student.getParentName() + "',contactNumber='" + student.getContactNumber() + "' where studentId='" + student.getStudentId() + "'";
+            int returnValue = DBHandler.setData(conn, sql);
+            return returnValue > 0;
+
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
+    
      
 }

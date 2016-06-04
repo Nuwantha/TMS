@@ -22,8 +22,7 @@ public interface StudentController extends Remote{
         public ArrayList<Student> getAllStudent() throws RemoteException, SQLException,ClassNotFoundException;
         public ArrayList<Student> getAllStudentRegisterForNewYear() throws RemoteException, SQLException,ClassNotFoundException;
         public ArrayList<Student> getStudentOfClass(String classId) throws RemoteException, SQLException,ClassNotFoundException;
+        public boolean editStudentDetail(Student student) throws RemoteException,ClassNotFoundException, SQLException;
 
-      
-        
         
 }

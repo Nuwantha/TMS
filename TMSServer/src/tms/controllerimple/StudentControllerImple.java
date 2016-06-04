@@ -55,4 +55,9 @@ public class StudentControllerImple extends UnicastRemoteObject implements Stude
         return  studentControllerD.getStudentOfClass(classId); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public boolean editStudentDetail(Student student) throws RemoteException, ClassNotFoundException, SQLException {
+        return  studentControllerD.editStudentDetail(student);//To change body of generated methods, choose Tools | Templates.
+    }
+
 }

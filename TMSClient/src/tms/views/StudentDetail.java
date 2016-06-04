@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,24 +22,26 @@ import tms.model.Student;
  * @author Nuwantha
  */
 public class StudentDetail extends javax.swing.JDialog {
-     StudentController studentController;
+
+    StudentController studentController;
+
     /**
      * Creates new form NewJDialog
      */
-     
-     
+
     public StudentDetail(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-         try {
-             studentController=Connector.getSConnector().getStudentController();
-         } catch (SQLException | InterruptedException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException ex) {
-             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         
-         setStudentID();
-        
+
+        try {
+            studentController = Connector.getSConnector().getStudentController();
+        } catch (SQLException | InterruptedException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setStudentID();
+        loadStudentId();
+
     }
 
     /**
@@ -80,7 +83,7 @@ public class StudentDetail extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         addressET = new javax.swing.JTextArea();
         editStudentB = new javax.swing.JButton();
-        indexNumberET = new javax.swing.JTextField();
+        indexNumberC = new javax.swing.JComboBox<>();
         jTabbedPane4 = new javax.swing.JTabbedPane();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
@@ -250,10 +253,16 @@ public class StudentDetail extends javax.swing.JDialog {
 
         editStudentB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         editStudentB.setText("Edit Student");
-
-        indexNumberET.addActionListener(new java.awt.event.ActionListener() {
+        editStudentB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                indexNumberETActionPerformed(evt);
+                editStudentBActionPerformed(evt);
+            }
+        });
+
+        indexNumberC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        indexNumberC.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                indexNumberCItemStateChanged(evt);
             }
         });
 
@@ -278,7 +287,7 @@ public class StudentDetail extends javax.swing.JDialog {
                     .addComponent(parentET)
                     .addComponent(contactNumberET)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                    .addComponent(indexNumberET))
+                    .addComponent(indexNumberC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -287,7 +296,7 @@ public class StudentDetail extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(indexNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(indexNumberET, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(indexNumberC, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameET, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -308,7 +317,7 @@ public class StudentDetail extends javax.swing.JDialog {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(contactNumberET, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(editStudentB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
@@ -462,10 +471,6 @@ public class StudentDetail extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_birthdayETActionPerformed
 
-    private void indexNumberETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indexNumberETActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_indexNumberETActionPerformed
-
     private void nameDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameDTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameDTActionPerformed
@@ -479,54 +484,105 @@ public class StudentDetail extends javax.swing.JDialog {
     }//GEN-LAST:event_indexNumberDTActionPerformed
 
     private void addStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBActionPerformed
-         
+
         String studentId = indexNumberRT.getText();
         String name = nameRT.getText();
-        String birthday= birthdayRT.getText();
-        String address=addressRT.getText();
+        String birthday = birthdayRT.getText();
+        String address = addressRT.getText();
         String parent = parentRT.getText();
-        String contactNumber=contactNumberRT.getText();
-        
-         Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
-         try {
+        String contactNumber = contactNumberRT.getText();
+
+        Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
+        try {
             boolean addNewStudent = studentController.addNewStudent(student);
-            if(addNewStudent){
-                JOptionPane.showMessageDialog(this,"student are added succesfully");
+            if (addNewStudent) {
+                JOptionPane.showMessageDialog(this, "student are added succesfully");
                 setStudentID();
                 nameRT.setText("");
                 birthdayRT.setText("");
                 addressRT.setText("");
                 parentRT.setText("");
                 contactNumberRT.setText("");
-            }else{
-                JOptionPane.showMessageDialog(this,"student are not added successfully");
+            } else {
+                JOptionPane.showMessageDialog(this, "student are not added successfully");
             }
-         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
-             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        
-        
-                  
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_addStudentBActionPerformed
-    
-    private void setStudentID(){
-         try {
-            int studentCount = studentController.getStudentCount()+1;
-            if(studentCount<10){
-                indexNumberRT.setText("St000"+String.valueOf(studentCount)  );
-            }else if(studentCount<100){
-                indexNumberRT.setText("St00"+String.valueOf(studentCount)  );
-            }else if(studentCount<1000){
-                indexNumberRT.setText("St0"+String.valueOf(studentCount)  );
-            }else{
-                indexNumberRT.setText("St"+String.valueOf(studentCount)  );
+
+    private void editStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStudentBActionPerformed
+
+        String studentId = String.valueOf(indexNumberC.getSelectedItem());
+        String name = nameET.getText();
+        String birthday = birthdayET.getText();
+        String address = addressET.getText();
+        String parent = parentET.getText();
+        String contactNumber = contactNumberET.getText();
+
+        Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
+        try {
+            boolean editStudentDetail = studentController.editStudentDetail(student);
+            if (editStudentDetail) {
+                JOptionPane.showMessageDialog(this, "student detail is updated succesfully");
+                setStudentID();
+            } else {
+                JOptionPane.showMessageDialog(this, "student detail is no updated successfully");
             }
-         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
-             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editStudentBActionPerformed
+
+    private void indexNumberCItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_indexNumberCItemStateChanged
+        try {
+            String indexNumber = String.valueOf(indexNumberC.getSelectedItem());
+            Student searchStudent = studentController.searchStudent(indexNumber);
+            nameET.setText(searchStudent.getName());
+            parentET.setText(searchStudent.getParentName());
+            contactNumberET.setText(searchStudent.getContactNumber());
+            birthdayET.setText(searchStudent.getBirthDay());
+            addressET.setText(searchStudent.getAddress());
+
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_indexNumberCItemStateChanged
+
+    private void setStudentID() {
+        try {
+            int studentCount = studentController.getStudentCount() + 1;
+            if (studentCount < 10) {
+                indexNumberRT.setText("St000" + String.valueOf(studentCount));
+            } else if (studentCount < 100) {
+                indexNumberRT.setText("St00" + String.valueOf(studentCount));
+            } else if (studentCount < 1000) {
+                indexNumberRT.setText("St0" + String.valueOf(studentCount));
+            } else {
+                indexNumberRT.setText("St" + String.valueOf(studentCount));
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-    
+
+    private void loadStudentId() {
+        indexNumberC.removeAllItems();
+        try {
+            ArrayList<Student> allStudent = studentController.getAllStudent();
+            for (Student student : allStudent) {
+                indexNumberC.addItem(student.getStudentId());
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -594,8 +650,8 @@ public class StudentDetail extends javax.swing.JDialog {
     private javax.swing.JTextField contactNumberRT;
     private javax.swing.JButton deleteStudentB;
     private javax.swing.JButton editStudentB;
+    private javax.swing.JComboBox<String> indexNumberC;
     private javax.swing.JTextField indexNumberDT;
-    private javax.swing.JTextField indexNumberET;
     private javax.swing.JLabel indexNumberRL;
     private javax.swing.JLabel indexNumberRL1;
     private javax.swing.JLabel indexNumberRL2;
