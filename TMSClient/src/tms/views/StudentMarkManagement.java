@@ -10,14 +10,18 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import tms.common_classes.PatternChecker;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
@@ -49,13 +53,16 @@ public class StudentMarkManagement extends javax.swing.JDialog {
             paperController = sConnector.getPaperController();
             classController = sConnector.getClassController();
             studentController = sConnector.getStudentController();
-            examController=sConnector.getExamController();
+            examController = sConnector.getExamController();
         } catch (SQLException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException | InterruptedException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
         setPaperID();
         loadClassCombo();
         loadPaperIdCombo();
+        dateValidation.setVisible(false);
+        markValidation.setVisible(false);
+
     }
 
     /**
@@ -76,11 +83,13 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         classIdAddMarkC = new javax.swing.JComboBox<>();
         loadAddMarkB = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        conductedDateT = new javax.swing.JTextField();
+        dateChooser = new com.toedter.calendar.JDateChooser();
+        dateValidation = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         addStudentMarkTable = new javax.swing.JTable();
         addMarkB = new javax.swing.JButton();
+        markValidation = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         paperIdAddMarkL1 = new javax.swing.JLabel();
@@ -124,6 +133,11 @@ public class StudentMarkManagement extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         jLabel1.setText("Conducted Date");
 
+        dateValidation.setBackground(new java.awt.Color(255, 0, 0));
+        dateValidation.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dateValidation.setForeground(new java.awt.Color(255, 0, 0));
+        dateValidation.setText("invalid date");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -141,8 +155,8 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(paperIdAddMarkT, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(classIdAddMarkC, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(classIdAddMarkC, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(paperIdAddMarkT, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -154,7 +168,10 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                         .addGap(0, 21, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(conductedDateT, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(dateValidation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -170,8 +187,10 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 .addComponent(classIdAddMarkC, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(conductedDateT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateValidation, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loadAddMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77))
@@ -191,7 +210,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true
+                false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -203,6 +222,10 @@ public class StudentMarkManagement extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(addStudentMarkTable);
+        if (addStudentMarkTable.getColumnModel().getColumnCount() > 0) {
+            addStudentMarkTable.getColumnModel().getColumn(1).setResizable(false);
+            addStudentMarkTable.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         addMarkB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         addMarkB.setText("Add Mark");
@@ -211,6 +234,11 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 addMarkBActionPerformed(evt);
             }
         });
+
+        markValidation.setBackground(new java.awt.Color(255, 0, 0));
+        markValidation.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        markValidation.setForeground(new java.awt.Color(255, 0, 0));
+        markValidation.setText("invalid mark");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -222,6 +250,8 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(markValidation, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
                         .addComponent(addMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -231,7 +261,9 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addMarkB)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addMarkB)
+                    .addComponent(markValidation))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -320,7 +352,7 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                 java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true
+                false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -332,6 +364,11 @@ public class StudentMarkManagement extends javax.swing.JDialog {
             }
         });
         jScrollPane2.setViewportView(edittable);
+        if (edittable.getColumnModel().getColumnCount() > 0) {
+            edittable.getColumnModel().getColumn(0).setResizable(false);
+            edittable.getColumnModel().getColumn(1).setResizable(false);
+            edittable.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         editB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         editB.setText("Edit Mark");
@@ -424,17 +461,128 @@ public class StudentMarkManagement extends javax.swing.JDialog {
     }//GEN-LAST:event_loadAddMarkBActionPerformed
 
     private void addMarkBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMarkBActionPerformed
+        markValidation.setVisible(false);
+        dateValidation.setVisible(false);
         try {
-            String paperId = paperIdAddMarkT.getText();
-            String conductedDate = conductedDateT.getText();
-            String classId = String.valueOf(classIdAddMarkC.getSelectedItem());
-            ClassS searchClass = classController.searchClass(classId);
-            int grade = searchClass.getGrade();
-            Paper paper = new Paper(paperId, conductedDate, classId, grade);
 
+            String paperId = paperIdAddMarkT.getText();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = dateChooser.getDate();
+            String conductedDate = df.format(date);
+            int conductedYear = Integer.parseInt(conductedDate.substring(0, 4));
+            int conductedMonth = Integer.parseInt(conductedDate.substring(5, 7));
+            int conductedDay = Integer.parseInt(conductedDate.substring(8, 10));
+            Calendar now = Calendar.getInstance();
+            int currentYear = now.get(Calendar.YEAR);
+            int currentMonth = now.get(Calendar.MONTH)+1;
+            int currentDay = now.get(Calendar.DAY_OF_MONTH);
+            System.out.println(conductedMonth +"  "+conductedDay +"  "+currentMonth+" "+currentDay);
+            if (conductedYear > currentYear || (conductedYear == currentYear && conductedMonth > currentMonth) || (conductedYear == currentYear && conductedMonth == currentMonth && conductedDay > currentDay)) {
+                dateValidation.setVisible(true);
+            } else {
+
+                String classId = String.valueOf(classIdAddMarkC.getSelectedItem());
+                ClassS searchClass = classController.searchClass(classId);
+                int grade = searchClass.getGrade();
+                Paper paper = new Paper(paperId, conductedDate, classId, grade);
+                ArrayList<Exam> results = new ArrayList<Exam>();
+
+                DefaultTableModel model = (DefaultTableModel) addStudentMarkTable.getModel();
+
+                boolean nextStep = true;
+                for (int count = 0; count < model.getRowCount(); count++) {
+
+                    String studentId = model.getValueAt(count, 1).toString();
+                    Student student = studentController.searchStudent(studentId);
+                    String markS = model.getValueAt(count, 2).toString();
+                    if (!PatternChecker.checkIntegerdirect(markS)) {
+                        nextStep = false;
+                        markValidation.setVisible(true);
+                        continue;
+            
+                    }
+                    int mark = Integer.parseInt(markS);
+                    Exam exam = new Exam(student, paper, mark, 0);
+                    results.add(exam);
+                }
+
+                if (nextStep) {
+
+                    Collections.sort(results, new Comparator<Exam>() {
+                        @Override
+                        public int compare(Exam exam1, Exam exam2) {
+                            if (exam1.getMark() > exam2.getMark()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                    ArrayList<Exam> resultfinal = new ArrayList<Exam>();
+                    int topScore = 0;
+                    int count = 1;
+                    double totalmark = 0;
+                    for (Exam result : results) {
+                        if (result.getMark() > 0) {
+                            resultfinal.add(result);
+                            result.setRank(count);
+                            if (topScore < result.getMark()) {
+                                topScore = result.getMark();
+                            }
+                            totalmark += result.getMark();
+                            count++;
+                        }
+                    }
+                    paper.setNumberOfFacedStudent(count - 1);
+                    paper.setTopScore(topScore);
+                    paper.setAverage(totalmark / count);
+                    boolean addNewExamResult = examController.addNewExamResult(paper, results);
+                    if (addNewExamResult) {
+                    
+                        JOptionPane.showMessageDialog(this, "result is added successfully");
+                         DefaultTableModel tableModel = (DefaultTableModel) edittable.getModel();
+                         tableModel.getDataVector().removeAllElements();
+                         revalidate();
+                         loadPaperIdCombo();
+                    
+                    } else {
+                        JOptionPane.showMessageDialog(this, "result is not added successfully");
+                    }
+                }
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(NullPointerException ex){
+            JOptionPane.showMessageDialog(this,"Enter valid marks");
+        }
+    }//GEN-LAST:event_addMarkBActionPerformed
+
+    private void loadAddMarkB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAddMarkB1ActionPerformed
+        try {
+            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
+            ArrayList<Exam> allResults = examController.getAllResults(paperId);
+
+            DefaultTableModel tableModel = (DefaultTableModel) edittable.getModel();
+            tableModel.getDataVector().removeAllElements();
+            revalidate();
+            for (Exam exam : allResults) {
+                tableModel.addRow(new Object[]{exam.getStudent().getName(), exam.getStudent().getStudentId(), exam.getMark()});
+            }
+
+// TODO add your handling code here:
+        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_loadAddMarkB1ActionPerformed
+
+    private void editBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBActionPerformed
+        try {
+
+            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
+            Paper paper = paperController.searchPaper(paperId);
             ArrayList<Exam> results = new ArrayList<Exam>();
 
-            DefaultTableModel model = (DefaultTableModel) addStudentMarkTable.getModel();
+            DefaultTableModel model = (DefaultTableModel) edittable.getModel();
 
             for (int count = 0; count < model.getRowCount(); count++) {
 
@@ -470,109 +618,25 @@ public class StudentMarkManagement extends javax.swing.JDialog {
                     count++;
                 }
             }
-            paper.setNumberOfFacedStudent(count-1);
+            paper.setNumberOfFacedStudent(count - 1);
             paper.setTopScore(topScore);
-            paper.setAverage(totalmark/count);
-            boolean addNewExamResult = examController.addNewExamResult(paper, results);
-            if(addNewExamResult){
-                JOptionPane.showMessageDialog(this,"result is added successfully");
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this,"result is not added successfully");
+            paper.setAverage(totalmark / count);
+
+            boolean editExamResult = examController.editExamResult(paper, results);
+            if (editExamResult) {
+                JOptionPane.showMessageDialog(this, "result is updeted successfully");
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "result is not updated successfully");
             }
+
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(NullPointerException ex){
+            JOptionPane.showMessageDialog(this, "Please enter valid data");
         }
-    }//GEN-LAST:event_addMarkBActionPerformed
-
-    private void loadAddMarkB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAddMarkB1ActionPerformed
-        try {
-            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
-            ArrayList<Exam> allResults = examController.getAllResults(paperId);
-
-            DefaultTableModel tableModel = (DefaultTableModel) edittable.getModel();
-            tableModel.getDataVector().removeAllElements();
-            revalidate();
-            for (Exam exam :allResults) {
-                tableModel.addRow(new Object[]{exam.getStudent().getName(), exam.getStudent().getStudentId(), exam.getMark()});
-            }
-      
-// TODO add your handling code here:
-        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_loadAddMarkB1ActionPerformed
-
-    private void editBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBActionPerformed
-try{
-            
-            
-            String paperId = String.valueOf(paperIdCombo.getSelectedItem());
-            Paper paper = paperController.searchPaper(paperId);
-            ArrayList<Exam> results = new ArrayList<Exam>();
-
-            DefaultTableModel model = (DefaultTableModel)edittable.getModel();
-
-            
-            
-            for (int count = 0; count < model.getRowCount(); count++) {
-
-               
-                    String studentId = model.getValueAt(count, 1).toString();
-                    Student student = studentController.searchStudent(studentId);
-                    int mark = Integer.parseInt(model.getValueAt(count, 2).toString());
-                    Exam exam = new Exam(student, paper, mark, 0);
-                    results.add(exam);
-            }
-
-            Collections.sort(results, new Comparator<Exam>() {
-                @Override
-                public int compare(Exam exam1, Exam exam2) {
-                    if (exam1.getMark() > exam2.getMark()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }
-            });
-            ArrayList<Exam> resultfinal = new ArrayList<Exam>();
-            int topScore = 0;
-            int count = 1;
-            double totalmark = 0;
-            for (Exam result : results) {
-                if (result.getMark() > 0) {
-                    resultfinal.add(result);
-                    result.setRank(count);
-                    if (topScore < result.getMark()) {
-                        topScore = result.getMark();
-                    }
-                    totalmark += result.getMark();
-                    count++;
-                }
-            }
-            paper.setNumberOfFacedStudent(count-1);
-            paper.setTopScore(topScore);
-            paper.setAverage(totalmark/count);
-            
-            
-            boolean editExamResult = examController.editExamResult(paper, results);
-            if(editExamResult){
-                JOptionPane.showMessageDialog(this,"result is updeted successfully");
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this,"result is not updated successfully");
-            }
-
-            } catch (RemoteException ex) {
-                    Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(StudentMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
-                }
-    
-
-
+        // TODO add your handling code here:
+        
 
         // TODO add your handling code here:
     }//GEN-LAST:event_editBActionPerformed
@@ -602,7 +666,7 @@ try{
     private void loadClassCombo() {
         classIdAddMarkC.removeAllItems();
         try {
-            ArrayList<ClassS> allClass = classController.getAllClass();
+            ArrayList<ClassS> allClass = classController.getAllClassForNewYear();
             for (ClassS cls : allClass) {
                 classIdAddMarkC.addItem(cls.getClassId());
             }
@@ -611,8 +675,7 @@ try{
         }
 
     }
-    
-    
+
     private void loadPaperIdCombo() {
         paperIdCombo.removeAllItems();
         try {
@@ -673,7 +736,8 @@ try{
     private javax.swing.JTable addStudentMarkTable;
     private javax.swing.JComboBox<String> classIdAddMarkC;
     private javax.swing.JLabel classIdAddMarkL;
-    private javax.swing.JTextField conductedDateT;
+    private com.toedter.calendar.JDateChooser dateChooser;
+    private javax.swing.JLabel dateValidation;
     private javax.swing.JButton editB;
     private javax.swing.JTable edittable;
     private javax.swing.JLabel jLabel1;
@@ -688,6 +752,7 @@ try{
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton loadAddMarkB;
     private javax.swing.JButton loadAddMarkB1;
+    private javax.swing.JLabel markValidation;
     private javax.swing.JLabel paperIdAddMarkL;
     private javax.swing.JLabel paperIdAddMarkL1;
     private javax.swing.JTextField paperIdAddMarkT;

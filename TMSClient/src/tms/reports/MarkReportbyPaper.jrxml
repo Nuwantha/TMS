@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MarkReportbyPaper" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="523c97a0-0dd6-4e91-83b4-d455f3dde508">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MarkReportbyPaper" language="groovy" pageWidth="800" pageHeight="842" columnWidth="760" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="523c97a0-0dd6-4e91-83b4-d455f3dde508">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="87"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -21,23 +21,23 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="159" splitType="Stretch">
+		<band height="141" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="170" y="0" width="299" height="62" uuid="e2633a96-4e0e-4517-82db-6c15d91f6726"/>
+				<reportElement style="Title" x="331" y="7" width="299" height="62" uuid="e2633a96-4e0e-4517-82db-6c15d91f6726"/>
 				<textElement verticalAlignment="Middle">
 					<font pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[Paper Result]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="SubTitle" x="219" y="62" width="196" height="22" uuid="b252124a-5218-480b-92ce-793a66482432"/>
+				<reportElement style="SubTitle" x="380" y="69" width="196" height="22" uuid="b252124a-5218-480b-92ce-793a66482432"/>
 				<textElement>
 					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[Siyora Tuition Welihida]]></text>
 			</staticText>
 			<image>
-				<reportElement x="13" y="12" width="128" height="121" uuid="b5d9723a-9570-472b-924f-3e0c63ee0929"/>
+				<reportElement x="153" y="7" width="128" height="121" uuid="b5d9723a-9570-472b-924f-3e0c63ee0929"/>
 				<imageExpression><![CDATA["E:\\Project\\TMS\\TMSClient\\src\\tms\\icons\\result.png"]]></imageExpression>
 			</image>
 		</band>
@@ -46,9 +46,9 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="65" splitType="Stretch">
+		<band height="31" splitType="Stretch">
 			<staticText>
-				<reportElement x="53" y="45" width="100" height="20" uuid="a42eb06d-43ba-4163-90fd-cb0ef47bf9fa"/>
+				<reportElement x="181" y="10" width="100" height="20" uuid="a42eb06d-43ba-4163-90fd-cb0ef47bf9fa"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -60,7 +60,7 @@
 				<text><![CDATA[Student Id]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="153" y="45" width="100" height="20" uuid="ced674d8-f1da-48c0-b53d-4ec70302e0d5"/>
+				<reportElement x="281" y="10" width="100" height="20" uuid="ced674d8-f1da-48c0-b53d-4ec70302e0d5"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -72,7 +72,7 @@
 				<text><![CDATA[Student Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="253" y="45" width="100" height="20" uuid="d3422c9f-3c10-4763-a2b5-11dcc4e26547"/>
+				<reportElement x="381" y="10" width="100" height="20" uuid="d3422c9f-3c10-4763-a2b5-11dcc4e26547"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -84,7 +84,7 @@
 				<text><![CDATA[Mark]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="353" y="45" width="100" height="20" uuid="a5b2d88e-de4f-46c7-8da8-52e73eec4a2c"/>
+				<reportElement x="481" y="10" width="100" height="20" uuid="a5b2d88e-de4f-46c7-8da8-52e73eec4a2c"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -98,9 +98,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="53" y="0" width="100" height="20" uuid="15fe0521-fb61-45e5-a36e-b8886881bf32"/>
+				<reportElement x="181" y="0" width="100" height="20" uuid="15fe0521-fb61-45e5-a36e-b8886881bf32"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -111,7 +111,7 @@
 				<textFieldExpression><![CDATA[$F{Student Id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="153" y="0" width="100" height="20" uuid="d3c04091-748e-4bc1-855e-d146f43e3f0d"/>
+				<reportElement x="281" y="0" width="100" height="20" uuid="d3c04091-748e-4bc1-855e-d146f43e3f0d"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -122,7 +122,7 @@
 				<textFieldExpression><![CDATA[$F{Student Name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="253" y="0" width="100" height="20" uuid="de30a081-7ab2-451e-b845-405dd43994ae"/>
+				<reportElement x="381" y="0" width="100" height="20" uuid="de30a081-7ab2-451e-b845-405dd43994ae"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -133,7 +133,7 @@
 				<textFieldExpression><![CDATA[$F{Mark}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="353" y="0" width="100" height="20" uuid="4abb02ce-c585-408d-b75c-981f01d17d2b"/>
+				<reportElement x="481" y="0" width="100" height="20" uuid="4abb02ce-c585-408d-b75c-981f01d17d2b"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -153,9 +153,9 @@
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
-			<stackedBarChart>
+			<bar3DChart>
 				<chart>
-					<reportElement x="37" y="30" width="499" height="182" uuid="2ffd2801-a41f-4b09-9e87-830faaeb19f6"/>
+					<reportElement x="13" y="22" width="735" height="251" uuid="dcd46f61-8fc9-4e1c-9ad8-d9c29b5c1388"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -163,11 +163,11 @@
 				<categoryDataset>
 					<categorySeries>
 						<seriesExpression><![CDATA[""]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{Student Name}]]></categoryExpression>
+						<categoryExpression><![CDATA[$F{Student Id}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{Mark}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>
-				<barPlot>
+				<bar3DPlot>
 					<plot/>
 					<itemLabel/>
 					<categoryAxisFormat>
@@ -176,8 +176,8 @@
 					<valueAxisFormat>
 						<axisFormat/>
 					</valueAxisFormat>
-				</barPlot>
-			</stackedBarChart>
+				</bar3DPlot>
+			</bar3DChart>
 		</band>
 	</columnFooter>
 	<pageFooter>

@@ -500,6 +500,7 @@ public class FrontPage extends javax.swing.JFrame {
         shortcutAccessPanel.add(studentRestrationFB);
 
         addNewStudentMarkMB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        addNewStudentMarkMB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/exam.png"))); // NOI18N
         addNewStudentMarkMB.setText("2-Add Student Mark");
         importantButtonSet.add(addNewStudentMarkMB);
         addNewStudentMarkMB.addActionListener(new java.awt.event.ActionListener() {
@@ -641,9 +642,10 @@ public class FrontPage extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        Grant.setText("Paper");
+        Grant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/examM.png"))); // NOI18N
+        Grant.setText("Student Mark");
 
-        addNewPaperM.setText("Add New Paper");
+        addNewPaperM.setText("Add Student Mark");
         addNewPaperM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addNewPaperMActionPerformed(evt);
