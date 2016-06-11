@@ -6,14 +6,21 @@
 package tms.views;
 
 import SeverConnector.Connector;
+import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import tms.common_classes.PatternChecker;
 import tms.controllercommon.StudentController;
 import tms.model.Student;
 
@@ -28,7 +35,6 @@ public class StudentDetail extends javax.swing.JDialog {
     /**
      * Creates new form NewJDialog
      */
-
     public StudentDetail(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -41,6 +47,10 @@ public class StudentDetail extends javax.swing.JDialog {
 
         setStudentID();
         loadStudentId();
+        addStudentB.setEnabled(false);
+        nameVali.setVisible(false);
+        paprentVali.setVisible(false);
+        contactNumberVali.setVisible(false);
 
     }
 
@@ -62,13 +72,16 @@ public class StudentDetail extends javax.swing.JDialog {
         parentRL = new javax.swing.JLabel();
         contactNumberRL = new javax.swing.JLabel();
         nameRT = new javax.swing.JTextField();
-        birthdayRT = new javax.swing.JTextField();
         parentRT = new javax.swing.JTextField();
         contactNumberRT = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         addressRT = new javax.swing.JTextArea();
         addStudentB = new javax.swing.JButton();
         indexNumberRT = new javax.swing.JTextField();
+        nameVali = new javax.swing.JLabel();
+        paprentVali = new javax.swing.JLabel();
+        contactNumberVali = new javax.swing.JLabel();
+        dateChooser = new com.toedter.calendar.JDateChooser();
         jPanel6 = new javax.swing.JPanel();
         indexNumberRL1 = new javax.swing.JLabel();
         nameRL1 = new javax.swing.JLabel();
@@ -77,30 +90,16 @@ public class StudentDetail extends javax.swing.JDialog {
         parentRL1 = new javax.swing.JLabel();
         contactNumberRL1 = new javax.swing.JLabel();
         nameET = new javax.swing.JTextField();
-        birthdayET = new javax.swing.JTextField();
         parentET = new javax.swing.JTextField();
         contactNumberET = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         addressET = new javax.swing.JTextArea();
         editStudentB = new javax.swing.JButton();
         indexNumberC = new javax.swing.JComboBox<>();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
-        jPanel7 = new javax.swing.JPanel();
-        indexNumberRL2 = new javax.swing.JLabel();
-        nameRL2 = new javax.swing.JLabel();
-        birthdayRL2 = new javax.swing.JLabel();
-        addressRL2 = new javax.swing.JLabel();
-        parentRL2 = new javax.swing.JLabel();
-        contactNumberRL2 = new javax.swing.JLabel();
-        nameDT = new javax.swing.JTextField();
-        birthdayDT = new javax.swing.JTextField();
-        parentDT = new javax.swing.JTextField();
-        contactNumberDT = new javax.swing.JTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        addressDT = new javax.swing.JTextArea();
-        deleteStudentB = new javax.swing.JButton();
-        indexNumberDT = new javax.swing.JTextField();
+        nameValiE = new javax.swing.JLabel();
+        paprentValiE = new javax.swing.JLabel();
+        contactNumberValiE = new javax.swing.JLabel();
+        dateChooserE = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -131,15 +130,31 @@ public class StudentDetail extends javax.swing.JDialog {
                 nameRTActionPerformed(evt);
             }
         });
+        nameRT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nameRTKeyReleased(evt);
+            }
+        });
 
-        birthdayRT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                birthdayRTActionPerformed(evt);
+        parentRT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                parentRTKeyReleased(evt);
+            }
+        });
+
+        contactNumberRT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                contactNumberRTKeyReleased(evt);
             }
         });
 
         addressRT.setColumns(20);
         addressRT.setRows(5);
+        addressRT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                addressRTKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(addressRT);
 
         addStudentB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -154,6 +169,27 @@ public class StudentDetail extends javax.swing.JDialog {
         indexNumberRT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 indexNumberRTActionPerformed(evt);
+            }
+        });
+
+        nameVali.setBackground(new java.awt.Color(255, 0, 0));
+        nameVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        nameVali.setForeground(new java.awt.Color(255, 0, 0));
+        nameVali.setText("invalid name");
+
+        paprentVali.setBackground(new java.awt.Color(255, 0, 0));
+        paprentVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        paprentVali.setForeground(new java.awt.Color(255, 0, 0));
+        paprentVali.setText("invalid name");
+
+        contactNumberVali.setBackground(new java.awt.Color(255, 0, 0));
+        contactNumberVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        contactNumberVali.setForeground(new java.awt.Color(255, 0, 0));
+        contactNumberVali.setText("invalid Tele number");
+
+        dateChooser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                dateChooserKeyReleased(evt);
             }
         });
 
@@ -174,12 +210,17 @@ public class StudentDetail extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(addStudentB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nameRT)
-                    .addComponent(birthdayRT)
                     .addComponent(parentRT)
                     .addComponent(contactNumberRT)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                    .addComponent(indexNumberRT))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(indexNumberRT)
+                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paprentVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(contactNumberVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,29 +232,35 @@ public class StudentDetail extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameRT, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameRL, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameRL, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameVali, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(birthdayRL, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(birthdayRT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(addressRL, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(parentRT, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(parentRL, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactNumberRL, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contactNumberRT, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(parentRT, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(parentRL, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(paprentVali, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(contactNumberRL, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(contactNumberRT, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(contactNumberVali, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(addStudentB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
 
-        jTabbedPane1.addTab("Add Student", jPanel5);
+        jTabbedPane1.addTab("Add Student Detail", jPanel5);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -240,15 +287,31 @@ public class StudentDetail extends javax.swing.JDialog {
                 nameETActionPerformed(evt);
             }
         });
+        nameET.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nameETKeyReleased(evt);
+            }
+        });
 
-        birthdayET.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                birthdayETActionPerformed(evt);
+        parentET.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                parentETKeyReleased(evt);
+            }
+        });
+
+        contactNumberET.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                contactNumberETKeyReleased(evt);
             }
         });
 
         addressET.setColumns(20);
         addressET.setRows(5);
+        addressET.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                addressETKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(addressET);
 
         editStudentB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -263,6 +326,27 @@ public class StudentDetail extends javax.swing.JDialog {
         indexNumberC.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 indexNumberCItemStateChanged(evt);
+            }
+        });
+
+        nameValiE.setBackground(new java.awt.Color(255, 0, 0));
+        nameValiE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        nameValiE.setForeground(new java.awt.Color(255, 0, 0));
+        nameValiE.setText("invalid name");
+
+        paprentValiE.setBackground(new java.awt.Color(255, 0, 0));
+        paprentValiE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        paprentValiE.setForeground(new java.awt.Color(255, 0, 0));
+        paprentValiE.setText("invalid name");
+
+        contactNumberValiE.setBackground(new java.awt.Color(255, 0, 0));
+        contactNumberValiE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        contactNumberValiE.setForeground(new java.awt.Color(255, 0, 0));
+        contactNumberValiE.setText("invalid Tele number");
+
+        dateChooserE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                dateChooserEKeyReleased(evt);
             }
         });
 
@@ -283,12 +367,17 @@ public class StudentDetail extends javax.swing.JDialog {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(editStudentB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nameET)
-                    .addComponent(birthdayET)
                     .addComponent(parentET)
                     .addComponent(contactNumberET)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                    .addComponent(indexNumberC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(indexNumberC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateChooserE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paprentValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(contactNumberValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,146 +386,51 @@ public class StudentDetail extends javax.swing.JDialog {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(indexNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(indexNumberC, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameET, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(birthdayET, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addressRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(parentET, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contactNumberET, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nameET, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateChooserE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addressRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(parentET, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(contactNumberET, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(nameValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(160, 160, 160)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(paprentValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(58, 58, 58))
+                            .addComponent(contactNumberValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(editStudentB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
 
-        jTabbedPane1.addTab("Edit Student", jPanel6);
-        jTabbedPane1.addTab("tab3", jTabbedPane4);
-        jTabbedPane1.addTab("tab3", jTabbedPane3);
-
-        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        indexNumberRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        indexNumberRL2.setText("Index Number");
-
-        nameRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        nameRL2.setText("Name");
-
-        birthdayRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        birthdayRL2.setText("Birthday");
-
-        addressRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        addressRL2.setText("Address");
-
-        parentRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        parentRL2.setText("Parent");
-
-        contactNumberRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        contactNumberRL2.setText("Contact Number");
-
-        nameDT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameDTActionPerformed(evt);
-            }
-        });
-
-        birthdayDT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                birthdayDTActionPerformed(evt);
-            }
-        });
-
-        addressDT.setColumns(20);
-        addressDT.setRows(5);
-        jScrollPane3.setViewportView(addressDT);
-
-        deleteStudentB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
-        deleteStudentB.setText("Delete Student");
-
-        indexNumberDT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                indexNumberDTActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(indexNumberRL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nameRL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(birthdayRL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addressRL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(parentRL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(contactNumberRL2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(deleteStudentB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nameDT)
-                    .addComponent(birthdayDT)
-                    .addComponent(parentDT)
-                    .addComponent(contactNumberDT)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                    .addComponent(indexNumberDT))
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(indexNumberRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(indexNumberDT, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameDT, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(birthdayRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(birthdayDT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addressRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(parentDT, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(parentRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactNumberRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contactNumberDT, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(deleteStudentB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
-        );
-
-        jTabbedPane1.addTab("Delete Student", jPanel7);
+        jTabbedPane1.addTab("Edit Student Detail", jPanel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -451,74 +445,34 @@ public class StudentDetail extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nameRTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameRTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameRTActionPerformed
-
-    private void birthdayRTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthdayRTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_birthdayRTActionPerformed
-
-    private void indexNumberRTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indexNumberRTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_indexNumberRTActionPerformed
-
-    private void nameETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameETActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameETActionPerformed
-
-    private void birthdayETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthdayETActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_birthdayETActionPerformed
-
-    private void nameDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameDTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameDTActionPerformed
-
-    private void birthdayDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthdayDTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_birthdayDTActionPerformed
-
-    private void indexNumberDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indexNumberDTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_indexNumberDTActionPerformed
-
-    private void addStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBActionPerformed
-
-        String studentId = indexNumberRT.getText();
-        String name = nameRT.getText();
-        String birthday = birthdayRT.getText();
-        String address = addressRT.getText();
-        String parent = parentRT.getText();
-        String contactNumber = contactNumberRT.getText();
-
-        Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
+    private void indexNumberCItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_indexNumberCItemStateChanged
         try {
-            boolean addNewStudent = studentController.addNewStudent(student);
-            if (addNewStudent) {
-                JOptionPane.showMessageDialog(this, "student are added succesfully");
-                setStudentID();
-                nameRT.setText("");
-                birthdayRT.setText("");
-                addressRT.setText("");
-                parentRT.setText("");
-                contactNumberRT.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "student are not added successfully");
-            }
+            String indexNumber = String.valueOf(indexNumberC.getSelectedItem());
+            Student searchStudent = studentController.searchStudent(indexNumber);
+            nameET.setText(searchStudent.getName());
+            parentET.setText(searchStudent.getParentName());
+            contactNumberET.setText(searchStudent.getContactNumber());
+            String birthday = searchStudent.getBirthDay();
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Date date = format.parse(birthday);
+            dateChooserE.setDate(date);
+            addressET.setText(searchStudent.getAddress());
+
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-    }//GEN-LAST:event_addStudentBActionPerformed
+    }//GEN-LAST:event_indexNumberCItemStateChanged
 
     private void editStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStudentBActionPerformed
 
         String studentId = String.valueOf(indexNumberC.getSelectedItem());
         String name = nameET.getText();
-        String birthday = birthdayET.getText();
-        String address = addressET.getText();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateChooser.getDate();
+        String birthday = df.format(date);
+       String address = addressET.getText();
         String parent = parentET.getText();
         String contactNumber = contactNumberET.getText();
 
@@ -538,20 +492,231 @@ public class StudentDetail extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_editStudentBActionPerformed
 
-    private void indexNumberCItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_indexNumberCItemStateChanged
-        try {
-            String indexNumber = String.valueOf(indexNumberC.getSelectedItem());
-            Student searchStudent = studentController.searchStudent(indexNumber);
-            nameET.setText(searchStudent.getName());
-            parentET.setText(searchStudent.getParentName());
-            contactNumberET.setText(searchStudent.getContactNumber());
-            birthdayET.setText(searchStudent.getBirthDay());
-            addressET.setText(searchStudent.getAddress());
+    private void nameETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameETActionPerformed
 
+    }//GEN-LAST:event_nameETActionPerformed
+
+    private void indexNumberRTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indexNumberRTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_indexNumberRTActionPerformed
+
+    private void addStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBActionPerformed
+
+        String studentId = indexNumberRT.getText();
+        String name = nameRT.getText();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateChooser.getDate();
+        String birthday = df.format(date);
+        String address = addressRT.getText();
+        String parent = parentRT.getText();
+        String contactNumber = contactNumberRT.getText();
+
+        Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
+        try {
+            boolean addNewStudent = studentController.addNewStudent(student);
+            if (addNewStudent) {
+                JOptionPane.showMessageDialog(this, "student are added succesfully");
+                setStudentID();
+                nameRT.setText("");
+                addressRT.setText("");
+                parentRT.setText("");
+                contactNumberRT.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "student are not added successfully");
+            }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_indexNumberCItemStateChanged
+
+    }//GEN-LAST:event_addStudentBActionPerformed
+
+    private void nameRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameRTKeyReleased
+
+        nameVali.setVisible(false);
+        String newtext = PatternChecker.checkstring(nameRT.getText());
+        nameRT.setText(newtext);
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (PatternChecker.checkStringdirect(nameRT.getText())) {
+                dateChooser.requestFocus();
+            } else {
+                nameVali.setVisible(true);
+            }
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            dateChooser.requestFocus();
+        }
+        EnableAddButton();
+    }//GEN-LAST:event_nameRTKeyReleased
+
+    private void nameRTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameRTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameRTActionPerformed
+
+    private void dateChooserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateChooserKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            addressRT.requestFocus();
+        }
+        EnableAddButton();
+    }//GEN-LAST:event_dateChooserKeyReleased
+
+    private void addressRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addressRTKeyReleased
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                parentRT.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                parentRT.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                dateChooser.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addressRTKeyReleased
+
+    private void parentRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_parentRTKeyReleased
+        paprentVali.setVisible(false);
+        String newtext = PatternChecker.checkstring(parentRT.getText());
+        nameRT.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkStringdirect(parentRT.getText())) {
+                    contactNumberRT.requestFocus();
+                } else {
+                    paprentVali.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                contactNumberRT.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                addressRT.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_parentRTKeyReleased
+
+    private void contactNumberRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contactNumberRTKeyReleased
+        contactNumberRT.setVisible(false);
+        String newtext = PatternChecker.checkTelNum(contactNumberRT.getText());
+        contactNumberRT.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkTelNumdirect(contactNumberRT.getText())) {
+                    addStudentB.requestFocus();
+                } else {
+                    contactNumberVali.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                addStudentB.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                parentRT.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+    }//GEN-LAST:event_contactNumberRTKeyReleased
+
+    private void nameETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameETKeyReleased
+        nameValiE.setVisible(false);
+        String newtext = PatternChecker.checkstring(nameET.getText());
+        nameET.setText(newtext);
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (PatternChecker.checkStringdirect(nameET.getText())) {
+                dateChooserE.requestFocus();
+            } else {
+                nameValiE.setVisible(true);
+            }
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            dateChooserE.requestFocus();
+        }
+       
+
+    }//GEN-LAST:event_nameETKeyReleased
+
+    private void dateChooserEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateChooserEKeyReleased
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            addressET.requestFocus();
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateChooserEKeyReleased
+
+    private void addressETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addressETKeyReleased
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                parentET.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                parentET.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                dateChooserE.requestFocus();
+                break;
+            default:
+                break;
+        }
+
+    }//GEN-LAST:event_addressETKeyReleased
+
+    private void parentETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_parentETKeyReleased
+        paprentValiE.setVisible(false);
+        String newtext = PatternChecker.checkstring(parentET.getText());
+        nameET.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkStringdirect(parentET.getText())) {
+                    contactNumberET.requestFocus();
+                } else {
+                    paprentValiE.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                contactNumberET.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                addressET.requestFocus();
+                break;
+            default:
+                break;
+        }        
+    }//GEN-LAST:event_parentETKeyReleased
+
+    private void contactNumberETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contactNumberETKeyReleased
+        contactNumberET.setVisible(false);
+        String newtext = PatternChecker.checkTelNum(contactNumberET.getText());
+        contactNumberET.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkTelNumdirect(contactNumberET.getText())) {
+                    editStudentB.requestFocus();
+                } else {
+                    contactNumberValiE.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                editStudentB.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                parentET.requestFocus();
+                break;
+            default:
+                break;
+        }
+        
+        
+    }//GEN-LAST:event_contactNumberETKeyReleased
 
     private void setStudentID() {
         try {
@@ -580,6 +745,14 @@ public class StudentDetail extends javax.swing.JDialog {
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void EnableAddButton() {
+        if (nameRT.getText().trim().length() != 0 && addressRT.getText().trim().length() != 0 && parentRT.getText().trim().length() != 0 && contactNumberRT.getText().trim().length() != 0) {
+            addStudentB.setEnabled(true);
+        } else {
+            addStudentB.setEnabled(false);
         }
     }
 
@@ -630,52 +803,41 @@ public class StudentDetail extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addStudentB;
-    private javax.swing.JTextArea addressDT;
     private javax.swing.JTextArea addressET;
     private javax.swing.JLabel addressRL;
     private javax.swing.JLabel addressRL1;
-    private javax.swing.JLabel addressRL2;
     private javax.swing.JTextArea addressRT;
-    private javax.swing.JTextField birthdayDT;
-    private javax.swing.JTextField birthdayET;
     private javax.swing.JLabel birthdayRL;
     private javax.swing.JLabel birthdayRL1;
-    private javax.swing.JLabel birthdayRL2;
-    private javax.swing.JTextField birthdayRT;
-    private javax.swing.JTextField contactNumberDT;
     private javax.swing.JTextField contactNumberET;
     private javax.swing.JLabel contactNumberRL;
     private javax.swing.JLabel contactNumberRL1;
-    private javax.swing.JLabel contactNumberRL2;
     private javax.swing.JTextField contactNumberRT;
-    private javax.swing.JButton deleteStudentB;
+    private javax.swing.JLabel contactNumberVali;
+    private javax.swing.JLabel contactNumberValiE;
+    private com.toedter.calendar.JDateChooser dateChooser;
+    private com.toedter.calendar.JDateChooser dateChooserE;
     private javax.swing.JButton editStudentB;
     private javax.swing.JComboBox<String> indexNumberC;
-    private javax.swing.JTextField indexNumberDT;
     private javax.swing.JLabel indexNumberRL;
     private javax.swing.JLabel indexNumberRL1;
-    private javax.swing.JLabel indexNumberRL2;
     private javax.swing.JTextField indexNumberRT;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTabbedPane jTabbedPane4;
-    private javax.swing.JTextField nameDT;
     private javax.swing.JTextField nameET;
     private javax.swing.JLabel nameRL;
     private javax.swing.JLabel nameRL1;
-    private javax.swing.JLabel nameRL2;
     private javax.swing.JTextField nameRT;
-    private javax.swing.JTextField parentDT;
+    private javax.swing.JLabel nameVali;
+    private javax.swing.JLabel nameValiE;
+    private javax.swing.JLabel paprentVali;
+    private javax.swing.JLabel paprentValiE;
     private javax.swing.JTextField parentET;
     private javax.swing.JLabel parentRL;
     private javax.swing.JLabel parentRL1;
-    private javax.swing.JLabel parentRL2;
     private javax.swing.JTextField parentRT;
     // End of variables declaration//GEN-END:variables
 }

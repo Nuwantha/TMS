@@ -794,15 +794,24 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_markAtendenceFBActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-        if (searchSetCombo.getSelectedIndex() == 1) {
-            ResultbyPapers resultbyPapers = new ResultbyPapers(this, true);
-            resultbyPapers.setLocationRelativeTo(null);
-            resultbyPapers.setVisible(true);
-
-        } else if (searchSetCombo.getSelectedIndex() == 0) {
-            ResultbyStudent resultbyStudent = new ResultbyStudent(this, true);
-            resultbyStudent.setLocationRelativeTo(null);
-            resultbyStudent.setVisible(true);
+        switch (searchSetCombo.getSelectedIndex()) {
+            case 1:
+                ResultbyPapers resultbyPapers = new ResultbyPapers(this, true);
+                resultbyPapers.setLocationRelativeTo(null);
+                resultbyPapers.setVisible(true);
+                break;
+            case 0:
+                ResultbyStudent resultbyStudent = new ResultbyStudent(this, true);
+                resultbyStudent.setLocationRelativeTo(null);
+                resultbyStudent.setVisible(true);
+                break;
+            case 2:
+                ResultbyClass resultbyClass = new ResultbyClass(this,true);
+                resultbyClass.setLocationRelativeTo(null);
+                resultbyClass.setVisible(true);
+                break;
+            default:
+                break;
         }
 
     }//GEN-LAST:event_goButtonActionPerformed

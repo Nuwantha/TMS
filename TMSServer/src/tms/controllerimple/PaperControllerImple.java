@@ -52,7 +52,7 @@ public class PaperControllerImple extends UnicastRemoteObject implements PaperCo
     }
 
     @Override
-    public ArrayList<Paper> getStudentFacedPapers(String classId) throws RemoteException, ClassNotFoundException, SQLException {
-        return paperControllerD.getStudentFacedPapers(classId);//To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Paper> getPapersOfClass(String classId) throws RemoteException, ClassNotFoundException, SQLException {
+        return paperControllerD.getPapersOfClass(classId);//To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -105,7 +105,7 @@ public class PaperControllerD {
 
     
 
-    public static ArrayList<Paper> getStudentFacedPapers(String classId) throws ClassNotFoundException, SQLException {
+    public static ArrayList<Paper> getPapersOfClass(String classId) throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.readLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import tms.controller.StudentControllerD;
 import tms.controllercommon.StudentController;
+import tms.model.ClassS;
 import tms.model.Student;
 
 /**
@@ -58,6 +59,11 @@ public class StudentControllerImple extends UnicastRemoteObject implements Stude
     @Override
     public boolean editStudentDetail(Student student) throws RemoteException, ClassNotFoundException, SQLException {
         return  studentControllerD.editStudentDetail(student);//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Student> getAvailableRegistrationStudentForClass(ClassS studentClass) throws RemoteException, ClassNotFoundException, SQLException {
+        return studentControllerD.getAvailableRegistrationStudentForClass(studentClass);//To change body of generated methods, choose Tools | Templates.
     }
 
 }
