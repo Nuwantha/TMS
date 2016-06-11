@@ -66,4 +66,9 @@ public class StudentControllerImple extends UnicastRemoteObject implements Stude
         return studentControllerD.getAvailableRegistrationStudentForClass(studentClass);//To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public Student getLastAddedStudent() throws RemoteException, ClassNotFoundException, SQLException {
+        return studentControllerD.getLastAddedStudent();//To change body of generated methods, choose Tools | Templates.
+    }
+
 }

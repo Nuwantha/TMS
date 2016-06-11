@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
  * @author Gimhani
  */
 public class PatternChecker {
+
     /*This class contains all the methods needed in data verifications.*/
     public static String checkNIC(String nicText) {
         int result = 0;
@@ -40,8 +41,9 @@ public class PatternChecker {
         }
         return nicText;
     }
-public static boolean checkNICdirect(String nicText) {
-        
+
+    public static boolean checkNICdirect(String nicText) {
+
         if (nicText.length() == 10) {
             Pattern pattern = Pattern.compile("[0-9]{9}[VX]");
             Matcher matcher = pattern.matcher(nicText);
@@ -51,9 +53,8 @@ public static boolean checkNICdirect(String nicText) {
                 return false;
             }
         } else if (nicText.length() != 10) {
-           return false;
-        }
-        else{
+            return false;
+        } else {
             return false;
         }
     }
@@ -84,40 +85,39 @@ public static boolean checkNICdirect(String nicText) {
         }
         return telText;
     }
-     public static boolean checkTelNumdirect(String telText) {
-        if (telText.length()== 10) {
+
+    public static boolean checkTelNumdirect(String telText) {
+        if (telText.length() == 10) {
             Pattern pattern2 = Pattern.compile("[0][1-9]{2}[0-9]{" + (telText.length() - 3) + "}");
             Matcher matcher2 = pattern2.matcher(telText);
             if (!matcher2.find()) {
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
-        }
-       
-        else{
+        } else {
             return false;
-            }
-        
-     }
-    public static boolean birthdayChecker(String birthday){
-        SimpleDateFormat sdf=new SimpleDateFormat("MM/d/yyyy");
-        Date testdate=null;
-        try{
-            testdate=sdf.parse(birthday);
-                   }
-        catch(ParseException e){
+        }
+
+    }
+
+    public static boolean birthdayChecker(String birthday) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/d/yyyy");
+        Date testdate = null;
+        try {
+            testdate = sdf.parse(birthday);
+        } catch (ParseException e) {
             System.out.println("Invalid Date Format");
             return false;
         }
-        if(!sdf.format(testdate).equals(birthday)){
+        if (!sdf.format(testdate).equals(birthday)) {
             System.out.println("Invalid Date Format");
             return false;
         }
         return true;
     }
-        public static String checkDecimal(String text) {
+
+    public static String checkDecimal(String text) {
         int result;
         for (int i = 1; i < text.length() + 1; i++) {
             Character c = text.charAt(i - 1);
@@ -135,25 +135,29 @@ public static boolean checkNICdirect(String nicText) {
         return text;
 
     }
-        public static boolean checkDecimaldirect(String text) {
-        
-            Pattern pattern = Pattern.compile("[0-9.]");//[a-z A-Z]
-            Matcher matcher = pattern.matcher(text);
-        return matcher.find();               
+
+    public static boolean checkDecimaldirect(String text) {
+
+        Pattern pattern = Pattern.compile("[0-9.]");//[a-z A-Z]
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
     }
-        public static boolean checkIntegerdirect(String text) {
-        
-            Pattern pattern = Pattern.compile("[0-9]");//[a-z A-Z]
-            Matcher matcher = pattern.matcher(text);
-        return matcher.find();               
+
+    public static boolean checkIntegerdirect(String text) {
+
+        Pattern pattern = Pattern.compile("[0-9]");//[a-z A-Z]
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
     }
-         public static boolean checkStringdirect(String text) {
-        
-            Pattern pattern = Pattern.compile("^[\\p{L} .'-]+$");//[a-z A-Z]
-            Matcher matcher = pattern.matcher(text);
-        return matcher.find();               
+
+    public static boolean checkStringdirect(String text) {
+
+        Pattern pattern = Pattern.compile("^[\\p{L} .'-]+$");//[a-z A-Z]
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
     }
-        public static String checkstring(String text) {
+
+    public static String checkstring(String text) {
         int result;
         for (int i = 1; i < text.length() + 1; i++) {
             Character c = text.charAt(i - 1);
@@ -171,6 +175,7 @@ public static boolean checkNICdirect(String nicText) {
         return text;
 
     }
+
     public static String checkPrice(String text) {
         int result = 0;
         for (int i = 1; i < text.length() + 1; i++) {
@@ -181,11 +186,11 @@ public static boolean checkNICdirect(String nicText) {
                 result = 1;
             } else {
                 result = 0;
-            }    
-        }
-         if (result == 0) {
-                text = text.concat(".00");
             }
+        }
+        if (result == 0) {
+            text = text.concat(".00");
+        }
         return text;
     }
 
@@ -208,6 +213,7 @@ public static boolean checkNICdirect(String nicText) {
         return text;
 
     }
+
     public static String checkDate(String text) {
         int result;
         for (int i = 1; i < text.length() + 1; i++) {
@@ -227,14 +233,15 @@ public static boolean checkNICdirect(String nicText) {
         return text;
 
     }
-     public static String getBirthday(String id){
-        
+
+    public static String getBirthday(String id) {
+
         int month[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        int year=1900 + Integer.parseInt(id.substring(0, 2));
+        int year = 1900 + Integer.parseInt(id.substring(0, 2));
         int d = Integer.parseInt(id.substring(2, 5));
         if (d > 500) {
-            d=d - 500;
-        } 
+            d = d - 500;
+        }
         int mo = 0, da = 0;
         int days = d;
         for (int i = 0; i < month.length; i++) {
@@ -246,8 +253,8 @@ public static boolean checkNICdirect(String nicText) {
                 days = days - month[i];
             }
         }
-        String text=""+year+"-"+""+mo+"-"+""+da;
+        String text = "" + year + "-" + "" + mo + "-" + "" + da;
         return text;
-        
+
     }
 }

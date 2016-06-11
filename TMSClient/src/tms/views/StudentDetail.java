@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -48,9 +49,16 @@ public class StudentDetail extends javax.swing.JDialog {
         setStudentID();
         loadStudentId();
         addStudentB.setEnabled(false);
-        nameVali.setVisible(false);
+        birthdayVali.setVisible(false);
         paprentVali.setVisible(false);
         contactNumberVali.setVisible(false);
+        nameVali.setVisible(false);
+        birthdayValiE.setVisible(false);
+        paprentValiE.setVisible(false);
+        contactNumberValiE.setVisible(false);
+        nameValiE.setVisible(false);
+        
+        nameRT.requestFocus();
 
     }
 
@@ -78,10 +86,11 @@ public class StudentDetail extends javax.swing.JDialog {
         addressRT = new javax.swing.JTextArea();
         addStudentB = new javax.swing.JButton();
         indexNumberRT = new javax.swing.JTextField();
-        nameVali = new javax.swing.JLabel();
+        birthdayVali = new javax.swing.JLabel();
         paprentVali = new javax.swing.JLabel();
         contactNumberVali = new javax.swing.JLabel();
         dateChooser = new com.toedter.calendar.JDateChooser();
+        nameVali = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         indexNumberRL1 = new javax.swing.JLabel();
         nameRL1 = new javax.swing.JLabel();
@@ -100,6 +109,7 @@ public class StudentDetail extends javax.swing.JDialog {
         paprentValiE = new javax.swing.JLabel();
         contactNumberValiE = new javax.swing.JLabel();
         dateChooserE = new com.toedter.calendar.JDateChooser();
+        birthdayValiE = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -164,6 +174,11 @@ public class StudentDetail extends javax.swing.JDialog {
                 addStudentBActionPerformed(evt);
             }
         });
+        addStudentB.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                addStudentBKeyReleased(evt);
+            }
+        });
 
         indexNumberRT.setEditable(false);
         indexNumberRT.addActionListener(new java.awt.event.ActionListener() {
@@ -172,10 +187,10 @@ public class StudentDetail extends javax.swing.JDialog {
             }
         });
 
-        nameVali.setBackground(new java.awt.Color(255, 0, 0));
-        nameVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        nameVali.setForeground(new java.awt.Color(255, 0, 0));
-        nameVali.setText("invalid name");
+        birthdayVali.setBackground(new java.awt.Color(255, 0, 0));
+        birthdayVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        birthdayVali.setForeground(new java.awt.Color(255, 0, 0));
+        birthdayVali.setText("invalid birthday");
 
         paprentVali.setBackground(new java.awt.Color(255, 0, 0));
         paprentVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -192,6 +207,11 @@ public class StudentDetail extends javax.swing.JDialog {
                 dateChooserKeyReleased(evt);
             }
         });
+
+        nameVali.setBackground(new java.awt.Color(255, 0, 0));
+        nameVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        nameVali.setForeground(new java.awt.Color(255, 0, 0));
+        nameVali.setText("invalid name");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -215,12 +235,22 @@ public class StudentDetail extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                     .addComponent(indexNumberRT)
                     .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nameVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(paprentVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(contactNumberVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(paprentVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(contactNumberVali, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(birthdayVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nameVali, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,13 +265,18 @@ public class StudentDetail extends javax.swing.JDialog {
                     .addComponent(nameRL, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nameVali, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(birthdayRL, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addressRL, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(birthdayRL, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addressRL, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(birthdayVali, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -321,6 +356,11 @@ public class StudentDetail extends javax.swing.JDialog {
                 editStudentBActionPerformed(evt);
             }
         });
+        editStudentB.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                editStudentBKeyReleased(evt);
+            }
+        });
 
         indexNumberC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         indexNumberC.addItemListener(new java.awt.event.ItemListener() {
@@ -350,6 +390,11 @@ public class StudentDetail extends javax.swing.JDialog {
             }
         });
 
+        birthdayValiE.setBackground(new java.awt.Color(255, 0, 0));
+        birthdayValiE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        birthdayValiE.setForeground(new java.awt.Color(255, 0, 0));
+        birthdayValiE.setText("invalid birthday");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -374,10 +419,17 @@ public class StudentDetail extends javax.swing.JDialog {
                     .addComponent(dateChooserE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nameValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(paprentValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(contactNumberValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(paprentValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(birthdayValiE, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(contactNumberValiE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,30 +445,32 @@ public class StudentDetail extends javax.swing.JDialog {
                             .addComponent(nameET, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(nameRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateChooserE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addressRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(parentET, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(contactNumberET, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateChooserE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(addressRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(parentET, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(contactNumberET, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(contactNumberValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(birthdayValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(nameValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(160, 160, 160)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(paprentValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(58, 58, 58))
-                            .addComponent(contactNumberValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(paprentValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(editStudentB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -458,38 +512,56 @@ public class StudentDetail extends javax.swing.JDialog {
             dateChooserE.setDate(date);
             addressET.setText(searchStudent.getAddress());
 
-        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (RemoteException | SQLException | ClassNotFoundException | ParseException ex) {
             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_indexNumberCItemStateChanged
 
     private void editStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStudentBActionPerformed
-
+        birthdayValiE.setVisible(false);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateChooserE.getDate();
+        String birthday = df.format(date);
+        int birthYear = Integer.parseInt(birthday.substring(0, 4));
+        Calendar now = Calendar.getInstance();
+        int currentYear = now.get(Calendar.YEAR);
         String studentId = String.valueOf(indexNumberC.getSelectedItem());
         String name = nameET.getText();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateChooser.getDate();
-        String birthday = df.format(date);
-       String address = addressET.getText();
+        String address = addressET.getText();
         String parent = parentET.getText();
         String contactNumber = contactNumberET.getText();
 
-        Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
-        try {
-            boolean editStudentDetail = studentController.editStudentDetail(student);
-            if (editStudentDetail) {
-                JOptionPane.showMessageDialog(this, "student detail is updated succesfully");
-                setStudentID();
-            } else {
-                JOptionPane.showMessageDialog(this, "student detail is no updated successfully");
-            }
-        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (birthYear >= currentYear - 20 && birthYear <= currentYear - 8) {
 
-        // TODO add your handling code here:
+            Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
+            try {
+                boolean editStudentDetail = studentController.editStudentDetail(student);
+                if (editStudentDetail) {
+                    JOptionPane.showMessageDialog(this, "student detail is updated succesfully");
+                    setStudentID();
+                } else {
+                    JOptionPane.showMessageDialog(this, "student detail is no updated successfully");
+                }
+            } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (!PatternChecker.checkStringdirect(name)) {
+            nameValiE.setVisible(true);
+            nameET.requestFocus();
+           
+        } else if (!PatternChecker.checkStringdirect(parent)) {
+            paprentValiE.setVisible(true);
+            parentET.requestFocus();
+           
+        } else if (!PatternChecker.checkTelNumdirect(contactNumber)) {
+            contactNumberValiE.setVisible(true);
+            contactNumberET.requestFocus();
+           
+        } else {
+            birthdayValiE.setVisible(true);
+        }
+// TODO add your handling code here:
     }//GEN-LAST:event_editStudentBActionPerformed
 
     private void nameETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameETActionPerformed
@@ -501,45 +573,69 @@ public class StudentDetail extends javax.swing.JDialog {
     }//GEN-LAST:event_indexNumberRTActionPerformed
 
     private void addStudentBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBActionPerformed
-
-        String studentId = indexNumberRT.getText();
-        String name = nameRT.getText();
+        birthdayVali.setVisible(false);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateChooser.getDate();
         String birthday = df.format(date);
+        int birthYear = Integer.parseInt(birthday.substring(0, 4));
+        Calendar now = Calendar.getInstance();
+        int currentYear = now.get(Calendar.YEAR);
+
+        String studentId = indexNumberRT.getText();
+        String name = nameRT.getText();
         String address = addressRT.getText();
         String parent = parentRT.getText();
         String contactNumber = contactNumberRT.getText();
 
-        Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
-        try {
-            boolean addNewStudent = studentController.addNewStudent(student);
-            if (addNewStudent) {
-                JOptionPane.showMessageDialog(this, "student are added succesfully");
-                setStudentID();
-                nameRT.setText("");
-                addressRT.setText("");
-                parentRT.setText("");
-                contactNumberRT.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "student are not added successfully");
-            }
-        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (!(birthYear >= currentYear - 10 && birthYear <= currentYear - 8)) {
+            birthdayVali.setVisible(true);
+            dateChooser.requestFocus();
+            addStudentB.setEnabled(false);
+        } else if (!PatternChecker.checkStringdirect(name)) {
+            nameVali.setVisible(true);
+            nameRT.requestFocus();
+            addStudentB.setEnabled(false);
+        } else if (!PatternChecker.checkStringdirect(parent)) {
+            paprentVali.setVisible(true);
+            parentRT.requestFocus();
+            addStudentB.setEnabled(false);
+        } else if (!PatternChecker.checkTelNumdirect(contactNumber)) {
+            contactNumberVali.setVisible(true);
+            contactNumberRT.requestFocus();
+            addStudentB.setEnabled(false);
+        } else {
 
+            Student student = new Student(studentId, birthday, name, address, parent, contactNumber);
+            try {
+                boolean addNewStudent = studentController.addNewStudent(student);
+                if (addNewStudent) {
+                    JOptionPane.showMessageDialog(this, "student are added succesfully");
+                    setStudentID();
+                    nameRT.setText("");
+                    addressRT.setText("");
+                    parentRT.setText("");
+                    contactNumberRT.setText("");
+                    loadStudentId();
+                } else {
+                    JOptionPane.showMessageDialog(this, "student are not added successfully");
+                }
+            } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }//GEN-LAST:event_addStudentBActionPerformed
 
     private void nameRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameRTKeyReleased
 
-        nameVali.setVisible(false);
+        birthdayVali.setVisible(false);
         String newtext = PatternChecker.checkstring(nameRT.getText());
         nameRT.setText(newtext);
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (PatternChecker.checkStringdirect(nameRT.getText())) {
                 dateChooser.requestFocus();
             } else {
-                nameVali.setVisible(true);
+                birthdayVali.setVisible(true);
             }
         } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             dateChooser.requestFocus();
@@ -552,8 +648,18 @@ public class StudentDetail extends javax.swing.JDialog {
     }//GEN-LAST:event_nameRTActionPerformed
 
     private void dateChooserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateChooserKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            addressRT.requestFocus();
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                addressRT.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                addressRT.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                nameRT.requestFocus();
+                break;
+            default:
+                break;
         }
         EnableAddButton();
     }//GEN-LAST:event_dateChooserKeyReleased
@@ -580,7 +686,7 @@ public class StudentDetail extends javax.swing.JDialog {
     private void parentRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_parentRTKeyReleased
         paprentVali.setVisible(false);
         String newtext = PatternChecker.checkstring(parentRT.getText());
-        nameRT.setText(newtext);
+        parentRT.setText(newtext);
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 if (PatternChecker.checkStringdirect(parentRT.getText())) {
@@ -604,12 +710,13 @@ public class StudentDetail extends javax.swing.JDialog {
     }//GEN-LAST:event_parentRTKeyReleased
 
     private void contactNumberRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contactNumberRTKeyReleased
-        contactNumberRT.setVisible(false);
+        contactNumberVali.setVisible(false);
         String newtext = PatternChecker.checkTelNum(contactNumberRT.getText());
         contactNumberRT.setText(newtext);
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 if (PatternChecker.checkTelNumdirect(contactNumberRT.getText())) {
+
                     addStudentB.requestFocus();
                 } else {
                     contactNumberVali.setVisible(true);
@@ -641,12 +748,12 @@ public class StudentDetail extends javax.swing.JDialog {
         } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             dateChooserE.requestFocus();
         }
-       
+
 
     }//GEN-LAST:event_nameETKeyReleased
 
     private void dateChooserEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateChooserEKeyReleased
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             addressET.requestFocus();
         }
 
@@ -673,7 +780,7 @@ public class StudentDetail extends javax.swing.JDialog {
     private void parentETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_parentETKeyReleased
         paprentValiE.setVisible(false);
         String newtext = PatternChecker.checkstring(parentET.getText());
-        nameET.setText(newtext);
+        parentET.setText(newtext);
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 if (PatternChecker.checkStringdirect(parentET.getText())) {
@@ -690,11 +797,11 @@ public class StudentDetail extends javax.swing.JDialog {
                 break;
             default:
                 break;
-        }        
+        }
     }//GEN-LAST:event_parentETKeyReleased
 
     private void contactNumberETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contactNumberETKeyReleased
-        contactNumberET.setVisible(false);
+        contactNumberValiE.setVisible(false);
         String newtext = PatternChecker.checkTelNum(contactNumberET.getText());
         contactNumberET.setText(newtext);
         switch (evt.getKeyCode()) {
@@ -714,13 +821,29 @@ public class StudentDetail extends javax.swing.JDialog {
             default:
                 break;
         }
-        
-        
+
+
     }//GEN-LAST:event_contactNumberETKeyReleased
+
+    private void addStudentBKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addStudentBKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            contactNumberRT.requestFocus();
+        }
+    }//GEN-LAST:event_addStudentBKeyReleased
+
+    private void editStudentBKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editStudentBKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            contactNumberET.requestFocus();
+        }
+
+    }//GEN-LAST:event_editStudentBKeyReleased
 
     private void setStudentID() {
         try {
-            int studentCount = studentController.getStudentCount() + 1;
+            Student lastAddedStudent = studentController.getLastAddedStudent();
+            String studentId = lastAddedStudent.getStudentId();
+            int count = Integer.parseInt(studentId.substring(2));
+            int studentCount = count + 1;
             if (studentCount < 10) {
                 indexNumberRT.setText("St000" + String.valueOf(studentCount));
             } else if (studentCount < 100) {
@@ -809,6 +932,8 @@ public class StudentDetail extends javax.swing.JDialog {
     private javax.swing.JTextArea addressRT;
     private javax.swing.JLabel birthdayRL;
     private javax.swing.JLabel birthdayRL1;
+    private javax.swing.JLabel birthdayVali;
+    private javax.swing.JLabel birthdayValiE;
     private javax.swing.JTextField contactNumberET;
     private javax.swing.JLabel contactNumberRL;
     private javax.swing.JLabel contactNumberRL1;

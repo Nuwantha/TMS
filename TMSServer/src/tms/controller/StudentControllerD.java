@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import tms.db_utilities.DBConnection;
 import tms.db_utilities.DBHandler;
+import tms.model.ClassS;
 import tms.model.Student;
 
 /**
@@ -133,6 +134,41 @@ public class StudentControllerD {
 
         } finally {
             readWriteLock.writeLock().unlock();
+        }
+    }
+
+     public static ArrayList<Student> getAvailableRegistrationStudentForClass(ClassS studentClass) throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * from Student where year(birthday)=year(curdate())-('"+studentClass.getGrade()+"'+5) and studentId not in(select studentId from registration where yearR='"+studentClass.getYear()+"')";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Student> studentList = new ArrayList<>();
+            while (rst.next()) {
+                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                studentList.add(student);
+            }
+            return studentList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+    
+    
+    public static Student getLastAddedStudent() throws ClassNotFoundException, SQLException {
+        try {
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select * from student order by studentId desc limit 1";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            if (rst.next()) {
+                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                return student;
+            } else {
+                return null;
+            }
+        } finally {
+            readWriteLock.readLock().unlock();
         }
     }
     

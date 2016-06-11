@@ -54,7 +54,7 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
         } catch (SQLException | InterruptedException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         loadClassCombo();
         loadClassComboView();
     }
@@ -193,18 +193,25 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
         contactNumberRL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         contactNumberRL.setText("Contact Number");
 
+        nameRT.setEditable(false);
         nameRT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameRTActionPerformed(evt);
             }
         });
 
+        birthdayRT.setEditable(false);
         birthdayRT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 birthdayRTActionPerformed(evt);
             }
         });
 
+        parentRT.setEditable(false);
+
+        contactNumberRT.setEditable(false);
+
+        addressRT.setEditable(false);
         addressRT.setColumns(20);
         addressRT.setRows(5);
         jScrollPane1.setViewportView(addressRT);
@@ -455,11 +462,13 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
         String selectedStudentId = String.valueOf(indexNumberCombo.getSelectedItem());
         try {
             Student searchStudent = studentController.searchStudent(selectedStudentId);
-            nameRT.setText(searchStudent.getName());
-            birthdayRT.setText(searchStudent.getContactNumber());
-            addressRT.setText(searchStudent.getAddress());
-            parentRT.setText(searchStudent.getParentName());
-            contactNumberRT.setText(searchStudent.getContactNumber());
+            if (searchStudent != null) {
+                nameRT.setText(searchStudent.getName());
+                birthdayRT.setText(searchStudent.getContactNumber());
+                addressRT.setText(searchStudent.getAddress());
+                parentRT.setText(searchStudent.getParentName());
+                contactNumberRT.setText(searchStudent.getContactNumber());
+            }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentRegistration.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -487,10 +496,10 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
             int year = classSelected.getYear();
             String selectedStudentId = (String) indexNumberCombo.getSelectedItem();
             Student student = studentController.searchStudent(selectedStudentId);
-            Registration registration = new Registration(classSelected, student,year);
+            Registration registration = new Registration(classSelected, student, year);
             boolean addNewRegistration = registrationController.addNewRegistration(registration);
-            if(addNewRegistration){
-                JOptionPane.showMessageDialog(this," registration is added successfully");
+            if (addNewRegistration) {
+                JOptionPane.showMessageDialog(this, " registration is added successfully");
                 nameRT.setText(null);
                 birthdayRT.setText(null);
                 addressRT.setText(null);
@@ -512,7 +521,7 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
             String classId = String.valueOf(classsRCo.getSelectedItem());
             ClassS searchClass = classController.searchClass(classId);
             loadStudentArrayList(searchClass);
-            
+
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentRegistration.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -530,22 +539,29 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
         try {
             String classId = String.valueOf(classsIdComboView.getSelectedItem());
             ArrayList<Student> students = studentController.getStudentOfClass(classId);
-            
-                DefaultTableModel tableModel = (DefaultTableModel) viewTable.getModel();
+
+            DefaultTableModel tableModel = (DefaultTableModel) viewTable.getModel();
             tableModel.getDataVector().removeAllElements();
             revalidate();
             for (Student student : students) {
-                tableModel.addRow(new Object[]{student.getStudentId(), student.getName(),student.getAddress(),student.getBirthDay(),student.getParentName(),student.getContactNumber()});
+                tableModel.addRow(new Object[]{student.getStudentId(), student.getName(), student.getAddress(), student.getBirthDay(), student.getParentName(), student.getContactNumber()});
             }
-            
+
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(StudentRegistration.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_searchBActionPerformed
 
     private void loadStudentArrayList(ClassS studentClass) {
         indexNumberCombo.removeAllItems();
+        nameRT.setText("");
+        addressRT.setText("");
+        birthdayRT.setText("");
+        parentRT.setText("");
+        contactNumberRT.setText("");
+        
+        
         try {
             ArrayList<Student> allStudent = studentController.getAvailableRegistrationStudentForClass(studentClass);
             for (Student student : allStudent) {
@@ -569,7 +585,7 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
         }
 
     }
-    
+
     private void loadClassComboView() {
         classsIdComboView.removeAllItems();
         try {
@@ -582,9 +598,8 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addressRL;
     private javax.swing.JTextArea addressRT;

@@ -18,6 +18,13 @@ public class FrontPage extends javax.swing.JFrame {
      */
     public FrontPage() {
         initComponents();
+        StudentRegistration studentRegistrationForm = new StudentRegistration(this);
+        studentRegistrationForm.setSize(desktopPane.getSize());
+        desktopPane.removeAll();
+        desktopPane.add(studentRegistrationForm);
+        studentRegistrationForm.setVisible(true);
+        studentRegistrationForm.requestFocus();
+        
     }
 
     /**
@@ -867,6 +874,10 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_viewAttendenceMActionPerformed
 
     private void addStudentDetailMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentDetailMActionPerformed
+        StudentDetail studentDetail = new StudentDetail(this, true);
+        studentDetail.setLocationRelativeTo(null);
+        studentDetail.setVisible(true);
+
     }//GEN-LAST:event_addStudentDetailMActionPerformed
 
     private void registerStudentMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerStudentMActionPerformed
