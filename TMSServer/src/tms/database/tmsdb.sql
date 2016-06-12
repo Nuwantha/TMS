@@ -98,6 +98,23 @@ CREATE TABLE Attendence(
 	CONSTRAINT PRIMARY KEY(classId,studentId,dateAttended)	 		
 );
 
+
+create table User (
+        username VARCHAR(100) not null,
+        password VARCHAR(400) not null,
+        power int(1) not null,
+        constraint PRIMARY KEY(username)
+);
+
+
+
+--user details
+
+INSERT INTO USER values('Teacher',(select password('1234')),1);
+INSERT INTO USER values('Nipuna',(select password('1234')),2);
+INSERT INTO USER values('Gayan',(select password('1234')),3);
+
+
 --2015 grade 5 student
 
 insert into Student  values ('ST0001', '2005-11-03', 'Ashley Cox', 'Lulea', 'Cox', '0750344156');

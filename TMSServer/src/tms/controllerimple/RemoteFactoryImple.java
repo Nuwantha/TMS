@@ -17,6 +17,7 @@ import tms.controllercommon.RegistrationController;
 import tms.controllercommon.RemoteFactory;
 import tms.controllercommon.SchoolarshipResultController;
 import tms.controllercommon.StudentController;
+import tms.controllercommon.UserController;
 
 /**
  *
@@ -68,5 +69,10 @@ public class RemoteFactoryImple extends UnicastRemoteObject implements RemoteFac
     @Override
     public StudentController getStudentController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException {
         return new StudentControllerImple();
+    }
+
+    @Override
+    public UserController getUSerController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException {
+        return new UserControllerImple();//To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -19,6 +19,7 @@ import tms.controllercommon.RegistrationController;
 import tms.controllercommon.RemoteFactory;
 import tms.controllercommon.SchoolarshipResultController;
 import tms.controllercommon.StudentController;
+import tms.controllercommon.UserController;
 
 /**
  *
@@ -40,6 +41,7 @@ public class Connector {
     private RegistrationController registrationController;
     private SchoolarshipResultController schoolarshipResultController;
     private StudentController studentController;
+    private UserController userController;
     
     private Connector() throws NotBoundException, MalformedURLException, RemoteException {
         String lookUpString = "rmi://127.0.0.1:344/TMSServer";
@@ -115,5 +117,11 @@ public class Connector {
         return studentController;
     }
 
+    public UserController getUserController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException {
+        if(userController==null){
+            userController=remoteFactory.getUSerController();
+        }
+        return userController;
+    }
     
 }

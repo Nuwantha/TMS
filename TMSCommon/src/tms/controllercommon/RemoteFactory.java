@@ -27,5 +27,7 @@ public interface RemoteFactory extends Remote {
     public SchoolarshipResultController getSchoolarshipResultController() throws RemoteException, SQLException, ClassNotFoundException;
 
     public StudentController getStudentController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException;
+    
+   public UserController getUSerController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException;
 
 }
