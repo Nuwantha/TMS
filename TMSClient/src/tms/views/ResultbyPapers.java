@@ -151,8 +151,14 @@ public class ResultbyPapers extends javax.swing.JDialog {
         averageMarkL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         averageMarkL.setText("Average Mark");
 
+        conductedDateT.setEditable(false);
+
+        aveMarkT.setEditable(false);
+
         highestScoreL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         highestScoreL.setText("Highest Score");
+
+        highestScoreT.setEditable(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -204,7 +210,7 @@ public class ResultbyPapers extends javax.swing.JDialog {
                 java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -218,13 +224,9 @@ public class ResultbyPapers extends javax.swing.JDialog {
         jScrollPane1.setViewportView(resultTable);
         if (resultTable.getColumnModel().getColumnCount() > 0) {
             resultTable.getColumnModel().getColumn(0).setResizable(false);
-            resultTable.getColumnModel().getColumn(0).setHeaderValue("Student Id");
             resultTable.getColumnModel().getColumn(1).setResizable(false);
-            resultTable.getColumnModel().getColumn(1).setHeaderValue("Student Name");
             resultTable.getColumnModel().getColumn(2).setResizable(false);
-            resultTable.getColumnModel().getColumn(2).setHeaderValue("Mark");
             resultTable.getColumnModel().getColumn(3).setResizable(false);
-            resultTable.getColumnModel().getColumn(3).setHeaderValue("Rank");
         }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);

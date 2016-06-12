@@ -260,8 +260,14 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="conductedDateT">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="aveMarkT">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="highestScoreL">
                   <Properties>
@@ -272,6 +278,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="highestScoreT">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -322,28 +331,28 @@
                             <Column editable="false" title="Student Id" type="java.lang.String"/>
                             <Column editable="false" title="Student Name" type="java.lang.String"/>
                             <Column editable="false" title="Mark" type="java.lang.Integer"/>
-                            <Column editable="true" title="Rank" type="java.lang.Integer"/>
+                            <Column editable="false" title="Rank" type="java.lang.Integer"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title value="Student Id"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title value="Student Name"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title value="Mark"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title value="Rank"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
