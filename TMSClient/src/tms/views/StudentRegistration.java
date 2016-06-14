@@ -7,6 +7,7 @@ package tms.views;
 
 import SeverConnector.Connector;
 import java.net.MalformedURLException;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
@@ -50,7 +51,12 @@ public class StudentRegistration extends javax.swing.JInternalFrame {
             studentController = Connector.getSConnector().getStudentController();
             classController = Connector.getSConnector().getClassController();
             registrationController = Connector.getSConnector().getRegistrationController();
-
+            
+        }catch(ConnectException ex){
+        
+            JOptionPane.showMessageDialog(this, "server is not started yet");
+            System.exit(0);
+        
         } catch (SQLException | InterruptedException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(StudentDetail.class.getName()).log(Level.SEVERE, null, ex);
         }

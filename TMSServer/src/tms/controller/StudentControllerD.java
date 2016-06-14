@@ -188,4 +188,25 @@ public class StudentControllerD {
         }
     }
 
+    public static ArrayList<Student> getAvailableStudentForAddingClassFees(String classId,int month) throws ClassNotFoundException, SQLException {
+        try {
+            
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select studentId From Registration where classId='" + classId + "' and studentId not in(select studentId from classfees where classId='"+classId+"' and month1='"+month+"')";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Student> studentList = new ArrayList<>();
+            
+            while (rst.next()) {
+                Student student = StudentControllerD.searchStudent(rst.getString(1));
+                studentList.add(student);
+            }
+            
+            return studentList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
+    
 }

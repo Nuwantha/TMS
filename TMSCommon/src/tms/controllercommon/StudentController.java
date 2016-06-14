@@ -17,6 +17,7 @@ import tms.model.Student;
  * @author Nuwantha
  */
 public interface StudentController extends Remote{
+        
         public int getStudentCount() throws RemoteException, SQLException,ClassNotFoundException; 
         public boolean addNewStudent(Student student) throws RemoteException, SQLException,ClassNotFoundException;
         public Student searchStudent(String studentId) throws RemoteException, SQLException,ClassNotFoundException;
@@ -27,4 +28,6 @@ public interface StudentController extends Remote{
         public  ArrayList<Student> getAvailableRegistrationStudentForClass(ClassS studentClass) throws RemoteException,ClassNotFoundException, SQLException;
         public Student getLastAddedStudent() throws RemoteException,ClassNotFoundException, SQLException;
         public  ArrayList<Student> getAvailableStudentForAddingSchoolarshipResult(String classId) throws RemoteException,ClassNotFoundException, SQLException;         
+        public ArrayList<Student> getAvailableStudentForAddingClassFees(String classId,int month) throws RemoteException,ClassNotFoundException, SQLException;
+
 }

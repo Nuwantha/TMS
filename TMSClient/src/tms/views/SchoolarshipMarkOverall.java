@@ -13,7 +13,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import tms.controllercommon.SchoolarshipResultController;
 
 /**
@@ -64,6 +72,7 @@ public class SchoolarshipMarkOverall extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         viewTable = new javax.swing.JTable();
+        reportB = new javax.swing.JButton();
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -72,7 +81,7 @@ public class SchoolarshipMarkOverall extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "year", "participated studenr", "pass student", "percentage"
+                "year", "participated student", "pass student", "percentage"
             }
         ) {
             Class[] types = new Class [] {
@@ -90,23 +99,44 @@ public class SchoolarshipMarkOverall extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        viewTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(viewTable);
+        if (viewTable.getColumnModel().getColumnCount() > 0) {
+            viewTable.getColumnModel().getColumn(0).setResizable(false);
+            viewTable.getColumnModel().getColumn(1).setResizable(false);
+            viewTable.getColumnModel().getColumn(2).setResizable(false);
+            viewTable.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        reportB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        reportB.setText("Report");
+        reportB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportBActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(reportB, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(reportB)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,10 +156,32 @@ public class SchoolarshipMarkOverall extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void reportBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBActionPerformed
+          try {
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/tms/reports/SchoolarshipResultOveral.jrxml"));
+            DefaultTableModel model = (DefaultTableModel)viewTable.getModel();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, new JRTableModelDataSource(model));
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            JDialog dialog = new JDialog();
+            dialog.setContentPane(jasperViewer.getContentPane());
+            dialog.setSize(jasperViewer.getSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+            
+        } catch (JRException ex) {
+            Logger.getLogger(ResultbyClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+        
+    }//GEN-LAST:event_reportBActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton reportB;
     private javax.swing.JTable viewTable;
     // End of variables declaration//GEN-END:variables
 }

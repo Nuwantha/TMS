@@ -11,9 +11,18 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import tms.controllercommon.SchoolarshipResultController;
 import tms.model.SchoolarshipResult;
 
@@ -22,7 +31,9 @@ import tms.model.SchoolarshipResult;
  * @author Nuwantha
  */
 public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
+
     SchoolarshipResultController schoolarshipResultController;
+
     /**
      * Creates new form SchoolarshipMarkByYear
      */
@@ -30,11 +41,10 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
         initComponents();
         try {
             Connector sConnector = Connector.getSConnector();
-            schoolarshipResultController=sConnector.getSchoolarshipResultController();
+            schoolarshipResultController = sConnector.getSchoolarshipResultController();
         } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(SchoolarshipMarkByYear.class.getName()).log(Level.SEVERE, null, ex);
         }
-        loadYearCombo();
     }
 
     /**
@@ -49,7 +59,8 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         searchButtun = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        yearCombo = new javax.swing.JComboBox<>();
+        yearChooser = new com.toedter.calendar.JYearChooser();
+        searchButtun1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         viewTable = new javax.swing.JTable();
@@ -67,6 +78,14 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         jLabel5.setText("Year");
 
+        searchButtun1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        searchButtun1.setText("Report");
+        searchButtun1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtun1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -74,20 +93,24 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(yearCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(yearChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(103, 103, 103)
                 .addComponent(searchButtun)
-                .addGap(38, 38, 38))
+                .addGap(18, 18, 18)
+                .addComponent(searchButtun1)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(yearCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchButtun))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(yearChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchButtun)
+                        .addComponent(searchButtun1)))
                 .addContainerGap())
         );
 
@@ -98,14 +121,14 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Student Number", "Index Number", "Mark", "Rank", "Pass"
+                "Student Id", "Index Number", "Mark", "Rank", "Pass"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -116,23 +139,31 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        viewTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(viewTable);
+        if (viewTable.getColumnModel().getColumnCount() > 0) {
+            viewTable.getColumnModel().getColumn(0).setResizable(false);
+            viewTable.getColumnModel().getColumn(1).setResizable(false);
+            viewTable.getColumnModel().getColumn(2).setResizable(false);
+            viewTable.getColumnModel().getColumn(3).setResizable(false);
+            viewTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -148,7 +179,7 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(3, 3, 3))
         );
 
         pack();
@@ -156,35 +187,45 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
 
     private void searchButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtunActionPerformed
         try {
-            
-            int year = Integer.parseInt(String.valueOf(yearCombo.getSelectedItem()));
+
+            int year = yearChooser.getYear();
             ArrayList<SchoolarshipResult> schoolarshipResultOfYear = schoolarshipResultController.getSchoolarshipResultOfYear(year);
-            
+
             DefaultTableModel model = (DefaultTableModel) viewTable.getModel();
 
             model.getDataVector().removeAllElements();
             revalidate();
-            for (SchoolarshipResult schoolarshipResult :schoolarshipResultOfYear) {
-                model.addRow(new Object[]{schoolarshipResult.getStudent().getName(),schoolarshipResult.getIndexNumber(),schoolarshipResult.getResult(),schoolarshipResult.getRank(),schoolarshipResult.getIsPass()});
-            
+            for (SchoolarshipResult schoolarshipResult : schoolarshipResultOfYear) {
+                model.addRow(new Object[]{schoolarshipResult.getStudent().getName(), schoolarshipResult.getIndexNumber(), schoolarshipResult.getResult(), schoolarshipResult.getRank(), schoolarshipResult.getIsPass()});
+
             }
         } catch (RemoteException | ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AttendenceViewByClass.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_searchButtunActionPerformed
 
-    private void loadYearCombo(){
+    private void searchButtun1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtun1ActionPerformed
         try {
-            ArrayList<Integer> years = schoolarshipResultController.getYears();
-            for (Integer year : years) {
-                yearCombo.addItem(String.valueOf(year));
-            }
-        } catch (RemoteException | ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(SchoolarshipMarkByYear.class.getName()).log(Level.SEVERE, null, ex);
+            
+            JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/tms/reports/SchoolarshipResultByYear.jrxml"));
+            DefaultTableModel model = (DefaultTableModel) viewTable.getModel();
+            HashMap hashMap = new HashMap();
+            hashMap.put("ExamYear", String.valueOf(yearChooser.getYear()));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,hashMap, new JRTableModelDataSource(model));
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            JDialog dialog = new JDialog();
+            dialog.setContentPane(jasperViewer.getContentPane());
+            dialog.setSize(jasperViewer.getSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+
+        } catch (JRException ex) {
+            Logger.getLogger(ResultbyClass.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    }
-    
+
+
+    }//GEN-LAST:event_searchButtun1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel5;
@@ -192,7 +233,8 @@ public class SchoolarshipMarkByYear extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton searchButtun;
+    private javax.swing.JButton searchButtun1;
     private javax.swing.JTable viewTable;
-    private javax.swing.JComboBox<String> yearCombo;
+    private com.toedter.calendar.JYearChooser yearChooser;
     // End of variables declaration//GEN-END:variables
 }

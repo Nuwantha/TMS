@@ -104,6 +104,10 @@ public class FrontPage extends javax.swing.JFrame {
         addAttendenceM = new javax.swing.JMenuItem();
         editAttendenceM = new javax.swing.JMenuItem();
         viewAttendenceM = new javax.swing.JMenuItem();
+        schoolarshipResultMainMenu = new javax.swing.JMenu();
+        schoolarshipResulAddMI = new javax.swing.JMenuItem();
+        schoolarshipResulEditMI = new javax.swing.JMenuItem();
+        schoolarshipResulViewMI = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         systemMenu = new javax.swing.JMenu();
@@ -532,6 +536,7 @@ public class FrontPage extends javax.swing.JFrame {
         shortcutAccessPanel.add(addClassFeesFB);
 
         addSchoolarshipMarksFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        addSchoolarshipMarksFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/schoolarshipResultB.png"))); // NOI18N
         addSchoolarshipMarksFB.setText("5-Add Schoolarship Marks");
         importantButtonSet.add(addSchoolarshipMarksFB);
         addSchoolarshipMarksFB.addActionListener(new java.awt.event.ActionListener() {
@@ -700,6 +705,20 @@ public class FrontPage extends javax.swing.JFrame {
         jMenu3.add(viewAttendenceM);
 
         jMenuBar1.add(jMenu3);
+
+        schoolarshipResultMainMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/schoolarshipResult.png"))); // NOI18N
+        schoolarshipResultMainMenu.setText("Schoolarship Result");
+
+        schoolarshipResulAddMI.setText("Schoolarship Result Add");
+        schoolarshipResultMainMenu.add(schoolarshipResulAddMI);
+
+        schoolarshipResulEditMI.setText("Schoolarship Result Edit");
+        schoolarshipResultMainMenu.add(schoolarshipResulEditMI);
+
+        schoolarshipResulViewMI.setText("Schoolarship Result View");
+        schoolarshipResultMainMenu.add(schoolarshipResulViewMI);
+
+        jMenuBar1.add(schoolarshipResultMainMenu);
 
         jMenu4.setText("ClassFees");
 
@@ -993,6 +1012,10 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.ButtonGroup permitSearchSet;
     private javax.swing.JMenuItem registerStudentM;
     private javax.swing.JMenuItem restoreMenu;
+    private javax.swing.JMenuItem schoolarshipResulAddMI;
+    private javax.swing.JMenuItem schoolarshipResulEditMI;
+    private javax.swing.JMenuItem schoolarshipResulViewMI;
+    private javax.swing.JMenu schoolarshipResultMainMenu;
     private javax.swing.ButtonGroup searchButtonSet;
     private javax.swing.JPanel searchPanel;
     private javax.swing.JPanel searchPanel1;

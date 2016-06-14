@@ -9,10 +9,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import tms.controller.StudentControllerD;
 import tms.controllerimple.RemoteFactoryImple;
 
 /**
