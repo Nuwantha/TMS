@@ -59,6 +59,74 @@ public class PatternChecker {
         }
     }
 
+    public static boolean checkIndexNumdirect(String indexText) {
+
+        if (indexText.length() == 6) {
+            Pattern pattern = Pattern.compile("[0-9]{6}");
+            Matcher matcher = pattern.matcher(indexText);
+            if (matcher.find()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (indexText.length() != 6) {
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public static String checkIndex(String indexText) {
+        if (indexText.length() == 6) {
+            Pattern pattern = Pattern.compile("[0-9]{6}");
+            Matcher matcher = pattern.matcher(indexText);
+            if (matcher.find()) {
+            } else {
+                indexText = indexText.substring(0, indexText.length() - 1);
+            }
+        } else if (indexText.length() < 6) {
+            Pattern pattern = Pattern.compile("[0-9]{" + indexText.length() + "}");
+            Matcher matcher = pattern.matcher(indexText);
+            if (matcher.find()) {
+            } else {
+                indexText = indexText.substring(0, indexText.length() - 1);
+            }
+
+        } else if (indexText.length() >6) {
+            indexText = indexText.substring(0, indexText.length() - 1);
+        }
+        return indexText;
+    }
+
+    public static boolean checkResultdirect(String resultText) {
+
+        if (resultText.length() == 3 || resultText.length() == 2 || resultText.length() == 1) {
+            Pattern pattern = Pattern.compile("[0-9]{" + resultText.length() + "}");
+            Matcher matcher = pattern.matcher(resultText);
+            if (matcher.find()) {
+                return Integer.parseInt(resultText) <= 200;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static String checkResult(String resultText) {
+        if (resultText.length() <= 3) {
+            Pattern pattern = Pattern.compile("[0-9]{" + resultText.length() + "}");
+            Matcher matcher = pattern.matcher(resultText);
+            if (!matcher.find()) {
+                resultText = resultText.substring(0, resultText.length() - 1);
+            }
+
+        } else if (resultText.length() > 3) {
+            resultText = resultText.substring(0, resultText.length() - 1);
+        }
+        return resultText;
+    }
+
     public static String checkTelNum(String telText) {
         int result;
         if (telText.length() == 1) {

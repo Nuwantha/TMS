@@ -628,7 +628,7 @@ public class StudentDetail extends javax.swing.JDialog {
 
     private void nameRTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameRTKeyReleased
 
-        birthdayVali.setVisible(false);
+        nameVali.setVisible(false);
         String newtext = PatternChecker.checkstring(nameRT.getText());
         nameRT.setText(newtext);
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {

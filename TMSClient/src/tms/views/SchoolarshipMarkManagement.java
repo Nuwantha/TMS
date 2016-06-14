@@ -6,6 +6,7 @@
 package tms.views;
 
 import SeverConnector.Connector;
+import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import tms.common_classes.PatternChecker;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ExamController;
 import tms.controllercommon.PaperController;
@@ -40,7 +42,6 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
     ClassController classController;
     StudentController studentController;
     SchoolarshipResultController schoolarshipResultController;
-    
 
     /**
      * Creates new form StudentMarkManagement
@@ -53,14 +54,22 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
             registrationController = sConnector.getRegistrationController();
             classController = sConnector.getClassController();
             studentController = sConnector.getStudentController();
-            schoolarshipResultController=sConnector.getSchoolarshipResultController();
-           
+            schoolarshipResultController = sConnector.getSchoolarshipResultController();
+
         } catch (SQLException | ClassNotFoundException | NotBoundException | MalformedURLException | RemoteException | InterruptedException ex) {
             Logger.getLogger(SchoolarshipMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         loadClassCombo();
         loadIndexCombo();
+
+        indexumberVali.setVisible(false);
+        resultVali.setVisible(false);
+        rankVali.setVisible(false);
+        rankValiE.setVisible(false);
+        resultValiE.setVisible(false);
+        addMarkB.setEnabled(false);
+
     }
 
     /**
@@ -73,6 +82,7 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -90,11 +100,12 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         resultTA = new javax.swing.JTextField();
         contactNumberRL = new javax.swing.JLabel();
         rankTA = new javax.swing.JTextField();
-        contactNumberRL1 = new javax.swing.JLabel();
-        yearComboA = new javax.swing.JComboBox<>();
         contactNumberRL2 = new javax.swing.JLabel();
         yesBA = new javax.swing.JRadioButton();
         NoBA = new javax.swing.JRadioButton();
+        indexumberVali = new javax.swing.JLabel();
+        rankVali = new javax.swing.JLabel();
+        resultVali = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         classIdAddMarkL2 = new javax.swing.JLabel();
@@ -109,11 +120,11 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         resultTE = new javax.swing.JTextField();
         contactNumberRL3 = new javax.swing.JLabel();
         rankTE = new javax.swing.JTextField();
-        contactNumberRL4 = new javax.swing.JLabel();
         contactNumberRL5 = new javax.swing.JLabel();
         yesBE = new javax.swing.JRadioButton();
         NoBE = new javax.swing.JRadioButton();
-        yearTE = new javax.swing.JTextField();
+        resultValiE = new javax.swing.JLabel();
+        rankValiE = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -199,6 +210,7 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         nameRL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         nameRL.setText("Student Name");
 
+        nameTA.setEditable(false);
         nameTA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameTAActionPerformed(evt);
@@ -213,6 +225,11 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
                 indexNumberTAActionPerformed(evt);
             }
         });
+        indexNumberTA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                indexNumberTAKeyReleased(evt);
+            }
+        });
 
         parentRL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         parentRL.setText("Result");
@@ -222,86 +239,135 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
                 resultTAActionPerformed(evt);
             }
         });
+        resultTA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                resultTAKeyReleased(evt);
+            }
+        });
 
         contactNumberRL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         contactNumberRL.setText("Rank");
 
-        contactNumberRL1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        contactNumberRL1.setText("Year");
-
-        yearComboA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016" }));
+        rankTA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rankTAActionPerformed(evt);
+            }
+        });
+        rankTA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                rankTAKeyReleased(evt);
+            }
+        });
 
         contactNumberRL2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         contactNumberRL2.setText("Pass");
 
+        buttonGroup1.add(yesBA);
         yesBA.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         yesBA.setText("Yes");
+        yesBA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yesBAActionPerformed(evt);
+            }
+        });
+        yesBA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                yesBAKeyReleased(evt);
+            }
+        });
 
+        buttonGroup1.add(NoBA);
         NoBA.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         NoBA.setText("No");
+        NoBA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NoBAActionPerformed(evt);
+            }
+        });
+        NoBA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NoBAKeyReleased(evt);
+            }
+        });
+
+        indexumberVali.setBackground(new java.awt.Color(255, 0, 0));
+        indexumberVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        indexumberVali.setForeground(new java.awt.Color(255, 0, 0));
+        indexumberVali.setText("invalid Index");
+
+        rankVali.setBackground(new java.awt.Color(255, 0, 0));
+        rankVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        rankVali.setForeground(new java.awt.Color(255, 0, 0));
+        rankVali.setText("invalid Rank");
+
+        resultVali.setBackground(new java.awt.Color(255, 0, 0));
+        resultVali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        resultVali.setForeground(new java.awt.Color(255, 0, 0));
+        resultVali.setText("invalid Result");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(parentRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(contactNumberRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(contactNumberRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(44, 44, 44)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(yesBA)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(NoBA))
-                                    .addComponent(rankTA)
-                                    .addComponent(resultTA)))))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(birthdayRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(indexNumberTA))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(contactNumberRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(yesBA, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64)
+                                .addComponent(NoBA, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(contactNumberRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(rankTA, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(addMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nameRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(birthdayRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nameTA, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                            .addComponent(indexNumberTA)
-                            .addComponent(yearComboA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(131, 131, 131))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(addMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(121, 121, 121))
+                            .addComponent(indexumberVali, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rankVali, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(nameRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(nameTA, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(parentRL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(resultTA, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addComponent(resultVali, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameRL, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nameTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(birthdayRL, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(indexNumberTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactNumberRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(yearComboA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(indexNumberTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(indexumberVali, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(parentRL, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(resultTA)
+                    .addComponent(resultVali, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contactNumberRL, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rankTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rankTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rankVali, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contactNumberRL2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,16 +385,16 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Add Schoolarship Mark", jPanel1);
@@ -354,13 +420,13 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(71, Short.MAX_VALUE)
-                .addComponent(indexComboE, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(classIdAddMarkL2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(indexComboE, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,66 +476,88 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
                 resultTEActionPerformed(evt);
             }
         });
+        resultTE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                resultTEKeyReleased(evt);
+            }
+        });
 
         contactNumberRL3.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         contactNumberRL3.setText("Rank");
 
-        contactNumberRL4.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        contactNumberRL4.setText("Year");
+        rankTE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                rankTEKeyReleased(evt);
+            }
+        });
 
         contactNumberRL5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         contactNumberRL5.setText("Pass");
 
+        buttonGroup2.add(yesBE);
         yesBE.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         yesBE.setText("Yes");
-
-        NoBE.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
-        NoBE.setText("No");
-
-        yearTE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yearTEActionPerformed(evt);
+        yesBE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                yesBEKeyReleased(evt);
             }
         });
+
+        buttonGroup2.add(NoBE);
+        NoBE.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
+        NoBE.setText("No");
+        NoBE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NoBEKeyReleased(evt);
+            }
+        });
+
+        resultValiE.setBackground(new java.awt.Color(255, 0, 0));
+        resultValiE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        resultValiE.setForeground(new java.awt.Color(255, 0, 0));
+        resultValiE.setText("invalid Result");
+
+        rankValiE.setBackground(new java.awt.Color(255, 0, 0));
+        rankValiE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        rankValiE.setForeground(new java.awt.Color(255, 0, 0));
+        rankValiE.setText("invalid Rank");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contactNumberRL4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(contactNumberRL3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(contactNumberRL5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(44, 44, 44)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(yesBE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(NoBE))
-                                    .addComponent(rankTE)
-                                    .addComponent(resultTE)))))
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nameRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nameTE, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                            .addComponent(studentIdTE)
-                            .addComponent(yearTE))))
-                .addGap(131, 131, 131))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(editMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(121, 121, 121))
+                        .addComponent(nameRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(nameTE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(contactNumberRL3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(contactNumberRL5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addComponent(yesBE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(NoBE))
+                                .addComponent(rankTE, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(editMarkB, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(resultTE, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(studentIdTE, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resultValiE, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(rankValiE, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,30 +566,28 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nameTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(birthdayRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(studentIdTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactNumberRL4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(yearTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(parentRL1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(resultTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resultValiE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contactNumberRL3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rankTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rankTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rankValiE, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contactNumberRL5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(yesBE)
                     .addComponent(NoBE))
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(editMarkB)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -511,15 +597,15 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 336, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -530,7 +616,7 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         jLabel1.setText("View By");
 
-        viewByC.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        viewByC.setFont(new java.awt.Font("Tempus Sans ITC", 1, 12)); // NOI18N
         viewByC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all result", "by year" }));
 
         loadB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -548,13 +634,13 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 34, Short.MAX_VALUE)
-                        .addComponent(viewByC, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(loadB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(loadB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 39, Short.MAX_VALUE)
+                        .addComponent(viewByC, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -562,11 +648,11 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(viewByC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(viewByC, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
                 .addComponent(loadB)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
         desktopPane.setBackground(new java.awt.Color(240, 240, 240));
@@ -575,7 +661,7 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         desktopPane.setLayout(desktopPaneLayout);
         desktopPaneLayout.setHorizontalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 448, Short.MAX_VALUE)
+            .addGap(0, 502, Short.MAX_VALUE)
         );
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -594,8 +680,11 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("View result", jPanel7);
@@ -622,22 +711,47 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         try {
             String studentId = String.valueOf(studentIdCombo.getSelectedItem());
             int indexNumber = Integer.parseInt(indexNumberTA.getText());
+
             int result = Integer.parseInt(resultTA.getText());
-            int rank = Integer.parseInt(rankTA.getText());            
-            int pass=0;
-            if(yesBA.isSelected()){
-                pass=1;
+            int rank = Integer.parseInt(rankTA.getText());
+            int pass = 0;
+            if (yesBA.isSelected()) {
+                pass = 1;
             }
-            int year = Integer.parseInt(String.valueOf(yearComboA.getSelectedItem()));
-            Student student = studentController.searchStudent(studentId);
-            SchoolarshipResult schoolarshipResult = new SchoolarshipResult(student, indexNumber, year, result, rank, pass);
-            boolean addSchoolarshipResult = schoolarshipResultController.addSchoolarshipResult(schoolarshipResult);
-            if(addSchoolarshipResult){
-                JOptionPane.showMessageDialog(this,"result is added successfully");
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this,"result is not added successfully");
+            String studentClass = String.valueOf(classIdComboA.getSelectedItem());
+            ClassS searchClass = classController.searchClass(studentClass);
+            int year = searchClass.getYear();
+            if (!PatternChecker.checkIndexNumdirect(indexNumberTA.getText())) {
+                indexumberVali.setVisible(true);
+                addMarkB.setEnabled(false);
+            } else if (!PatternChecker.checkResultdirect(resultTA.getText())) {
+                resultVali.setVisible(true);
+                addMarkB.setEnabled(false);
+            } else if (!PatternChecker.checkIntegerdirect(rankTA.getText())) {
+                rankVali.setVisible(false);
+                addMarkB.setEnabled(false);
+            } else {
+
+                Student student = studentController.searchStudent(studentId);
+                SchoolarshipResult schoolarshipResult = new SchoolarshipResult(student, indexNumber, year, result, rank, pass);
+                boolean addSchoolarshipResult = schoolarshipResultController.addSchoolarshipResult(schoolarshipResult);
+
+                if (addSchoolarshipResult) {
+                    JOptionPane.showMessageDialog(this, "result is added successfully");
+                    loadStudentIdOfClass(studentClass);
+                    loadIndexCombo();
+                    resultTA.setText("");
+                    rankTA.setText("");
+                    indexNumberTA.setText("");
+                    yesBA.setSelected(false);
+                    NoBA.setSelected(false);
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "result is not added successfully");
+                }
+
             }
+
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(SchoolarshipMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -664,30 +778,39 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
     }//GEN-LAST:event_indexComboEActionPerformed
 
     private void editMarkBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMarkBActionPerformed
+
         try {
             String studentId = studentIdTE.getText();
             int indexNumber = Integer.parseInt(String.valueOf(indexComboE.getSelectedItem()));
             int result = Integer.parseInt(resultTE.getText());
-            int rank = Integer.parseInt(rankTE.getText());            
-            int pass=0;
-            if(yesBE.isSelected()){
-                pass=1;
+            int rank = Integer.parseInt(rankTE.getText());
+            int pass = 0;
+            if (yesBE.isSelected()) {
+                pass = 1;
             }
-            int year = Integer.parseInt(yearTE.getText());
-            Student student = studentController.searchStudent(studentId);
-            SchoolarshipResult schoolarshipResult = new SchoolarshipResult(student, indexNumber, year, result, rank, pass);
-            boolean editSchoolarshipResult = schoolarshipResultController.editSchoolarshipResult(schoolarshipResult);
-            if(editSchoolarshipResult){
-                JOptionPane.showMessageDialog(this,"result is updated successfully");
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this,"result is not updated successfully");
+            if (!PatternChecker.checkResultdirect(resultTE.getText())) {
+                resultValiE.setVisible(true);
+            } else if (!PatternChecker.checkIntegerdirect(rankTE.getText())) {
+                rankValiE.setVisible(false);
+            } else {
+
+                SchoolarshipResult searchSchoolarshipResult = schoolarshipResultController.searchSchoolarshipResult(String.valueOf(indexNumber));
+                int year = searchSchoolarshipResult.getYear();
+                Student student = studentController.searchStudent(studentId);
+                SchoolarshipResult schoolarshipResult = new SchoolarshipResult(student, indexNumber, year, result, rank, pass);
+                boolean editSchoolarshipResult = schoolarshipResultController.editSchoolarshipResult(schoolarshipResult);
+
+                if (editSchoolarshipResult) {
+                    JOptionPane.showMessageDialog(this, "result is updated successfully");
+                } else {
+                    JOptionPane.showMessageDialog(this, "result is not updated successfully");
+                }
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(SchoolarshipMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
-        
+
+
     }//GEN-LAST:event_editMarkBActionPerformed
 
     private void nameTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTEActionPerformed
@@ -711,7 +834,7 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         try {
             String studentId = String.valueOf(studentIdCombo.getSelectedItem());
             Student searchStudent = studentController.searchStudent(studentId);
-            if(searchStudent!=null){
+            if (searchStudent != null) {
                 nameTA.setText(searchStudent.getName());
             }
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
@@ -720,32 +843,28 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
     }//GEN-LAST:event_studentIdComboItemStateChanged
 
     private void indexComboEItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_indexComboEItemStateChanged
-        String index =String.valueOf(indexComboE.getSelectedItem());
+        String index = String.valueOf(indexComboE.getSelectedItem());
         try {
             SchoolarshipResult searchSchoolarshipResult = schoolarshipResultController.searchSchoolarshipResult(index);
-            nameTE.setText(searchSchoolarshipResult.getStudent().getName());
-            studentIdTE.setText(searchSchoolarshipResult.getStudent().getStudentId());
-            resultTE.setText(String.valueOf(searchSchoolarshipResult.getResult()));
-            rankTE.setText(String.valueOf(searchSchoolarshipResult.getRank()));
-            yearTE.setText(String.valueOf(searchSchoolarshipResult.getYear()));
-            int isPass = searchSchoolarshipResult.getIsPass();
-            if(isPass==0){
-                NoBE.setSelected(true);
-            }else{
-                yesBE.setSelected(true);
-             }
+            if (searchSchoolarshipResult != null) {
+                nameTE.setText(searchSchoolarshipResult.getStudent().getName());
+                studentIdTE.setText(searchSchoolarshipResult.getStudent().getStudentId());
+                resultTE.setText(String.valueOf(searchSchoolarshipResult.getResult()));
+                rankTE.setText(String.valueOf(searchSchoolarshipResult.getRank()));
+                int isPass = searchSchoolarshipResult.getIsPass();
+                if (isPass == 0) {
+                    NoBE.setSelected(true);
+                } else {
+                    yesBE.setSelected(true);
+                }
+            }
         } catch (RemoteException | ClassNotFoundException | SQLException ex) {
             Logger.getLogger(SchoolarshipMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_indexComboEItemStateChanged
 
-    private void yearTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearTEActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_yearTEActionPerformed
-
     private void loadBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBActionPerformed
-        
-        
+
         int selectedIndex = viewByC.getSelectedIndex();
         if (selectedIndex == 0) {
             SchoolarshipMarkOverall schoolarshipMarkOverall = new SchoolarshipMarkOverall();
@@ -755,34 +874,265 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
             schoolarshipMarkOverall.setVisible(true);
             schoolarshipMarkOverall.requestFocus();
         } else {
-            
+
             SchoolarshipMarkByYear schoolarshipMarkByYear = new SchoolarshipMarkByYear();
             schoolarshipMarkByYear.setSize(desktopPane.getSize());
             desktopPane.removeAll();
             desktopPane.add(schoolarshipMarkByYear);
             schoolarshipMarkByYear.setVisible(true);
             schoolarshipMarkByYear.requestFocus();
-            
+
         }
 
-  
 
     }//GEN-LAST:event_loadBActionPerformed
 
-    
-    private void loadClassCombo() {
-        classIdComboA.removeAllItems();
-        try {
-            ArrayList<ClassS> allClass = classController.getAllClass();
-            for (ClassS cls : allClass) {
-                classIdComboA.addItem(cls.getClassId());
+    private void indexNumberTAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_indexNumberTAKeyReleased
+
+        indexumberVali.setVisible(false);
+        String newtext = PatternChecker.checkIndex(indexNumberTA.getText());
+        indexNumberTA.setText(newtext);
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (PatternChecker.checkIndexNumdirect(indexNumberTA.getText())) {
+                resultTA.requestFocus();
+            } else {
+                indexumberVali.setVisible(true);
             }
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            resultTA.requestFocus();
+        }
+        EnableAddButton();
+
+    }//GEN-LAST:event_indexNumberTAKeyReleased
+
+    private void resultTAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resultTAKeyReleased
+
+        resultVali.setVisible(false);
+        String newtext = PatternChecker.checkResult(resultTA.getText());
+        resultTA.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkResultdirect(resultTA.getText())) {
+                    rankTA.requestFocus();
+                } else {
+                    resultVali.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                rankTA.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                indexNumberTA.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+    }//GEN-LAST:event_resultTAKeyReleased
+
+    private void rankTAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rankTAKeyReleased
+        rankVali.setVisible(false);
+        String newtext = PatternChecker.checkInteger(rankTA.getText());
+
+        rankTA.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkIntegerdirect(rankTA.getText())) {
+                    yesBA.requestFocus();
+                } else {
+                    rankVali.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                yesBA.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                resultTA.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+
+    }//GEN-LAST:event_rankTAKeyReleased
+
+    private void yesBAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_yesBAKeyReleased
+
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                addMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                addMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                rankTA.requestFocus();
+                break;
+            case KeyEvent.VK_RIGHT:
+                NoBA.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+
+    }//GEN-LAST:event_yesBAKeyReleased
+
+    private void NoBAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoBAKeyReleased
+
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                addMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                addMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                rankTA.requestFocus();
+                break;
+            case KeyEvent.VK_LEFT:
+                yesBA.requestFocus();
+                break;
+            default:
+                break;
+        }
+        EnableAddButton();
+
+
+    }//GEN-LAST:event_NoBAKeyReleased
+
+    private void resultTEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resultTEKeyReleased
+        resultValiE.setVisible(false);
+        String newtext = PatternChecker.checkIndex(resultTE.getText());
+        resultTE.setText(newtext);
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkResultdirect(resultTE.getText())) {
+                    rankTE.requestFocus();
+                } else {
+                    resultValiE.setVisible(true);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                rankTE.requestFocus();
+                break;
+            default:
+                break;
+        }
+
+
+    }//GEN-LAST:event_resultTEKeyReleased
+
+    private void rankTEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rankTEKeyReleased
+
+        rankValiE.setVisible(false);
+        String newtext = PatternChecker.checkInteger(rankTE.getText());
+
+        rankTE.setText(newtext);
+        switch (evt.getKeyCode()) {
+
+            case KeyEvent.VK_ENTER:
+                if (PatternChecker.checkIntegerdirect(rankTE.getText())) {
+                    yesBE.requestFocus();
+                } else {
+                    rankValiE.setVisible(true);
+                }
+                break;
+
+            case KeyEvent.VK_DOWN:
+                yesBE.requestFocus();
+                break;
+
+            case KeyEvent.VK_UP:
+                resultTE.requestFocus();
+                break;
+            default:
+                break;
+        }
+
+    }//GEN-LAST:event_rankTEKeyReleased
+
+    private void yesBEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_yesBEKeyReleased
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                editMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                editMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                rankTE.requestFocus();
+                break;
+            case KeyEvent.VK_RIGHT:
+                NoBE.requestFocus();
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_yesBEKeyReleased
+
+    private void NoBEKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoBEKeyReleased
+
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                editMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_DOWN:
+                editMarkB.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                rankTE.requestFocus();
+                break;
+            case KeyEvent.VK_LEFT:
+                yesBE.requestFocus();
+                break;
+            default:
+                break;
+        }
+
+    }//GEN-LAST:event_NoBEKeyReleased
+
+    private void NoBAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoBAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NoBAActionPerformed
+
+    private void rankTAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankTAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rankTAActionPerformed
+
+    private void yesBAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesBAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_yesBAActionPerformed
+
+    private void loadClassCombo() {
+
+        classIdComboA.removeAllItems();
+
+        try {
+            ArrayList<ClassS> allClass = classController.getAllClassForNewYear();
+            for (ClassS cls : allClass) {
+                if (cls.getGrade() == 5) {
+                    classIdComboA.addItem(cls.getClassId());
+                }
+            }
+
         } catch (RemoteException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(SchoolarshipMarkManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-   
+
+    public void EnableAddButton() {
+        if (indexNumberTA.getText().trim().length() != 0 && rankTA.getText().trim().length() != 0 && resultTA.getText().trim().length() != 0 && (yesBA.isSelected() || NoBA.isSelected())) {
+            addMarkB.setEnabled(true);
+        } else {
+            addMarkB.setEnabled(false);
+        }
+    }
+
     private void loadIndexCombo() {
         indexComboE.removeAllItems();
         try {
@@ -795,12 +1145,11 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         }
 
     }
-  
-    
+
     private void loadStudentIdOfClass(String classId) {
         try {
             studentIdCombo.removeAllItems();
-            ArrayList<Student> studentOfClass = registrationController.getStudentOfClass(classId);
+            ArrayList<Student> studentOfClass = studentController.getAvailableStudentForAddingSchoolarshipResult(classId);
             for (Student student : studentOfClass) {
                 studentIdCombo.addItem(student.getStudentId());
             }
@@ -809,7 +1158,6 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
         }
 
     }
-
 
     /**
      * @param args the command line arguments
@@ -861,20 +1209,20 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
     private javax.swing.JLabel birthdayRL;
     private javax.swing.JLabel birthdayRL1;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel classIdAddMarkL;
     private javax.swing.JLabel classIdAddMarkL1;
     private javax.swing.JLabel classIdAddMarkL2;
     private javax.swing.JComboBox<String> classIdComboA;
     private javax.swing.JLabel contactNumberRL;
-    private javax.swing.JLabel contactNumberRL1;
     private javax.swing.JLabel contactNumberRL2;
     private javax.swing.JLabel contactNumberRL3;
-    private javax.swing.JLabel contactNumberRL4;
     private javax.swing.JLabel contactNumberRL5;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JButton editMarkB;
     private javax.swing.JComboBox<String> indexComboE;
     private javax.swing.JTextField indexNumberTA;
+    private javax.swing.JLabel indexumberVali;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -894,13 +1242,15 @@ public class SchoolarshipMarkManagement extends javax.swing.JDialog {
     private javax.swing.JLabel parentRL1;
     private javax.swing.JTextField rankTA;
     private javax.swing.JTextField rankTE;
+    private javax.swing.JLabel rankVali;
+    private javax.swing.JLabel rankValiE;
     private javax.swing.JTextField resultTA;
     private javax.swing.JTextField resultTE;
+    private javax.swing.JLabel resultVali;
+    private javax.swing.JLabel resultValiE;
     private javax.swing.JComboBox<String> studentIdCombo;
     private javax.swing.JTextField studentIdTE;
     private javax.swing.JComboBox<String> viewByC;
-    private javax.swing.JComboBox<String> yearComboA;
-    private javax.swing.JTextField yearTE;
     private javax.swing.JRadioButton yesBA;
     private javax.swing.JRadioButton yesBE;
     // End of variables declaration//GEN-END:variables

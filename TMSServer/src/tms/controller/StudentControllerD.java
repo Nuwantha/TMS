@@ -22,8 +22,7 @@ import tms.model.Student;
 public class StudentControllerD {
 
     private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    
-    
+
     public static int getStudentCount() throws ClassNotFoundException, SQLException {
         int count = 0;
         try {
@@ -40,8 +39,7 @@ public class StudentControllerD {
 
         return count;
     }
-    
-    
+
     public static boolean addNewStudent(Student student) throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.writeLock().lock();
@@ -54,7 +52,7 @@ public class StudentControllerD {
             readWriteLock.writeLock().unlock();
         }
     }
-    
+
     public static Student searchStudent(String studentId) throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.readLock().lock();
@@ -62,7 +60,7 @@ public class StudentControllerD {
             String sql = "Select * from student where studentId='" + studentId + "'";
             ResultSet rst = DBHandler.getData(conn, sql);
             if (rst.next()) {
-                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                Student student = new Student(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
                 return student;
             } else {
                 return null;
@@ -71,8 +69,8 @@ public class StudentControllerD {
             readWriteLock.readLock().unlock();
         }
     }
-    
-     public static ArrayList<Student> getAllStudent() throws ClassNotFoundException, SQLException {
+
+    public static ArrayList<Student> getAllStudent() throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.readLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();
@@ -80,7 +78,7 @@ public class StudentControllerD {
             ResultSet rst = DBHandler.getData(conn, sql);
             ArrayList<Student> studentList = new ArrayList<>();
             while (rst.next()) {
-                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                Student student = new Student(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
                 studentList.add(student);
             }
             return studentList;
@@ -97,7 +95,7 @@ public class StudentControllerD {
             ResultSet rst = DBHandler.getData(conn, sql);
             ArrayList<Student> studentList = new ArrayList<>();
             while (rst.next()) {
-                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                Student student = new Student(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
                 studentList.add(student);
             }
             return studentList;
@@ -105,13 +103,12 @@ public class StudentControllerD {
             readWriteLock.readLock().unlock();
         }
     }
-    
-    
-     public static ArrayList<Student> getStudentOfClass(String classId) throws ClassNotFoundException, SQLException {
+
+    public static ArrayList<Student> getStudentOfClass(String classId) throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.readLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();
-            String sql = "Select studentId From Registration where classId='"+classId+"'";
+            String sql = "Select studentId From Registration where classId='" + classId + "'";
             ResultSet rst = DBHandler.getData(conn, sql);
             ArrayList<Student> studentList = new ArrayList<>();
             while (rst.next()) {
@@ -137,15 +134,15 @@ public class StudentControllerD {
         }
     }
 
-     public static ArrayList<Student> getAvailableRegistrationStudentForClass(ClassS studentClass) throws ClassNotFoundException, SQLException {
+    public static ArrayList<Student> getAvailableRegistrationStudentForClass(ClassS studentClass) throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.readLock().lock();
             Connection conn = DBConnection.getDBConnection().getConnection();
-            String sql = "Select * from Student where year(birthday)=year(curdate())-('"+studentClass.getGrade()+"'+5) and studentId not in(select studentId from registration where yearR='"+studentClass.getYear()+"')";
+            String sql = "Select * from Student where year(birthday)=year(curdate())-('" + studentClass.getGrade() + "'+5) and studentId not in(select studentId from registration where yearR='" + studentClass.getYear() + "')";
             ResultSet rst = DBHandler.getData(conn, sql);
             ArrayList<Student> studentList = new ArrayList<>();
             while (rst.next()) {
-                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                Student student = new Student(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
                 studentList.add(student);
             }
             return studentList;
@@ -153,8 +150,7 @@ public class StudentControllerD {
             readWriteLock.readLock().unlock();
         }
     }
-    
-    
+
     public static Student getLastAddedStudent() throws ClassNotFoundException, SQLException {
         try {
             readWriteLock.readLock().lock();
@@ -162,7 +158,7 @@ public class StudentControllerD {
             String sql = "Select * from student order by studentId desc limit 1";
             ResultSet rst = DBHandler.getData(conn, sql);
             if (rst.next()) {
-                Student student = new Student(rst.getString(1),rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
+                Student student = new Student(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6));
                 return student;
             } else {
                 return null;
@@ -171,6 +167,25 @@ public class StudentControllerD {
             readWriteLock.readLock().unlock();
         }
     }
-    
-     
+
+    public static ArrayList<Student> getAvailableStudentForAddingSchoolarshipResult(String classId) throws ClassNotFoundException, SQLException {
+        try {
+            
+            readWriteLock.readLock().lock();
+            Connection conn = DBConnection.getDBConnection().getConnection();
+            String sql = "Select studentId From Registration where classId='" + classId + "' and studentId not in(select studentId from schoolarshipResult)";
+            ResultSet rst = DBHandler.getData(conn, sql);
+            ArrayList<Student> studentList = new ArrayList<>();
+            
+            while (rst.next()) {
+                Student student = StudentControllerD.searchStudent(rst.getString(1));
+                studentList.add(student);
+            }
+            
+            return studentList;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+    }
+
 }
