@@ -65,6 +65,13 @@ public class StudentMarkManagement extends javax.swing.JDialog {
 
     }
 
+    
+    public StudentMarkManagement(java.awt.Frame parent, boolean modal,int a) {
+        this(parent, modal);
+        jTabbedPane1.setSelectedIndex(a);
+        
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

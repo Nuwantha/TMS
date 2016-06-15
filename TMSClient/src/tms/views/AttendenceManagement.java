@@ -61,6 +61,13 @@ public class AttendenceManagement extends javax.swing.JDialog {
         dateValidation.setVisible(false);
     }
 
+    
+    public AttendenceManagement(java.awt.Frame parent, boolean modal,int a) {
+        this(parent, modal);
+        jTabbedPane1.setSelectedIndex(a);
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

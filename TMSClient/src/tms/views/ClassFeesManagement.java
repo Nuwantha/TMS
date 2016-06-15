@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import tms.common_classes.MSGHandler;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ClassFeesController;
 import tms.controllercommon.RegistrationController;
@@ -36,6 +37,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
     RegistrationController registrationController;
     StudentController studentController;
     ClassFeesController classFeesController;
+    ArrayList<Student> students;
 
     /**
      * Creates new form ClassFeesId
@@ -110,6 +112,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
         jPanel9 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         classFesTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -153,6 +156,11 @@ public class ClassFeesManagement extends javax.swing.JDialog {
 
         monthComboA.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         monthComboA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "Octomber", "November", "December" }));
+        monthComboA.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                monthComboAItemStateChanged(evt);
+            }
+        });
         monthComboA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 monthComboAKeyReleased(evt);
@@ -489,21 +497,35 @@ public class ClassFeesManagement extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(classFesTable);
 
+        jButton1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        jButton1.setText("Send Notification");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -624,6 +646,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
             boolean addNewClassFees = classFeesController.addNewClassFees(classFees);
             if (addNewClassFees) {
                 JOptionPane.showMessageDialog(this, "classFees is added successfully");
+                loadStudentIdOfClass(classId, month);
             } else {
                 JOptionPane.showMessageDialog(this, "classFees is not added successfully");
 
@@ -641,8 +664,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
 
     private void loadBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBActionPerformed
         String classId = String.valueOf(classIdComboView.getSelectedItem());
-        int month = monthComboA1.getSelectedIndex();
-        ArrayList<Student> students = null;
+        int month = monthComboA1.getSelectedIndex()+1;
         if (yesB.isSelected()) {
             try {
                 students = classFeesController.getClassFeesPaidStudents(classId, month);
@@ -659,6 +681,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
 
         DefaultTableModel tableModel = (DefaultTableModel) classFesTable.getModel();
         tableModel.getDataVector().removeAllElements();
+        
         revalidate();
         for (Student student : students) {
             tableModel.addRow(new Object[]{student.getStudentId(), student.getName(), student.getParentName(), student.getContactNumber()});
@@ -671,6 +694,16 @@ public class ClassFeesManagement extends javax.swing.JDialog {
         int month=monthComboA.getSelectedIndex()+1;
         loadStudentIdOfClass(classId, month);
     }//GEN-LAST:event_monthComboAKeyReleased
+
+    private void monthComboAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboAItemStateChanged
+        String classId = String.valueOf(classIdComboA.getSelectedItem());
+        int month=monthComboA.getSelectedIndex()+1;
+        loadStudentIdOfClass(classId, month);
+    }//GEN-LAST:event_monthComboAItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        MSGHandler.sendNotification(students, "has to pay class fees for this month");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadClassId(JComboBox comboBox) {
         try {
@@ -773,6 +806,7 @@ public class ClassFeesManagement extends javax.swing.JDialog {
     private javax.swing.JTextField contactNumberTextA;
     private javax.swing.JLabel gradeLabelA;
     private javax.swing.JTextField gradeTextA;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

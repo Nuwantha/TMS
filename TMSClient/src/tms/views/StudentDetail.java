@@ -61,6 +61,12 @@ public class StudentDetail extends javax.swing.JDialog {
         nameRT.requestFocus();
 
     }
+    public StudentDetail(java.awt.Frame parent, boolean modal,int a){
+        this(parent, modal);
+        if(a==2){
+            jTabbedPane1.setSelectedIndex(1);            
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

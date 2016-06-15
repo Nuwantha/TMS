@@ -16,7 +16,7 @@ public class BackUpControllerD {
     public static int  writeBackup() throws IOException,InterruptedException {
         Runtime runTime = Runtime.getRuntime();
         String password="";
-        Process exec = runTime.exec("C:\\wamp\\bin\\mysql\\mysql5.6.17\\bin\\mysqldump TMS -h localhost -u root -p'"+password+"' -r  E:\\Project\\TMS\\back.sql");
+        Process exec = runTime.exec("C:\\wamp\\bin\\mysql\\mysql5.6.17\\bin\\mysqldump TMS -h localhost -u root -p -r  E:\\Project\\TMS\\back.sql");
         return exec.waitFor();
     }
 

@@ -147,7 +147,6 @@ public class FrontPage extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addStudentDetailM = new javax.swing.JMenuItem();
-        registerStudentM = new javax.swing.JMenuItem();
         editStudentDetail = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         addNewClassM = new javax.swing.JMenuItem();
@@ -155,7 +154,6 @@ public class FrontPage extends javax.swing.JFrame {
         Grant = new javax.swing.JMenu();
         addNewPaperM = new javax.swing.JMenuItem();
         addPaperMarksM = new javax.swing.JMenuItem();
-        viewResultM = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         addAttendenceM = new javax.swing.JMenuItem();
         editAttendenceM = new javax.swing.JMenuItem();
@@ -547,7 +545,7 @@ public class FrontPage extends javax.swing.JFrame {
         shortcutAccessPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         shortcutAccessPanel.setLayout(new java.awt.GridLayout(7, 1, 50, 10));
 
-        studentRestrationFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        studentRestrationFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         studentRestrationFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/applicant - s.png"))); // NOI18N
         studentRestrationFB.setText("1-Student Registration");
         importantButtonSet.add(studentRestrationFB);
@@ -558,7 +556,7 @@ public class FrontPage extends javax.swing.JFrame {
         });
         shortcutAccessPanel.add(studentRestrationFB);
 
-        addNewStudentMarkMB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        addNewStudentMarkMB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         addNewStudentMarkMB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/exam.png"))); // NOI18N
         addNewStudentMarkMB.setText("2-Add Student Mark");
         importantButtonSet.add(addNewStudentMarkMB);
@@ -569,7 +567,7 @@ public class FrontPage extends javax.swing.JFrame {
         });
         shortcutAccessPanel.add(addNewStudentMarkMB);
 
-        markAtendenceFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        markAtendenceFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         markAtendenceFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/attendence.png"))); // NOI18N
         markAtendenceFB.setText("3-Mark Attendence");
         importantButtonSet.add(markAtendenceFB);
@@ -580,7 +578,7 @@ public class FrontPage extends javax.swing.JFrame {
         });
         shortcutAccessPanel.add(markAtendenceFB);
 
-        addClassFeesFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        addClassFeesFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         addClassFeesFB.setText("4-Add ClassFees");
         importantButtonSet.add(addClassFeesFB);
         addClassFeesFB.addActionListener(new java.awt.event.ActionListener() {
@@ -590,7 +588,7 @@ public class FrontPage extends javax.swing.JFrame {
         });
         shortcutAccessPanel.add(addClassFeesFB);
 
-        addSchoolarshipMarksFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        addSchoolarshipMarksFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         addSchoolarshipMarksFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/schoolarshipResultB.png"))); // NOI18N
         addSchoolarshipMarksFB.setText("5-Add Schoolarship Marks");
         importantButtonSet.add(addSchoolarshipMarksFB);
@@ -601,7 +599,7 @@ public class FrontPage extends javax.swing.JFrame {
         });
         shortcutAccessPanel.add(addSchoolarshipMarksFB);
 
-        sendNotifaicationFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
+        sendNotifaicationFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         sendNotifaicationFB.setText("6-Send Notification");
         importantButtonSet.add(sendNotifaicationFB);
         sendNotifaicationFB.addActionListener(new java.awt.event.ActionListener() {
@@ -611,8 +609,8 @@ public class FrontPage extends javax.swing.JFrame {
         });
         shortcutAccessPanel.add(sendNotifaicationFB);
 
-        viewStudentMarksFB.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 14)); // NOI18N
-        viewStudentMarksFB.setText("7-View Student Marks");
+        viewStudentMarksFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        viewStudentMarksFB.setText("7-Add Class Detail");
         importantButtonSet.add(viewStudentMarksFB);
         viewStudentMarksFB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -669,14 +667,6 @@ public class FrontPage extends javax.swing.JFrame {
         });
         jMenu1.add(addStudentDetailM);
 
-        registerStudentM.setText("Register Student");
-        registerStudentM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registerStudentMActionPerformed(evt);
-            }
-        });
-        jMenu1.add(registerStudentM);
-
         editStudentDetail.setText("Edit Student Detail");
         editStudentDetail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -718,21 +708,13 @@ public class FrontPage extends javax.swing.JFrame {
         });
         Grant.add(addNewPaperM);
 
-        addPaperMarksM.setText("Add Paper Marks");
+        addPaperMarksM.setText("Edit Student Mark");
         addPaperMarksM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPaperMarksMActionPerformed(evt);
             }
         });
         Grant.add(addPaperMarksM);
-
-        viewResultM.setText("View Result");
-        viewResultM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewResultMActionPerformed(evt);
-            }
-        });
-        Grant.add(viewResultM);
 
         jMenuBar1.add(Grant);
 
@@ -769,12 +751,27 @@ public class FrontPage extends javax.swing.JFrame {
         schoolarshipResultMainMenu.setText("Schoolarship Result");
 
         schoolarshipResulAddMI.setText("Schoolarship Result Add");
+        schoolarshipResulAddMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                schoolarshipResulAddMIActionPerformed(evt);
+            }
+        });
         schoolarshipResultMainMenu.add(schoolarshipResulAddMI);
 
         schoolarshipResulEditMI.setText("Schoolarship Result Edit");
+        schoolarshipResulEditMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                schoolarshipResulEditMIActionPerformed(evt);
+            }
+        });
         schoolarshipResultMainMenu.add(schoolarshipResulEditMI);
 
         schoolarshipResulViewMI.setText("Schoolarship Result View");
+        schoolarshipResulViewMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                schoolarshipResulViewMIActionPerformed(evt);
+            }
+        });
         schoolarshipResultMainMenu.add(schoolarshipResulViewMI);
 
         jMenuBar1.add(schoolarshipResultMainMenu);
@@ -852,6 +849,11 @@ public class FrontPage extends javax.swing.JFrame {
 
 
     private void sendNotifaicationFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendNotifaicationFBActionPerformed
+        
+        SendNotificationForm sendNotificationForm = new SendNotificationForm(this, rootPaneCheckingEnabled);
+        sendNotificationForm.setLocationRelativeTo(null);
+        sendNotificationForm.setVisible(true);
+        
     }//GEN-LAST:event_sendNotifaicationFBActionPerformed
 
     private void addClassFeesFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClassFeesFBActionPerformed
@@ -911,10 +913,10 @@ public class FrontPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchSetComboActionPerformed
 
-    private void viewResultMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewResultMActionPerformed
-    }//GEN-LAST:event_viewResultMActionPerformed
-
     private void addPaperMarksMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaperMarksMActionPerformed
+         StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,1);
+        studentMarkManagement.setLocationRelativeTo(null);
+        studentMarkManagement.setVisible(true);
     }//GEN-LAST:event_addPaperMarksMActionPerformed
 
     private void backUpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backUpMenuActionPerformed
@@ -946,6 +948,8 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_restoreMenuActionPerformed
 
     private void LogOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutButtonActionPerformed
+        this.dispose();
+        new Login().setVisible(true);
     }//GEN-LAST:event_LogOutButtonActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
@@ -972,28 +976,49 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_createNewUserMenuActionPerformed
 
     private void addNewPaperMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewPaperMActionPerformed
+        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,0);
+        studentMarkManagement.setLocationRelativeTo(null);
+        studentMarkManagement.setVisible(true);
     }//GEN-LAST:event_addNewPaperMActionPerformed
 
     private void addAttendenceMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAttendenceMActionPerformed
+        
+        AttendenceManagement attendenceManagement = new AttendenceManagement(this, true, 0);
+        attendenceManagement.setLocationRelativeTo(null);
+        attendenceManagement.setVisible(true);
+        
     }//GEN-LAST:event_addAttendenceMActionPerformed
 
     private void viewAttendenceMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAttendenceMActionPerformed
+        
+        AttendenceManagement attendenceManagement = new AttendenceManagement(this, true,2);
+        attendenceManagement.setLocationRelativeTo(null);
+        attendenceManagement.setVisible(true);
+        
     }//GEN-LAST:event_viewAttendenceMActionPerformed
 
     private void addStudentDetailMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentDetailMActionPerformed
+        
         StudentDetail studentDetail = new StudentDetail(this, true);
         studentDetail.setLocationRelativeTo(null);
         studentDetail.setVisible(true);
 
     }//GEN-LAST:event_addStudentDetailMActionPerformed
 
-    private void registerStudentMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerStudentMActionPerformed
-    }//GEN-LAST:event_registerStudentMActionPerformed
-
     private void editStudentDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStudentDetailActionPerformed
+        
+        StudentDetail studentDetail = new StudentDetail(this, true,2);
+        studentDetail.setLocationRelativeTo(null);
+        studentDetail.setVisible(true);
+        
     }//GEN-LAST:event_editStudentDetailActionPerformed
 
     private void editAttendenceMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAttendenceMActionPerformed
+        
+        AttendenceManagement attendenceManagement = new AttendenceManagement(this, true,1);
+        attendenceManagement.setLocationRelativeTo(null);
+        attendenceManagement.setVisible(true);
+
     }//GEN-LAST:event_editAttendenceMActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1004,6 +1029,10 @@ public class FrontPage extends javax.swing.JFrame {
 
 
     private void viewStudentMarksFBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStudentMarksFBActionPerformed
+        ClassDetail classDetail = new ClassDetail(this, rootPaneCheckingEnabled);
+        classDetail.setLocationRelativeTo(null);
+        classDetail.setVisible(true);
+
     }//GEN-LAST:event_viewStudentMarksFBActionPerformed
 
     private void editClassDetailMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClassDetailMActionPerformed
@@ -1020,6 +1049,30 @@ public class FrontPage extends javax.swing.JFrame {
         classDetail.setLocationRelativeTo(null);
         classDetail.setVisible(true);
     }//GEN-LAST:event_addNewClassMActionPerformed
+
+    private void schoolarshipResulAddMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schoolarshipResulAddMIActionPerformed
+        
+        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,0);
+        studentMarkManagement.setLocationRelativeTo(null);
+        studentMarkManagement.setVisible(true);
+        
+    }//GEN-LAST:event_schoolarshipResulAddMIActionPerformed
+
+    private void schoolarshipResulEditMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schoolarshipResulEditMIActionPerformed
+       
+        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,1);
+        studentMarkManagement.setLocationRelativeTo(null);
+        studentMarkManagement.setVisible(true);
+        
+    }//GEN-LAST:event_schoolarshipResulEditMIActionPerformed
+
+    private void schoolarshipResulViewMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schoolarshipResulViewMIActionPerformed
+        
+        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,2);
+        studentMarkManagement.setLocationRelativeTo(null);
+        studentMarkManagement.setVisible(true);
+        
+    }//GEN-LAST:event_schoolarshipResulViewMIActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1094,7 +1147,6 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.ButtonGroup landSearchSet;
     private javax.swing.JButton markAtendenceFB;
     private javax.swing.ButtonGroup permitSearchSet;
-    private javax.swing.JMenuItem registerStudentM;
     private javax.swing.JMenuItem restoreMenu;
     private javax.swing.JMenuItem schoolarshipResulAddMI;
     private javax.swing.JMenuItem schoolarshipResulEditMI;
@@ -1114,7 +1166,6 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.JLabel username;
     private javax.swing.JPanel userpanel;
     private javax.swing.JMenuItem viewAttendenceM;
-    private javax.swing.JMenuItem viewResultM;
     private javax.swing.JButton viewStudentMarksFB;
     // End of variables declaration//GEN-END:variables
 }
