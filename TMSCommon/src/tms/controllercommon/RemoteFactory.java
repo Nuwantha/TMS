@@ -30,4 +30,7 @@ public interface RemoteFactory extends Remote {
     
    public UserController getUSerController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException;
 
+   public BackUpController getBackUpController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException;
+
 }
+

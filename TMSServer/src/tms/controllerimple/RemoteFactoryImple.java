@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import tms.controllercommon.AttendenceController;
+import tms.controllercommon.BackUpController;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ClassFeesController;
 import tms.controllercommon.ExamController;
@@ -74,5 +75,10 @@ public class RemoteFactoryImple extends UnicastRemoteObject implements RemoteFac
     @Override
     public UserController getUSerController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException {
         return new UserControllerImple();//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public BackUpController getBackUpController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException {
+        return new BackUpCotrollerDImple();//To change body of generated methods, choose Tools | Templates.
     }
 }

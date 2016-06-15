@@ -5,7 +5,12 @@
  */
 package tmsclient;
 
-import tms.views.FrontPage;
+import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import tms.views.Login;
 
 /**
  *
@@ -17,7 +22,14 @@ public class TMSClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       new FrontPage().setVisible(true);
+        try {
+            UIManager.setLookAndFeel(new AcrylLookAndFeel());
+            Login login = new Login();
+            login.setLocationRelativeTo(null);
+            login.setVisible(true);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(TMSClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
 }

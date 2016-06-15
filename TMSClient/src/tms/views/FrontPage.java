@@ -5,26 +5,81 @@
  */
 package tms.views;
 
-import org.apache.batik.gvt.flow.TextLineBreaks;
+import SeverConnector.Connector;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import tms.controllercommon.BackUpController;
+import tms.controllercommon.UserController;
+import tms.model.User;
 
 /**
  *
  * @author Nuwantha
  */
 public class FrontPage extends javax.swing.JFrame {
-
+    UserController userController;
+    BackUpController backUpController;
     /**
      * Creates new form FrontPage
      */
     public FrontPage() {
         initComponents();
+        ImageIcon icon1 = new ImageIcon(getClass().getResource("/tms/icons/main.png"));
+        setIconImage(icon1.getImage());
+
         StudentRegistration studentRegistrationForm = new StudentRegistration(this);
         studentRegistrationForm.setSize(desktopPane.getSize());
         desktopPane.removeAll();
         desktopPane.add(studentRegistrationForm);
         studentRegistrationForm.setVisible(true);
         studentRegistrationForm.requestFocus();
+        try {
+            Connector sConnector = Connector.getSConnector();
+           userController= sConnector.getUserController();
+           backUpController= sConnector.getBackUpController();
+        } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | InterruptedException | ClassNotFoundException ex) {
+            Logger.getLogger(FrontPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+    }
+
+    public FrontPage(User user) {
+        this();
+        username.setText(user.getName());
+
+        switch (user.getPower()) {
+            case 3: {
+                studentRestrationFB.setEnabled(false);
+                markAtendenceFB.setEnabled(false);
+                addClassFeesFB.setEnabled(false);
+                addSchoolarshipMarksFB.setEnabled(false);
+                sendNotifaicationFB.setEnabled(false);
+                addNewStudentMarkMB.setEnabled(false);
+                ImageIcon icon1 = new ImageIcon(getClass().getResource("/tms/icons/power3.png"));
+                userIcon.setIcon(icon1);
+                break;
+            }
+            case 2: {
+                createNewUserMenu.setEnabled(false);
+                sendNotifaicationFB.setEnabled(false);
+                ImageIcon icon1 = new ImageIcon(getClass().getResource("/tms/icons/power2.png"));
+                userIcon.setIcon(icon1);
+                break;
+            }
+            default: {
+                ImageIcon icon1 = new ImageIcon(getClass().getResource("/tms/icons/power1.png"));
+                userIcon.setIcon(icon1);
+                break;
+            }
+        }
+
     }
 
     /**
@@ -88,6 +143,7 @@ public class FrontPage extends javax.swing.JFrame {
         addSchoolarshipMarksFB = new javax.swing.JButton();
         sendNotifaicationFB = new javax.swing.JButton();
         viewStudentMarksFB = new javax.swing.JButton();
+        userIcon = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addStudentDetailM = new javax.swing.JMenuItem();
@@ -113,7 +169,6 @@ public class FrontPage extends javax.swing.JFrame {
         systemMenu = new javax.swing.JMenu();
         changePasswordMenu = new javax.swing.JMenuItem();
         createNewUserMenu = new javax.swing.JMenuItem();
-        viewAllUsersMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         backUpMenu = new javax.swing.JMenuItem();
         restoreMenu = new javax.swing.JMenuItem();
@@ -571,7 +626,9 @@ public class FrontPage extends javax.swing.JFrame {
         desktopJPanelLayout.setHorizontalGroup(
             desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopJPanelLayout.createSequentialGroup()
-                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(userIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(desktopJPanelLayout.createSequentialGroup()
@@ -586,9 +643,11 @@ public class FrontPage extends javax.swing.JFrame {
         desktopJPanelLayout.setVerticalGroup(
             desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopJPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(userLogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(desktopJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -744,14 +803,6 @@ public class FrontPage extends javax.swing.JFrame {
             }
         });
         systemMenu.add(createNewUserMenu);
-
-        viewAllUsersMenu.setText("View all users");
-        viewAllUsersMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewAllUsersMenuActionPerformed(evt);
-            }
-        });
-        systemMenu.add(viewAllUsersMenu);
         systemMenu.add(jSeparator1);
 
         backUpMenu.setText("Create a backup");
@@ -836,7 +887,7 @@ public class FrontPage extends javax.swing.JFrame {
                 resultbyStudent.setVisible(true);
                 break;
             case 2:
-                ResultbyClass resultbyClass = new ResultbyClass(this,true);
+                ResultbyClass resultbyClass = new ResultbyClass(this, true);
                 resultbyClass.setLocationRelativeTo(null);
                 resultbyClass.setVisible(true);
                 break;
@@ -867,9 +918,31 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_addPaperMarksMActionPerformed
 
     private void backUpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backUpMenuActionPerformed
+        try {
+            int writeBackup = backUpController.writeBackup();
+            if(writeBackup==0){
+                JOptionPane.showMessageDialog(this,"BackUp is wtrtten successfully");
+            }else{
+                JOptionPane.showMessageDialog(this,"BackUp is not wtrtten successfully");
+            }
+        } catch (IOException | SQLException | InterruptedException ex) {
+            Logger.getLogger(FrontPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_backUpMenuActionPerformed
 
     private void restoreMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreMenuActionPerformed
+        try {
+            int restoreBackup = backUpController.restoreBackup();
+             if(restoreBackup==0){
+                JOptionPane.showMessageDialog(this,"BackUp is restored successfully");
+            }else{
+                JOptionPane.showMessageDialog(this,"BackUp is not restored successfully");
+            }
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(FrontPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_restoreMenuActionPerformed
 
     private void LogOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutButtonActionPerformed
@@ -879,13 +952,24 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitButtonActionPerformed
 
     private void changePasswordMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordMenuActionPerformed
+        try {
+            User searchUser = userController.searchUser(username.getText());
+            PasswordChangeView passwordChangeView = new PasswordChangeView(this, rootPaneCheckingEnabled, searchUser);
+            passwordChangeView.setLocationRelativeTo(null);
+            passwordChangeView.setVisible(true);
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(FrontPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_changePasswordMenuActionPerformed
 
     private void createNewUserMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewUserMenuActionPerformed
+        NewUserCreator newUserCreator = new NewUserCreator(this, rootPaneCheckingEnabled);
+        newUserCreator.setLocationRelativeTo(null);
+        newUserCreator.setVisible(true);
+        
+        
     }//GEN-LAST:event_createNewUserMenuActionPerformed
-
-    private void viewAllUsersMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllUsersMenuActionPerformed
-    }//GEN-LAST:event_viewAllUsersMenuActionPerformed
 
     private void addNewPaperMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewPaperMActionPerformed
     }//GEN-LAST:event_addNewPaperMActionPerformed
@@ -1025,10 +1109,10 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.JButton studentRestrationFB;
     private javax.swing.JMenu systemMenu;
     private javax.swing.JPanel titlePanel;
+    private javax.swing.JLabel userIcon;
     private javax.swing.JPanel userLogPanel;
     private javax.swing.JLabel username;
     private javax.swing.JPanel userpanel;
-    private javax.swing.JMenuItem viewAllUsersMenu;
     private javax.swing.JMenuItem viewAttendenceM;
     private javax.swing.JMenuItem viewResultM;
     private javax.swing.JButton viewStudentMarksFB;

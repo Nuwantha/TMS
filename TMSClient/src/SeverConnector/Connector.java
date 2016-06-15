@@ -11,6 +11,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import tms.controllercommon.AttendenceController;
+import tms.controllercommon.BackUpController;
 import tms.controllercommon.ClassController;
 import tms.controllercommon.ClassFeesController;;
 import tms.controllercommon.ExamController;
@@ -42,7 +43,7 @@ public class Connector {
     private SchoolarshipResultController schoolarshipResultController;
     private StudentController studentController;
     private UserController userController;
-    
+    private BackUpController backUpController;
     private Connector() throws NotBoundException, MalformedURLException, RemoteException {
         String lookUpString = "rmi://127.0.0.1:344/TMSServer";
         remoteFactory = (RemoteFactory) Naming.lookup(lookUpString);
@@ -122,6 +123,13 @@ public class Connector {
             userController=remoteFactory.getUSerController();
         }
         return userController;
+    }
+    
+    public BackUpController getBackUpController() throws RemoteException, SQLException, InterruptedException, ClassNotFoundException {
+        if(backUpController==null){
+            backUpController=remoteFactory.getBackUpController();
+        }
+        return backUpController;
     }
     
 }

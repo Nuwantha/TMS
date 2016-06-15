@@ -5,17 +5,77 @@
  */
 package tms.views;
 
+import SeverConnector.Connector;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.rmi.ConnectException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.text.JTextComponent;
+import tms.common_classes.GUIitemsValidator;
+import tms.controllercommon.UserController;
+import tms.model.User;
+
 /**
  *
  * @author Nuwantha
  */
 public class Login extends javax.swing.JFrame {
 
+    UserController userController;
+
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        setLocationRelativeTo(null);
+        ImageIcon icon1 = new ImageIcon(getClass().getResource("/tms/icons/main.png"));
+        setIconImage(icon1.getImage());
+        try {
+            Connector sConnector = Connector.getSConnector();
+            userController = sConnector.getUserController();
+        } catch (ConnectException ex) {
+            JOptionPane.showMessageDialog(this, "server is not started");
+        } catch (NotBoundException | MalformedURLException | RemoteException | SQLException | InterruptedException | ClassNotFoundException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        loginVali.setVisible(false);
+        userCombo.setEditable(true);
+        userCombo.requestFocus();
+        JTextComponent userComboEditable = (JTextComponent) userCombo.getEditor().getEditorComponent();
+        userComboEditable.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                try {
+                    loginVali.setVisible(false);
+                    String item = (String) userCombo.getEditor().getItem();
+                    ArrayList<Object> list = new ArrayList();
+
+                    ArrayList<User> userlist = userController.getAllSimilarUsers(item);
+                    for (int i = 0; i < userlist.size(); i++) {
+                        list.add(userlist.get(i).getName());
+                    }
+                    GUIitemsValidator.addItemToCombo(list, userCombo);
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        passwordField.requestFocus();
+                    }
+                } catch (RemoteException | ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        });
+
     }
 
     /**
@@ -29,10 +89,11 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         userNameL = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         userNameL1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        passwordField = new javax.swing.JPasswordField();
         loginB = new javax.swing.JButton();
+        loginVali = new javax.swing.JLabel();
+        userCombo = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -44,23 +105,34 @@ public class Login extends javax.swing.JFrame {
         userNameL.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         userNameL.setText("User Name");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         userNameL1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         userNameL1.setText("Password");
 
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+                passwordFieldActionPerformed(evt);
+            }
+        });
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passwordFieldKeyReleased(evt);
             }
         });
 
         loginB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         loginB.setText("Login");
+        loginB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBActionPerformed(evt);
+            }
+        });
+
+        loginVali.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        loginVali.setForeground(new java.awt.Color(204, 0, 0));
+        loginVali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loginVali.setText("Invalid UserName or Password");
+
+        userCombo.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -82,25 +154,34 @@ public class Login extends javax.swing.JFrame {
                         .addGap(0, 87, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1))))
+                        .addComponent(passwordField)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(userCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(loginVali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(98, 98, 98)
                 .addComponent(userNameL, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(userCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(userNameL1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(loginVali)
+                .addGap(28, 28, 28)
                 .addComponent(loginB, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -153,13 +234,36 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        loginB.requestFocus();
+    }//GEN-LAST:event_passwordFieldActionPerformed
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+    private void loginBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBActionPerformed
+        try {
+            String username = String.valueOf(userCombo.getSelectedItem());
+            User user=userController.searchUser(username);
+            String password = (passwordField.getText());
+            if (userController.matchPassword(username, password)) {
+                FrontPage frontPage = new FrontPage(user);
+                frontPage.setVisible(true);
+                this.dispose();
+            } else {
+                loginVali.setVisible(true);
+            }
+        } catch (RemoteException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_loginBActionPerformed
+
+    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyReleased
+        loginVali.setVisible(false);
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            loginVali.requestFocus();
+        }
+
+    }//GEN-LAST:event_passwordFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -201,9 +305,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton loginB;
+    private javax.swing.JLabel loginVali;
+    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JComboBox<String> userCombo;
     private javax.swing.JLabel userNameL;
     private javax.swing.JLabel userNameL1;
     // End of variables declaration//GEN-END:variables
