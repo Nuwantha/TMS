@@ -5,3 +5,5 @@
 /TMSCommon/build/
 /TMSCommon/dist/
 /TMSClient/build/
+/TMSClient/dist/
+/TMSServer/dist/

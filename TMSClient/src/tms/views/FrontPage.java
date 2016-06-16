@@ -164,6 +164,7 @@ public class FrontPage extends javax.swing.JFrame {
         schoolarshipResulViewMI = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         systemMenu = new javax.swing.JMenu();
         changePasswordMenu = new javax.swing.JMenuItem();
         createNewUserMenu = new javax.swing.JMenuItem();
@@ -579,6 +580,7 @@ public class FrontPage extends javax.swing.JFrame {
         shortcutAccessPanel.add(markAtendenceFB);
 
         addClassFeesFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        addClassFeesFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/money_add.png"))); // NOI18N
         addClassFeesFB.setText("4-Add ClassFees");
         importantButtonSet.add(addClassFeesFB);
         addClassFeesFB.addActionListener(new java.awt.event.ActionListener() {
@@ -600,6 +602,7 @@ public class FrontPage extends javax.swing.JFrame {
         shortcutAccessPanel.add(addSchoolarshipMarksFB);
 
         sendNotifaicationFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        sendNotifaicationFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/email-32.png"))); // NOI18N
         sendNotifaicationFB.setText("6-Send Notification");
         importantButtonSet.add(sendNotifaicationFB);
         sendNotifaicationFB.addActionListener(new java.awt.event.ActionListener() {
@@ -610,6 +613,7 @@ public class FrontPage extends javax.swing.JFrame {
         shortcutAccessPanel.add(sendNotifaicationFB);
 
         viewStudentMarksFB.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        viewStudentMarksFB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/report_user.png"))); // NOI18N
         viewStudentMarksFB.setText("7-Add Class Detail");
         importantButtonSet.add(viewStudentMarksFB);
         viewStudentMarksFB.addActionListener(new java.awt.event.ActionListener() {
@@ -657,6 +661,7 @@ public class FrontPage extends javax.swing.JFrame {
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/Child_Male_Light (2).png"))); // NOI18N
         jMenu1.setText("Student");
 
         addStudentDetailM.setText("Add Student Detail");
@@ -677,6 +682,7 @@ public class FrontPage extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/report_userM.png"))); // NOI18N
         jMenu2.setText("Class");
 
         addNewClassM.setText("Add New Class");
@@ -776,13 +782,28 @@ public class FrontPage extends javax.swing.JFrame {
 
         jMenuBar1.add(schoolarshipResultMainMenu);
 
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/money_addM.png"))); // NOI18N
         jMenu4.setText("ClassFees");
 
         jMenu5.setText("Add New ClassFeesId");
+        jMenu5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu5ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenu5);
+
+        jMenuItem1.setText("View Class Feees");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
 
         jMenuBar1.add(jMenu4);
 
+        systemMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tms/icons/System.png"))); // NOI18N
         systemMenu.setText("System");
 
         changePasswordMenu.setText("Change password");
@@ -1052,27 +1073,40 @@ public class FrontPage extends javax.swing.JFrame {
 
     private void schoolarshipResulAddMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schoolarshipResulAddMIActionPerformed
         
-        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,0);
-        studentMarkManagement.setLocationRelativeTo(null);
-        studentMarkManagement.setVisible(true);
+        SchoolarshipMarkManagement schoolarshipMarkManagement = new SchoolarshipMarkManagement(this, true, 0);
+        schoolarshipMarkManagement.setLocationRelativeTo(null);
+        schoolarshipMarkManagement.setVisible(true);
+        
         
     }//GEN-LAST:event_schoolarshipResulAddMIActionPerformed
 
     private void schoolarshipResulEditMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schoolarshipResulEditMIActionPerformed
        
-        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,1);
-        studentMarkManagement.setLocationRelativeTo(null);
-        studentMarkManagement.setVisible(true);
+        SchoolarshipMarkManagement schoolarshipMarkManagement = new SchoolarshipMarkManagement(this, true, 1);
+        schoolarshipMarkManagement.setLocationRelativeTo(null);
+        schoolarshipMarkManagement.setVisible(true);
         
     }//GEN-LAST:event_schoolarshipResulEditMIActionPerformed
 
     private void schoolarshipResulViewMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schoolarshipResulViewMIActionPerformed
         
-        StudentMarkManagement studentMarkManagement = new StudentMarkManagement(this, rootPaneCheckingEnabled,2);
-        studentMarkManagement.setLocationRelativeTo(null);
-        studentMarkManagement.setVisible(true);
+        SchoolarshipMarkManagement schoolarshipMarkManagement = new SchoolarshipMarkManagement(this, true, 2);
+        schoolarshipMarkManagement.setLocationRelativeTo(null);
+        schoolarshipMarkManagement.setVisible(true);
         
     }//GEN-LAST:event_schoolarshipResulViewMIActionPerformed
+
+    private void jMenu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu5ActionPerformed
+        ClassFeesManagement classFeesManagement = new ClassFeesManagement(this,true, 0);
+        classFeesManagement.setLocationRelativeTo(null);
+        classFeesManagement.setVisible(true);
+    }//GEN-LAST:event_jMenu5ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+         ClassFeesManagement classFeesManagement = new ClassFeesManagement(this,true, 1);
+        classFeesManagement.setLocationRelativeTo(null);
+        classFeesManagement.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1136,6 +1170,7 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButton10;
